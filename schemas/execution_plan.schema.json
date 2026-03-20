@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "execution_plan.schema.json",
+  "title": "Execution Plan",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "request_id",
+    "stage",
+    "payload"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage": {
+      "const": "execution_plan"
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "validated",
+        "execution_mode",
+        "steps",
+        "dependencies",
+        "expected_outputs"
+      ],
+      "properties": {
+        "validated": {
+          "type": "boolean"
+        },
+        "execution_mode": {
+          "type": "string",
+          "enum": ["dry_run", "apply"]
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "expected_outputs": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

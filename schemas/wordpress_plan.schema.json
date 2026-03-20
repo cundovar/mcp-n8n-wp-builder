@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "wordpress_plan.schema.json",
+  "title": "WordPress Plan",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "request_id",
+    "stage",
+    "payload"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage": {
+      "const": "wordpress_plan"
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "pages_to_create",
+        "menus_to_create",
+        "plugins_to_install",
+        "theme_strategy",
+        "settings_to_apply",
+        "forms_to_create",
+        "seo_actions"
+      ],
+      "properties": {
+        "pages_to_create": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "slug",
+              "title"
+            ],
+            "properties": {
+              "slug": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "menus_to_create": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "plugins_to_install": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "theme_strategy": {
+          "type": "object"
+        },
+        "settings_to_apply": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "forms_to_create": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "seo_actions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

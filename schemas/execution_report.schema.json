@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "execution_report.schema.json",
+  "title": "Execution Report",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "request_id",
+    "stage",
+    "payload"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage": {
+      "const": "execution_report"
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "execution_id",
+        "status",
+        "steps_completed",
+        "steps_failed"
+      ],
+      "properties": {
+        "execution_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": ["completed", "failed", "failed_partial", "compensated"]
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "steps_completed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["step_id", "action"],
+            "properties": {
+              "step_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "result": {
+                "type": "string"
+              },
+              "duration_ms": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "steps_failed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["step_id", "action", "error"],
+            "properties": {
+              "step_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "error": {
+                "type": "string",
+                "minLength": 1
+              },
+              "error_details": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "steps_compensated": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["step_id", "action"],
+            "properties": {
+              "step_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "compensation_result": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "next_action": {
+          "type": "string",
+          "enum": ["none", "resume", "compensate", "manual_intervention_required"]
+        },
+        "site_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "summary": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

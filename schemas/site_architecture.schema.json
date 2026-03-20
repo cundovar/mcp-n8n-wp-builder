@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "site_architecture.schema.json",
+  "title": "Site Architecture",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "request_id",
+    "stage",
+    "payload"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage": {
+      "const": "site_architecture"
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "site_name",
+        "site_type",
+        "pages",
+        "design_direction",
+        "technical_notes"
+      ],
+      "properties": {
+        "site_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "site_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "slug",
+              "title",
+              "goal",
+              "sections"
+            ],
+            "properties": {
+              "slug": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "goal": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sections": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "title",
+                    "content_brief"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "content_brief": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "design_direction": {
+          "type": "object",
+          "required": [
+            "tone",
+            "colors",
+            "layout"
+          ],
+          "properties": {
+            "tone": {
+              "type": "string",
+              "minLength": 1
+            },
+            "colors": {
+              "type": "string",
+              "minLength": 1
+            },
+            "layout": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "technical_notes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

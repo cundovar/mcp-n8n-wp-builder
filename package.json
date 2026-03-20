@@ -1,0 +1,22 @@
+{
+  "name": "n8n-mcp",
+  "version": "1.0.0",
+  "description": "Serveur MCP custom pour n8n",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node --prefer-ts-exts src/index.ts",
+    "smoke:test": "node scripts/smoke-test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0"
+  }
+}

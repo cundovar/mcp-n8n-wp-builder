@@ -1,0 +1,304 @@
+{
+  "name": "WP Site Builder — Core Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wp-site-builder-core-brief",
+        "options": {}
+      },
+      "id": "webhook-1",
+      "name": "Brief Client Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "ef2f499f-b0cb-4791-b376-ee62ebb0a130"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:3000/task",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"engine\":\"claude\",\"prompt\":\"Tu es le collecteur d'un pipeline de creation de site WordPress. Analyse le brief suivant et retourne uniquement un JSON valide, sans texte avant ni apres. Schema attendu: {\\\"entreprise_nom\\\":\\\"string\\\",\\\"activite\\\":\\\"string\\\",\\\"ville\\\":\\\"string\\\",\\\"objectif_site\\\":\\\"string\\\",\\\"style\\\":\\\"string\\\",\\\"pages_souhaitees\\\":[\\\"string\\\"],\\\"contraintes\\\":[\\\"string\\\"],\\\"besoins_specifiques\\\":[\\\"string\\\"]}. Brief client: {{ JSON.stringify($json, null, 2) }}\",\"expect_json\":true,\"context\":{\"task_id\":\"{{$execution.id}}\",\"stage\":\"collecteur\"}}",
+        "options": {}
+      },
+      "id": "collecteur-1",
+      "name": "Agent 1 — Collecteur",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        304,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:3000/task",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"engine\":\"codex\",\"prompt\":\"Tu es l'architecte d'un pipeline de creation de site WordPress. A partir du JSON suivant, retourne uniquement un JSON valide. Schema attendu: {\\\"site_name\\\":\\\"string\\\",\\\"site_type\\\":\\\"string\\\",\\\"pages\\\":[{\\\"slug\\\":\\\"string\\\",\\\"title\\\":\\\"string\\\",\\\"goal\\\":\\\"string\\\",\\\"sections\\\":[{\\\"type\\\":\\\"string\\\",\\\"title\\\":\\\"string\\\",\\\"content_brief\\\":\\\"string\\\"}]}],\\\"design_direction\\\":{\\\"tone\\\":\\\"string\\\",\\\"colors\\\":\\\"string\\\",\\\"layout\\\":\\\"string\\\"},\\\"technical_notes\\\":[\\\"string\\\"]}. Donnees collectees: {{ JSON.stringify($json.parsed_json, null, 2) }}\",\"expect_json\":true,\"context\":{\"task_id\":\"{{$execution.id}}\",\"stage\":\"architecte\"}}",
+        "options": {}
+      },
+      "id": "architecte-1",
+      "name": "Agent 2 — Architecte",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        608,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "brief-1",
+              "name": "brief_architecte",
+              "value": "={{ JSON.stringify($json.parsed_json, null, 2) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-1",
+      "name": "Préparer validation",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        912,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.NOTIFICATION_EMAIL }}",
+        "toEmail": "={{ $env.NOTIFICATION_EMAIL }}",
+        "subject": "Validation requise — workflow WP Site Builder",
+        "options": {}
+      },
+      "id": "email-1",
+      "name": "Email — Demande validation",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1200,
+        0
+      ],
+      "webhookId": "67bdd899-78fc-4e87-8efe-2781beaaddb7",
+      "credentials": {
+        "smtp": {
+          "id": "SMTP_CREDENTIAL_ID",
+          "name": "SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "options": {
+          "webhookSuffix": "wp-site-builder-core-validation"
+        }
+      },
+      "id": "wait-1",
+      "name": "Attente Validation",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1504,
+        0
+      ],
+      "webhookId": "d9363c60-23b7-4605-ba2c-ab27862d4d06"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:3000/task",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"engine\":\"codex\",\"prompt\":\"Tu es le builder technique d'un pipeline WordPress. A partir du JSON suivant, retourne uniquement un JSON valide. Schema attendu: {\\\"summary\\\":\\\"string\\\",\\\"wp_cli_commands\\\":[\\\"string\\\"],\\\"bash_script\\\":\\\"string\\\",\\\"post_actions\\\":[\\\"string\\\"]}. Architecture validee: {{ $('Préparer validation').item.json.brief_architecte }}. Contraintes: le script doit etre prudent, idempotent autant que possible, et orienté WordPress.\",\"expect_json\":true,\"context\":{\"task_id\":\"{{$execution.id}}\",\"stage\":\"builder\"}}",
+        "options": {}
+      },
+      "id": "builder-1",
+      "name": "Agent 3 — Builder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1808,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "={{ $json.parsed_json.bash_script }}"
+      },
+      "id": "ssh-1",
+      "name": "Exécution WP-CLI (SSH)",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        2112,
+        0
+      ],
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "SSH_CREDENTIAL_ID",
+          "name": "WordPress Server SSH"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.NOTIFICATION_EMAIL }}",
+        "toEmail": "={{ $env.NOTIFICATION_EMAIL }}",
+        "subject": "Déploiement terminé — workflow WP Site Builder",
+        "options": {}
+      },
+      "id": "email-2",
+      "name": "Notification — Fin",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2400,
+        0
+      ],
+      "webhookId": "9e40ba46-b197-4115-833c-059542f34802",
+      "credentials": {
+        "smtp": {
+          "id": "SMTP_CREDENTIAL_ID",
+          "name": "SMTP"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Brief Client Webhook": {
+      "main": [
+        [
+          {
+            "node": "Agent 1 — Collecteur",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 1 — Collecteur": {
+      "main": [
+        [
+          {
+            "node": "Agent 2 — Architecte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 2 — Architecte": {
+      "main": [
+        [
+          {
+            "node": "Préparer validation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Préparer validation": {
+      "main": [
+        [
+          {
+            "node": "Email — Demande validation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email — Demande validation": {
+      "main": [
+        [
+          {
+            "node": "Attente Validation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attente Validation": {
+      "main": [
+        [
+          {
+            "node": "Agent 3 — Builder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 3 — Builder": {
+      "main": [
+        [
+          {
+            "node": "Exécution WP-CLI (SSH)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Exécution WP-CLI (SSH)": {
+      "main": [
+        [
+          {
+            "node": "Notification — Fin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  }
+}
