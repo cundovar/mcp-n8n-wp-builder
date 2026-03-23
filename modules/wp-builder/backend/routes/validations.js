@@ -1,4 +1,4 @@
-import config from '../../config/default.js';
+import config from '../../../../bridge/config/default.js';
 import Request from '../db/models/Request.js';
 import ValidationDecision from '../db/models/ValidationDecision.js';
 import {
