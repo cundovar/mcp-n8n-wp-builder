@@ -1,5 +1,5 @@
 import fastq from 'fastq';
-import config from '../../config/default.js';
+import config from '../../../config/default.js';
 import { executeTask } from '../services/executor.js';
 
 // Worker function for the queue

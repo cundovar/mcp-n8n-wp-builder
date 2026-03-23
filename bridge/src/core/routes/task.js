@@ -1,4 +1,4 @@
-import config from '../../config/default.js';
+import config from '../../../config/default.js';
 import { enqueue } from '../queue/job-queue.js';
 import { buildError } from '../utils/response.js';
 
