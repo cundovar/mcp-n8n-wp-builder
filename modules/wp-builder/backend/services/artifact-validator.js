@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 
 const ajv = new Ajv2020({
@@ -7,7 +8,9 @@ const ajv = new Ajv2020({
   strict: false,
 });
 
-const schemasDir = path.resolve(process.cwd(), '..', 'schemas');
+// Chemin relatif au fichier, pas au cwd
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const schemasDir = path.resolve(__dirname, '..', '..', 'schemas');
 const validators = new Map();
 let supportedArtifactTypesCache = null;
 
