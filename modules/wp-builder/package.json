@@ -1,0 +1,10 @@
+{
+  "name": "wp-builder",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "WP-Builder module for MCP N8N Bridge",
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "mongoose": "^9.3.1"
+  }
+}

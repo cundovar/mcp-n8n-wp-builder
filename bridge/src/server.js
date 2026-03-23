@@ -5,10 +5,11 @@ import config from '../config/default.js';
 import { connectDB } from './db/connection.js';
 import healthRoutes from './core/routes/health.js';
 import taskRoutes from './core/routes/task.js';
-import artifactsRoutes from './routes/artifacts.js';
-import requestsRoutes from './routes/requests.js';
-import validationsRoutes from './routes/validations.js';
-import executionsRoutes from './routes/executions.js';
+// WP-Builder routes (module produit)
+import artifactsRoutes from '../../modules/wp-builder/backend/routes/artifacts.js';
+import requestsRoutes from '../../modules/wp-builder/backend/routes/requests.js';
+import validationsRoutes from '../../modules/wp-builder/backend/routes/validations.js';
+import executionsRoutes from '../../modules/wp-builder/backend/routes/executions.js';
 
 // Initialize Fastify
 const fastify = Fastify({
