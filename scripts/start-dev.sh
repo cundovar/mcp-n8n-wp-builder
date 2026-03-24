@@ -93,7 +93,7 @@ start_service() {
 # 3. frontend
 start_mongo
 start_service "bridge" "$ROOT_DIR/bridge" npm run dev
-start_service "frontend" "$ROOT_DIR/bridge/frontend" npm run dev -- --host 0.0.0.0
+start_service "frontend" "$ROOT_DIR/modules/wp-builder/frontend" npm run dev -- --host 0.0.0.0
 
 cat <<EOF
 
