@@ -196,13 +196,18 @@ function buildArgs(command, prompt) {
   if (command === 'codex' || command.includes('codex')) {
     // codex exec <prompt> runs non-interactively
     // --skip-git-repo-check allows running outside git repos
-    // workspace-write : les tâches doivent pouvoir écrire dans le workspace
-    // (préparer un refactor). L'écriture reste confinée par resolveCwd().
+    // Le sandbox interne de codex (workspace-write) repose sur bubblewrap, qui
+    // ne peut pas créer de namespace dans un conteneur non privilégié :
+    // "bwrap: No permissions to create a new namespace". Y remédier
+    // demanderait SYS_ADMIN, donc d'affaiblir le conteneur pour dupliquer une
+    // isolation qu'il fournit déjà. On laisse donc le conteneur faire office de
+    // bac à sable : seul /workspace est monté depuis l'hôte, et resolveCwd()
+    // confine l'exécution à cette racine.
     return [
       'exec',
       '--skip-git-repo-check',
       '--sandbox',
-      'workspace-write',
+      'danger-full-access',
       '--color',
       'never',
       prompt,
