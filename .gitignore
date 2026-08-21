@@ -3,5 +3,6 @@
 /n8n-local
 /.claude
 /bridge/node_modules
+/modules/wp-builder/node_modules
 /.env
 /bridge/.env
