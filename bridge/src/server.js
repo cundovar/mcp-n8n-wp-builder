@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
-import config from '../config/default.js';
+import config, { DEFAULT_DEV_TOKEN } from '../config/default.js';
 import { connectDB } from './db/connection.js';
 import healthRoutes from './core/routes/health.js';
 import taskRoutes from './core/routes/task.js';
@@ -79,6 +79,16 @@ fastify.setErrorHandler((error, request, reply) => {
 // Start server
 const start = async () => {
   try {
+    // Refuse de démarrer avec le token de dev versionné : sans ce garde-fou,
+    // l'auth serait active mais le secret connu de quiconque lit le repo.
+    if (config.auth.enabled && config.auth.token === DEFAULT_DEV_TOKEN) {
+      console.error(
+        'FATAL: BRIDGE_TOKEN is unset or still the default dev token. ' +
+        'Set a strong BRIDGE_TOKEN, or set BRIDGE_AUTH_ENABLED=false for local dev.'
+      );
+      process.exit(1);
+    }
+
     // Connect to MongoDB
     await connectDB();
 
