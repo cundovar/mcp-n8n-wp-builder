@@ -104,6 +104,7 @@ function spawnCli({ command, prompt, cwd, timeout }) {
       cwd: cwd || process.cwd(),
       env: { ...process.env },
       shell: false,
+      stdio: ['ignore', 'pipe', 'pipe'],
     };
 
     const child = spawn(command, args, options);
@@ -164,7 +165,15 @@ function buildArgs(command, prompt) {
   if (command === 'codex' || command.includes('codex')) {
     // codex exec <prompt> runs non-interactively
     // --skip-git-repo-check allows running outside git repos
-    return ['exec', '--skip-git-repo-check', prompt];
+    return [
+      'exec',
+      '--skip-git-repo-check',
+      '--sandbox',
+      'read-only',
+      '--color',
+      'never',
+      prompt,
+    ];
   }
 
   if (command === 'claude' || command.includes('claude')) {

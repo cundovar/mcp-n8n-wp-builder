@@ -27,11 +27,22 @@
         "brand_direction"
       ],
       "properties": {
+        "design_assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
         "brand_direction": {
           "type": "object",
           "required": ["tone", "palette"],
           "properties": {
             "tone": {
+              "type": "string",
+              "minLength": 1
+            },
+            "visual_positioning": {
               "type": "string",
               "minLength": 1
             },
@@ -65,11 +76,44 @@
                 "heading_font": {
                   "type": "string"
                 },
+                "heading_weights": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
                 "body_font": {
                   "type": "string"
                 },
+                "body_weight": {
+                  "type": "number"
+                },
                 "scale_ratio": {
                   "type": "number"
+                },
+                "computed_scale": {
+                  "type": "object",
+                  "properties": {
+                    "h1": {
+                      "type": "string"
+                    },
+                    "h2": {
+                      "type": "string"
+                    },
+                    "h3": {
+                      "type": "string"
+                    },
+                    "h4": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "string"
+                    },
+                    "small": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": true
                 }
               },
               "additionalProperties": true
@@ -80,6 +124,39 @@
                 "type": "string",
                 "minLength": 1
               }
+            },
+            "border_radius": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string"
+                },
+                "small": {
+                  "type": "string"
+                },
+                "large": {
+                  "type": "string"
+                },
+                "pill": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            },
+            "shadows": {
+              "type": "object",
+              "properties": {
+                "sm": {
+                  "type": "string"
+                },
+                "md": {
+                  "type": "string"
+                },
+                "lg": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
             }
           },
           "additionalProperties": true
@@ -98,6 +175,25 @@
                 "type": "string",
                 "minLength": 1
               },
+              "elementor_widget": {
+                "type": "string"
+              },
+              "layout": {
+                "type": "string"
+              },
+              "styling": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "interaction": {
+                "type": "string"
+              },
+              "avoid": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "examples": {
                 "type": "array",
                 "items": {
@@ -112,17 +208,159 @@
           "type": "object",
           "additionalProperties": true
         },
+        "spacing_system": {
+          "type": "object",
+          "properties": {
+            "base_unit": {
+              "type": "string"
+            },
+            "scale": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "section_padding": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "container_max_width": {
+              "type": "string"
+            },
+            "column_gap": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
         "imagery": {
           "type": "object",
           "properties": {
             "style": {
               "type": "string"
             },
+            "color_treatment": {
+              "type": "string"
+            },
+            "subjects": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "aspect_ratios": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "avoid": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "sources": {
               "type": "array",
               "items": {
                 "type": "string"
               }
+            }
+          },
+          "additionalProperties": true
+        },
+        "elementor_guidelines": {
+          "type": "object",
+          "properties": {
+            "global_colors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["title", "color"],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "color": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "global_fonts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["title", "font_family"],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "font_family": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "font_weight": {
+                    "type": "string"
+                  },
+                  "font_size": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": true
+              }
+            },
+            "section_patterns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["pattern_name", "structure"],
+                "properties": {
+                  "pattern_name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "structure": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "used_on_pages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": true
+              }
+            },
+            "astra_child_variables": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "css_variables": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["variable", "value"],
+                    "properties": {
+                      "variable": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "value": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": true
             }
           },
           "additionalProperties": true

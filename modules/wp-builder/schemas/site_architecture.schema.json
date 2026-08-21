@@ -123,6 +123,30 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "wordpress_stack": {
+          "type": "object",
+          "properties": {
+            "theme_parent": {
+              "type": "string",
+              "minLength": 1
+            },
+            "theme_child_required": {
+              "type": "boolean"
+            },
+            "page_builder": {
+              "type": "string",
+              "minLength": 1
+            },
+            "plugins_required": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "additionalProperties": true
         }
       },
       "additionalProperties": false

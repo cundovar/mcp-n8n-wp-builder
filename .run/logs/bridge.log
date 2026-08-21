@@ -1,0 +1,6011 @@
+
+> codex-claude-bridge@1.0.0 dev
+> node --watch src/server.js
+
+MongoDB connected: mongodb://localhost:27017/wp-builder
+strict mode: use allowUnionTypes to allow union type keyword at "#/properties/expect_json" (strictTypes)
+
+╔════════════════════════════════════════════════╗
+║        Codex/Claude Bridge Server              ║
+╠════════════════════════════════════════════════╣
+║  Listening: http://0.0.0.0:3000       ║
+║  Auth:      disabled                            ║
+║  Max jobs:  2                                 ║
+║  MongoDB:   connected                          ║
+╚════════════════════════════════════════════════╝
+    
+[15:19:58.287] [32mINFO[39m (700799): [36mServer listening at http://127.0.0.1:3000[39m
+[15:19:58.287] [32mINFO[39m (700799): [36mServer listening at http://192.168.1.147:3000[39m
+[15:19:58.287] [32mINFO[39m (700799): [36mServer listening at http://100.105.224.121:3000[39m
+[15:19:58.287] [32mINFO[39m (700799): [36mServer listening at http://172.19.0.1:3000[39m
+[15:19:58.287] [32mINFO[39m (700799): [36mServer listening at http://172.17.0.1:3000[39m
+[15:19:58.287] [32mINFO[39m (700799): [36mServer listening at http://172.23.0.1:3000[39m
+[15:19:58.287] [32mINFO[39m (700799): [36mServer listening at http://172.21.0.1:3000[39m
+[15:19:58.287] [32mINFO[39m (700799): [36mServer listening at http://172.18.0.1:3000[39m
+[15:19:58.287] [32mINFO[39m (700799): [36mServer listening at http://172.20.0.1:3000[39m
+[15:20:05.505] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1"
+    req: {
+      "method": "GET",
+      "url": "/",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 48164
+    }
+[15:20:05.510] [32mINFO[39m (700799): [36mRoute GET:/ not found[39m
+    reqId: "req-1"
+[15:20:05.515] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1"
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 9.101277999579906
+[15:20:06.017] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2"
+    req: {
+      "method": "GET",
+      "url": "/favicon.ico",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 48164
+    }
+[15:20:06.017] [32mINFO[39m (700799): [36mRoute GET:/favicon.ico not found[39m
+    reqId: "req-2"
+[15:20:06.020] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2"
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 2.6353280022740364
+[15:21:02.286] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3"
+    req: {
+      "method": "GET",
+      "url": "/ws",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 51594
+    }
+[15:21:02.286] [32mINFO[39m (700799): [36mRoute GET:/ws not found[39m
+    reqId: "req-3"
+[15:21:02.287] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3"
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 0.4932520017027855
+[15:21:33.392] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:21:33.412] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 20.50635500252247
+[15:21:33.414] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57944
+    }
+[15:21:33.418] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.821439005434513
+[15:21:38.391] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57944
+    }
+[15:21:38.400] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.121795997023582
+[15:21:43.391] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57944
+    }
+[15:21:43.400] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 8.796246998012066
+[15:21:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57944
+    }
+[15:21:48.399] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 8.858574002981186
+[15:21:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-9"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57944
+    }
+[15:21:53.400] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-9"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.196267001330853
+[15:21:53.911] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-a"
+    req: {
+      "method": "GET",
+      "url": "/requests/977e984d-b816-4b8b-ab5d-a152864dc8e4",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57944
+    }
+[15:21:53.922] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 10.98674700409174
+[15:21:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-b"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57944
+    }
+[15:21:58.400] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-b"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.215854994952679
+[15:22:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-c"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57944
+    }
+[15:22:03.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.6319699957966805
+[15:22:06.180] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-d"
+    req: {
+      "method": "GET",
+      "url": "/requests/977e984d-b816-4b8b-ab5d-a152864dc8e4/validation-context",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57944
+    }
+[15:22:06.189] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-d"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.052281998097897
+[15:22:06.190] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-e"
+    req: {
+      "method": "GET",
+      "url": "/requests/977e984d-b816-4b8b-ab5d-a152864dc8e4/validation-context",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:06.194] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-e"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.295168995857239
+[15:22:08.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-f"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:08.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-f"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.6738130003213882
+[15:22:12.104] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-g"
+    req: {
+      "method": "GET",
+      "url": "/requests/977e984d-b816-4b8b-ab5d-a152864dc8e4",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:12.108] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.461134999990463
+[15:22:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-h"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:13.400] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-h"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.925599001348019
+[15:22:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-i"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:18.400] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-i"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.069176003336906
+[15:22:22.563] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-j"
+    req: {
+      "method": "GET",
+      "url": "/requests/977e984d-b816-4b8b-ab5d-a152864dc8e4/ai-ready-plan?format=prompt",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:22.598] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 34.36100400239229
+[15:22:23.391] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-k"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:23.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.423307999968529
+[15:22:28.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-l"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:28.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.4999279975891113
+[15:22:33.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-m"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:33.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-m"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.355011999607086
+[15:22:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-n"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:38.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-n"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.633302994072437
+[15:22:43.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-o"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:43.394] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.638651996850967
+[15:22:48.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-p"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:48.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-p"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.37967299669981
+[15:22:53.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-q"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:53.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.9432030022144318
+[15:22:58.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:22:58.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.2385910004377365
+[15:23:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-s"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:03.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-s"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.0105670019984245
+[15:23:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-t"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:08.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-t"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.034203000366688
+[15:23:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-u"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:13.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-u"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.587191000580788
+[15:23:18.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-v"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:18.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-v"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.2279189974069595
+[15:23:23.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-w"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:23.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-w"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.908672995865345
+[15:23:28.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-x"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:28.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-x"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.955974005162716
+[15:23:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-y"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:33.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-y"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.958042003214359
+[15:23:38.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-z"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:38.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-z"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.736004002392292
+[15:23:43.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-10"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:43.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-10"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.447002001106739
+[15:23:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-11"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:48.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-11"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.707832001149654
+[15:23:53.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-12"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:53.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-12"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.235826998949051
+[15:23:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-13"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:23:58.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-13"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.879713997244835
+[15:24:03.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-14"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:03.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-14"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.257852993905544
+[15:24:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-15"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:08.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-15"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.696131005883217
+[15:24:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-16"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:13.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-16"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.377397999167442
+[15:24:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-17"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:18.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-17"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.156314998865128
+[15:24:23.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-18"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:23.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-18"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.5426570028066635
+[15:24:28.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-19"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:28.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-19"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.332355000078678
+[15:24:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1a"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:33.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.726977005600929
+[15:24:38.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1b"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:38.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1b"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.7453830018639565
+[15:24:43.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1c"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:43.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.646256998181343
+[15:24:48.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1d"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:48.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1d"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.817500002682209
+[15:24:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1e"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:53.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1e"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.386315003037453
+[15:24:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1f"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:24:58.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1f"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.1964409947395325
+[15:25:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1g"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:03.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.2471150010824203
+[15:25:08.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1h"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:08.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1h"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.746170997619629
+[15:25:13.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1i"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:13.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1i"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.820424996316433
+[15:25:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1j"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:18.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.299947001039982
+[15:25:23.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1k"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:23.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.961199000477791
+[15:25:28.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1l"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:28.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.170864999294281
+[15:25:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1m"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:33.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1m"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.433857999742031
+[15:25:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1n"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:38.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1n"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.139538995921612
+[15:25:43.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1o"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:43.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.549561001360416
+[15:25:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1p"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:48.399] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1p"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 8.110271997749805
+[15:25:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1q"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:53.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.042185999453068
+[15:25:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:25:58.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.25382000207901
+[15:26:03.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1s"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:03.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1s"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.503930002450943
+[15:26:08.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1t"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:08.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1t"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.6572399958968163
+[15:26:13.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1u"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:13.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1u"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.9034220054745674
+[15:26:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1v"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:18.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1v"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.840089000761509
+[15:26:23.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1w"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:23.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1w"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.912329003214836
+[15:26:28.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1x"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:28.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1x"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.005808003246784
+[15:26:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1y"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:33.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1y"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.133359000086784
+[15:26:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-1z"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:38.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-1z"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.101861000061035
+[15:26:43.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-20"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:43.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-20"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.990417003631592
+[15:26:48.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-21"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:48.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-21"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6809739992022514
+[15:26:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-22"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:53.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-22"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.674541004002094
+[15:26:58.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-23"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:26:58.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-23"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.9022630006074905
+[15:27:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-24"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:03.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-24"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.712645001709461
+[15:27:08.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-25"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:08.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-25"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.7315699979662895
+[15:27:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-26"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:13.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-26"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.939602002501488
+[15:27:18.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-27"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:18.395] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-27"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.343999996781349
+[15:27:23.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-28"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:23.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-28"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.068299002945423
+[15:27:28.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-29"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:28.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-29"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.8134889975190163
+[15:27:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2a"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:33.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.652657002210617
+[15:27:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2b"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:38.394] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2b"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.410907000303268
+[15:27:43.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2c"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:43.394] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.691932000219822
+[15:27:48.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2d"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:48.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2d"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.493088997900486
+[15:27:53.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2e"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:53.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2e"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.449516996741295
+[15:27:58.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2f"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:27:58.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2f"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.74006599932909
+[15:28:03.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2g"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:28:03.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.8269170001149178
+[15:28:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2h"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:28:08.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2h"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.113347999751568
+[15:28:12.172] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2i"
+    req: {
+      "method": "GET",
+      "url": "/requests/977e984d-b816-4b8b-ab5d-a152864dc8e4/ai-ready-plan?format=prompt",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:28:12.184] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2i"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 12.65014100074768
+[15:28:13.388] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2j"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:28:13.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.7265289947390556
+[15:28:18.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2k"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:28:18.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.757482998073101
+[15:28:23.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2l"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:28:23.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6206249967217445
+[15:28:28.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2m"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 57940
+    }
+[15:28:28.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2m"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.0751390010118484
+[15:28:33.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2n"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:28:33.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2n"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.663033999502659
+[15:28:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2o"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:28:38.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.524566002190113
+[15:28:43.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2p"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:28:43.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2p"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.045405000448227
+[15:28:48.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2q"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:28:48.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.068495996296406
+[15:28:53.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:28:53.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.2141120061278343
+[15:28:58.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2s"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:28:58.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2s"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.9051750004291534
+[15:29:03.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2t"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:03.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2t"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.72749900072813
+[15:29:08.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2u"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:08.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2u"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.0617450028657913
+[15:29:13.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2v"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:13.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2v"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.293444000184536
+[15:29:18.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2w"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:18.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2w"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.0206880047917366
+[15:29:23.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2x"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:23.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2x"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.5977069959044456
+[15:29:28.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2y"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:28.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2y"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.401379004120827
+[15:29:33.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-2z"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:33.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-2z"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.1097449958324432
+[15:29:35.276] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-30"
+    req: {
+      "method": "GET",
+      "url": "/ws",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 41236
+    }
+[15:29:35.276] [32mINFO[39m (700799): [36mRoute GET:/ws not found[39m
+    reqId: "req-30"
+[15:29:35.277] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-30"
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 0.39003700017929077
+[15:29:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-31"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:38.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-31"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.041296005249023
+[15:29:43.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-32"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:43.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-32"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.9317459985613823
+[15:29:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-33"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:48.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-33"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.064642004668713
+[15:29:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-34"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:53.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-34"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.883983001112938
+[15:29:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-35"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:29:58.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-35"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.814722001552582
+[15:30:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-36"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:03.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-36"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.663823001086712
+[15:30:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-37"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:08.402] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-37"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 12.00025999546051
+[15:30:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-38"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:13.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-38"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.973060004413128
+[15:30:18.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-39"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:18.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-39"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.216987006366253
+[15:30:23.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3a"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:23.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.443732000887394
+[15:30:28.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3b"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:28.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3b"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6133439987897873
+[15:30:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3c"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:33.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.944012001156807
+[15:30:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3d"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:38.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3d"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.662234000861645
+[15:30:43.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3e"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:43.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3e"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.234928995370865
+[15:30:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3f"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:48.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3f"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.584509000182152
+[15:30:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3g"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:53.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.410480000078678
+[15:30:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3h"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:30:58.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3h"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.634102001786232
+[15:31:03.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3i"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:03.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3i"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.133449003100395
+[15:31:08.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3j"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:08.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6746319979429245
+[15:31:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3k"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:13.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.091919995844364
+[15:31:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3l"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:18.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.530674993991852
+[15:31:23.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3m"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:23.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3m"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.031819000840187
+[15:31:28.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3n"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:28.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3n"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.341403998434544
+[15:31:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3o"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:33.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.219913996756077
+[15:31:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3p"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:38.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3p"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.095424003899097
+[15:31:43.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3q"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:43.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.660429999232292
+[15:31:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:48.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.54109500348568
+[15:31:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3s"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:53.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3s"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.93520999699831
+[15:31:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3t"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:31:58.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3t"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.832948997616768
+[15:32:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3u"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:03.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3u"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.9422160014510155
+[15:32:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3v"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:08.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3v"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.0489509999752045
+[15:32:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3w"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:13.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3w"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.935332998633385
+[15:32:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3x"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:18.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3x"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.510231003165245
+[15:32:23.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3y"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:23.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3y"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.119786001741886
+[15:32:28.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-3z"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:28.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-3z"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.114107005298138
+[15:32:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-40"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:33.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-40"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.584504999220371
+[15:32:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-41"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:38.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-41"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.168064996600151
+[15:32:43.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-42"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:43.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-42"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.175376996397972
+[15:32:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-43"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:48.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-43"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.007503002882004
+[15:32:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-44"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:53.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-44"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.181490994989872
+[15:32:58.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-45"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:32:58.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-45"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.782959997653961
+[15:33:03.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-46"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:03.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-46"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.0006849989295006
+[15:33:08.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-47"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:08.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-47"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.681490994989872
+[15:33:13.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-48"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:13.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-48"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.691140003502369
+[15:33:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-49"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:18.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-49"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.606114000082016
+[15:33:23.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4a"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:23.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.813250996172428
+[15:33:28.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4b"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:28.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4b"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.723117001354694
+[15:33:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4c"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:33.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.416940003633499
+[15:33:38.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4d"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:38.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4d"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6368080005049706
+[15:33:43.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4e"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:43.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4e"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.7521160021424294
+[15:33:48.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4f"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:48.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4f"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.9702769964933395
+[15:33:53.391] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4g"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:53.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.993385002017021
+[15:33:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4h"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:33:58.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4h"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.663460001349449
+[15:34:03.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4i"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:03.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4i"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.939167998731136
+[15:34:08.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4j"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:08.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.52606999874115
+[15:34:13.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4k"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:13.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.02054899930954
+[15:34:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4l"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:18.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.994539998471737
+[15:34:23.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4m"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:23.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4m"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.4375210031867027
+[15:34:28.391] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4n"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:28.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4n"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.361278995871544
+[15:34:33.391] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4o"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:33.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.6587970033288
+[15:34:38.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4p"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:38.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4p"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.1979760006070137
+[15:34:43.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4q"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:43.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.5654169991612434
+[15:34:48.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:48.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.583798997104168
+[15:34:53.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4s"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:53.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4s"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.703509993851185
+[15:34:58.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4t"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:34:58.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4t"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6044379994273186
+[15:35:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4u"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:03.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4u"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.5908059999346733
+[15:35:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4v"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:08.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4v"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.931010000407696
+[15:35:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4w"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:13.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4w"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.324651002883911
+[15:35:18.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4x"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:18.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4x"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.664292998611927
+[15:35:23.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4y"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:23.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4y"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.059997998178005
+[15:35:28.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-4z"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:28.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-4z"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.4912600070238113
+[15:35:33.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-50"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:33.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-50"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.7418869957327843
+[15:35:38.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-51"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:38.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-51"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.768355004489422
+[15:35:43.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-52"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:43.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-52"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.719099998474121
+[15:35:48.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-53"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:48.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-53"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6610299944877625
+[15:35:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-54"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:53.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-54"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.343426994979382
+[15:35:58.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-55"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:35:58.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-55"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.284171000123024
+[15:36:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-56"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:03.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-56"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.4833270013332367
+[15:36:08.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-57"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:08.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-57"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.045824997127056
+[15:36:13.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-58"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:13.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-58"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.2780760005116463
+[15:36:18.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-59"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:18.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-59"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.581344000995159
+[15:36:23.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5a"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:23.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6815019994974136
+[15:36:28.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5b"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:28.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5b"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.865775004029274
+[15:36:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5c"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:33.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.495637997984886
+[15:36:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5d"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:38.394] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5d"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.0426699966192245
+[15:36:43.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5e"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:43.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5e"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.484072998166084
+[15:36:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5f"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:48.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5f"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.0159090012311935
+[15:36:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5g"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:53.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.388375997543335
+[15:36:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5h"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:36:58.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5h"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.747659996151924
+[15:37:03.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5i"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:03.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5i"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.830685995519161
+[15:37:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5j"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:08.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.084449000656605
+[15:37:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5k"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:13.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.393247000873089
+[15:37:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5l"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:18.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.428286999464035
+[15:37:23.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5m"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:23.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5m"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.50662200152874
+[15:37:28.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5n"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:28.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5n"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.58483300358057
+[15:37:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5o"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:33.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.497528001666069
+[15:37:38.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5p"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:38.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5p"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6060980036854744
+[15:37:43.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5q"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:43.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.477263994514942
+[15:37:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:48.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.64715900272131
+[15:37:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5s"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:53.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5s"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.6501820012927055
+[15:37:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5t"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:37:58.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5t"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.3653810024261475
+[15:38:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5u"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:03.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5u"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.9284709990024567
+[15:38:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5v"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:08.395] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5v"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.141664005815983
+[15:38:13.388] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5w"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:13.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5w"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.4664250016212463
+[15:38:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5x"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:18.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5x"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.053461998701096
+[15:38:23.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5y"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:23.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5y"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.908143997192383
+[15:38:28.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-5z"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:28.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-5z"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.7211750000715256
+[15:38:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-60"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:33.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-60"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.704153999686241
+[15:38:38.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-61"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:38.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-61"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.020994000136852
+[15:38:43.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-62"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:43.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-62"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.874641999602318
+[15:38:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-63"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:48.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-63"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.5623850002884865
+[15:38:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-64"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:53.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-64"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.784385003149509
+[15:38:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-65"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:38:58.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-65"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.1087599992752075
+[15:39:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-66"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:03.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-66"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.0245359987020493
+[15:39:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-67"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:08.398] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-67"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.6950870007276535
+[15:39:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-68"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:13.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-68"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.8063839972019196
+[15:39:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-69"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:18.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-69"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.448158994317055
+[15:39:23.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6a"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:23.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.595967993140221
+[15:39:28.391] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6b"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:28.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6b"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.559669002890587
+[15:39:33.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6c"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:33.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.578536003828049
+[15:39:38.391] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6d"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:38.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6d"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.531748004257679
+[15:39:43.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6e"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:43.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6e"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.8004800006747246
+[15:39:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6f"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:48.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6f"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.4744850024580956
+[15:39:53.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6g"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:53.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.5879129990935326
+[15:39:58.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6h"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:39:58.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6h"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.102053999900818
+[15:40:03.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6i"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:03.393] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6i"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.551267996430397
+[15:40:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6j"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:08.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.274830996990204
+[15:40:13.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6k"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:13.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6611530035734177
+[15:40:18.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6l"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:18.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.406102001667023
+[15:40:23.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6m"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:23.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6m"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.264463998377323
+[15:40:28.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6n"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:28.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6n"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.99541100114584
+[15:40:33.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6o"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:33.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.0525400042533875
+[15:40:38.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6p"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:38.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6p"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.6436519995331764
+[15:40:43.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6q"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:43.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.835859000682831
+[15:40:48.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:48.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.278760001063347
+[15:40:53.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6s"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:53.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6s"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.430691994726658
+[15:40:58.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6t"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:40:58.396] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6t"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.0808829963207245
+[15:41:03.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6u"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:41:03.392] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6u"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.75288800150156
+[15:41:08.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6v"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:41:08.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6v"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.702971003949642
+[15:41:13.390] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6w"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:41:13.397] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6w"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.409253999590874
+[15:41:18.389] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6x"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:41:18.391] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6x"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.486625000834465
+[15:41:24.268] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6y"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:41:24.271] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6y"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.571662999689579
+[15:41:29.268] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-6z"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:41:29.271] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-6z"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.8149349987506866
+[15:41:34.271] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-70"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:41:34.277] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-70"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.682487994432449
+[15:41:39.270] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-71"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44800
+    }
+[15:41:39.273] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-71"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.1799890026450157
+[15:41:44.269] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-72"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 59838
+    }
+[15:41:44.272] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-72"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.1285120025277138
+[15:41:49.270] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-73"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53896
+    }
+[15:41:49.274] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-73"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.9745479971170425
+[15:41:54.269] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-74"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:41:54.273] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-74"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.6642590016126633
+[15:41:59.268] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-75"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:41:59.271] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-75"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.844360001385212
+[15:42:04.270] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-76"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:42:04.273] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-76"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.1486039981245995
+[15:42:09.269] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-77"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:42:09.272] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-77"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.8852559998631477
+[15:42:14.271] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-78"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:42:14.277] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-78"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.399346999824047
+[15:42:19.271] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-79"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:42:19.274] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-79"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.9700770005583763
+[15:42:46.295] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7a"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:42:46.301] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.518486998975277
+[15:43:46.293] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7b"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:43:46.298] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7b"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.0149619951844215
+[15:44:46.302] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7c"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:44:46.306] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.997059002518654
+[15:45:46.283] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7d"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:45:46.291] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7d"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.68681900203228
+[15:46:46.292] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7e"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:46:46.297] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7e"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.984621003270149
+[15:47:46.299] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7f"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:47:46.303] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7f"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.333246000111103
+[15:48:46.293] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7g"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:48:46.308] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 14.930598005652428
+[15:49:46.286] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7h"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:49:46.297] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7h"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 10.714186996221542
+[15:50:46.296] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7i"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:50:46.301] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7i"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.202864997088909
+[15:51:46.294] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7j"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:51:46.301] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.069513998925686
+[15:52:46.315] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7k"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:52:46.320] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.027902998030186
+[15:53:46.310] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7l"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:53:46.316] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.48013299703598
+[15:54:46.305] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7m"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:54:46.315] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7m"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.725175000727177
+[15:55:46.309] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7n"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:55:46.316] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7n"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.490736000239849
+[15:56:46.302] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7o"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:56:46.312] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.770024001598358
+[15:57:46.325] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7p"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53900
+    }
+[15:57:46.330] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7p"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.66525299847126
+[15:58:46.301] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7q"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[15:58:46.309] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.589607000350952
+[15:59:46.304] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[15:59:46.318] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 14.055405005812645
+[16:00:46.294] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7s"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:00:46.304] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7s"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.41780100017786
+[16:01:46.318] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7t"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:01:46.323] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7t"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.858448006212711
+[16:02:46.306] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7u"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:02:46.311] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7u"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.7978790029883385
+[16:03:46.310] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7v"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:03:46.317] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7v"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.522265002131462
+[16:04:46.323] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7w"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:04:46.332] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7w"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.219633996486664
+[16:05:46.311] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7x"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:05:46.317] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7x"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.763656996190548
+[16:06:46.305] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7y"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:06:46.312] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7y"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.9670149981975555
+[16:07:46.299] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-7z"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:07:46.308] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-7z"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 8.8045220002532
+[16:08:46.303] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-80"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:08:46.307] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-80"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.732560001313686
+[16:09:46.304] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-81"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:09:46.314] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-81"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.633933000266552
+[16:10:46.318] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-82"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:10:46.322] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-82"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.415225997567177
+[16:11:46.298] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-83"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:11:46.302] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-83"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.090221002697945
+[16:12:46.303] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-84"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:12:46.308] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-84"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.489629998803139
+[16:13:46.308] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-85"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:13:46.313] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-85"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.742879003286362
+[16:14:46.304] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-86"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:14:46.308] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-86"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.9108240008354187
+[16:15:46.309] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-87"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:15:46.315] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-87"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.467931002378464
+[16:16:28.988] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-88"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 38290
+    }
+[16:16:29.070] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-88"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 82.34691400080919
+[16:16:29.118] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-89"
+    req: {
+      "method": "POST",
+      "url": "/requests/smoke-design-agent-20260522-001/artifacts",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 48272
+    }
+[16:16:29.121] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-89"
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 2.8744279965758324
+[16:16:46.325] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8a"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:16:46.329] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.221687994897366
+[16:17:41.070] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8b"
+    req: {
+      "method": "POST",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 42296
+    }
+[16:17:41.168] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8b"
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 97.34697099775076
+[16:17:41.169] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8c"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 50642
+    }
+[16:17:41.169] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 0.6429560035467148
+[16:17:41.174] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8d"
+    req: {
+      "method": "POST",
+      "url": "/requests/3d745739-f95c-4e58-96be-9f23e9408a29/artifacts",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 50652
+    }
+[16:17:41.187] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8d"
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 12.908918000757694
+[16:17:41.216] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8e"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 50658
+    }
+[16:17:46.317] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8f"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:17:46.324] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8f"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.422398000955582
+[16:17:49.588] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8g"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 43870
+    }
+[16:17:49.589] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 0.7113739997148514
+[16:17:49.595] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8h"
+    req: {
+      "method": "POST",
+      "url": "/requests/3d745739-f95c-4e58-96be-9f23e9408a29/artifacts",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 43874
+    }
+[16:17:49.605] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8h"
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 9.981903001666069
+[16:17:49.621] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8i"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 43880
+    }
+[16:18:46.290] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8j"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:18:46.297] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.954675003886223
+[16:19:41.230] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8e"
+    res: {
+      "statusCode": 422
+    }
+    responseTime: 120013.45446899533
+[16:19:46.312] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8k"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:19:46.323] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 11.033013001084328
+[16:19:49.634] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8i"
+    res: {
+      "statusCode": 422
+    }
+    responseTime: 120012.93396700174
+[16:19:50.618] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8l"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 51876
+    }
+[16:19:50.619] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 0.6344309970736504
+[16:19:50.624] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8m"
+    req: {
+      "method": "POST",
+      "url": "/requests/3d745739-f95c-4e58-96be-9f23e9408a29/artifacts",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 51890
+    }
+[16:19:50.629] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8m"
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 4.873628996312618
+[16:19:50.638] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8n"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 51898
+    }
+[16:20:46.302] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8o"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:20:46.308] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.793006002902985
+[16:20:46.561] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8p"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53896
+    }
+[16:21:46.299] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8q"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:21:46.307] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.837319001555443
+[16:21:50.646] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8n"
+    res: {
+      "statusCode": 422
+    }
+    responseTime: 120007.97004199773
+[16:22:46.297] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:22:46.306] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 8.087031997740269
+[16:22:46.574] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8p"
+    res: {
+      "statusCode": 422
+    }
+    responseTime: 120012.51840700209
+[16:23:46.298] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8s"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:23:46.304] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8s"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.420476995408535
+[16:24:46.301] [32mINFO[39m (700799): [36mincoming request[39m
+    reqId: "req-8t"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 47710
+    }
+[16:24:46.308] [32mINFO[39m (700799): [36mrequest completed[39m
+    reqId: "req-8t"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.653228998184204
+Restarting 'src/server.js'
+
+Shutting down...
+MongoDB connected: mongodb://localhost:27017/wp-builder
+strict mode: use allowUnionTypes to allow union type keyword at "#/properties/expect_json" (strictTypes)
+
+╔════════════════════════════════════════════════╗
+║        Codex/Claude Bridge Server              ║
+╠════════════════════════════════════════════════╣
+║  Listening: http://0.0.0.0:3000       ║
+║  Auth:      disabled                            ║
+║  Max jobs:  2                                 ║
+║  MongoDB:   connected                          ║
+╚════════════════════════════════════════════════╝
+    
+[16:25:09.831] [32mINFO[39m (771284): [36mServer listening at http://127.0.0.1:3000[39m
+[16:25:09.832] [32mINFO[39m (771284): [36mServer listening at http://192.168.1.147:3000[39m
+[16:25:09.832] [32mINFO[39m (771284): [36mServer listening at http://100.105.224.121:3000[39m
+[16:25:09.832] [32mINFO[39m (771284): [36mServer listening at http://172.19.0.1:3000[39m
+[16:25:09.832] [32mINFO[39m (771284): [36mServer listening at http://172.17.0.1:3000[39m
+[16:25:09.832] [32mINFO[39m (771284): [36mServer listening at http://172.23.0.1:3000[39m
+[16:25:09.832] [32mINFO[39m (771284): [36mServer listening at http://172.22.0.1:3000[39m
+[16:25:09.832] [32mINFO[39m (771284): [36mServer listening at http://172.21.0.1:3000[39m
+[16:25:09.832] [32mINFO[39m (771284): [36mServer listening at http://172.18.0.1:3000[39m
+[16:25:09.832] [32mINFO[39m (771284): [36mServer listening at http://172.20.0.1:3000[39m
+[16:25:16.237] [32mINFO[39m (771284): [36mincoming request[39m
+    reqId: "req-1"
+    req: {
+      "method": "GET",
+      "url": "/health",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 50914
+    }
+[16:25:16.243] [32mINFO[39m (771284): [36mrequest completed[39m
+    reqId: "req-1"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.130196005105972
+[16:25:28.387] [32mINFO[39m (771284): [36mincoming request[39m
+    reqId: "req-2"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44480
+    }
+[16:25:33.928] [32mINFO[39m (771284): [36mrequest completed[39m
+    reqId: "req-2"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5540.718367002904
+[16:25:45.880] [32mINFO[39m (771284): [36mincoming request[39m
+    reqId: "req-3"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 47380
+    }
+[16:25:45.933] [32mINFO[39m (771284): [36mrequest completed[39m
+    reqId: "req-3"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 52.329346999526024
+[16:25:45.938] [32mINFO[39m (771284): [36mincoming request[39m
+    reqId: "req-4"
+    req: {
+      "method": "POST",
+      "url": "/requests/3d745739-f95c-4e58-96be-9f23e9408a29/artifacts",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 47390
+    }
+[16:25:45.964] [32mINFO[39m (771284): [36mrequest completed[39m
+    reqId: "req-4"
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 25.527915000915527
+[16:25:45.975] [32mINFO[39m (771284): [36mincoming request[39m
+    reqId: "req-5"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 47398
+    }
+[16:25:46.298] [32mINFO[39m (771284): [36mincoming request[39m
+    reqId: "req-6"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 54712
+    }
+[16:25:46.307] [32mINFO[39m (771284): [36mrequest completed[39m
+    reqId: "req-6"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 8.487701997160912
+[16:25:50.037] [32mINFO[39m (771284): [36mrequest completed[39m
+    reqId: "req-5"
+    res: {
+      "statusCode": 422
+    }
+    responseTime: 4061.698175996542
+[16:26:46.307] [32mINFO[39m (771284): [36mincoming request[39m
+    reqId: "req-7"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 54712
+    }
+[16:26:46.313] [32mINFO[39m (771284): [36mrequest completed[39m
+    reqId: "req-7"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.743358999490738
+[16:27:46.299] [32mINFO[39m (771284): [36mincoming request[39m
+    reqId: "req-8"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 54712
+    }
+[16:27:46.304] [32mINFO[39m (771284): [36mrequest completed[39m
+    reqId: "req-8"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.243276998400688
+Restarting 'src/server.js'
+
+Shutting down...
+MongoDB connected: mongodb://localhost:27017/wp-builder
+strict mode: use allowUnionTypes to allow union type keyword at "#/properties/expect_json" (strictTypes)
+
+╔════════════════════════════════════════════════╗
+║        Codex/Claude Bridge Server              ║
+╠════════════════════════════════════════════════╣
+║  Listening: http://0.0.0.0:3000       ║
+║  Auth:      disabled                            ║
+║  Max jobs:  2                                 ║
+║  MongoDB:   connected                          ║
+╚════════════════════════════════════════════════╝
+    
+[16:27:55.644] [32mINFO[39m (775465): [36mServer listening at http://127.0.0.1:3000[39m
+[16:27:55.645] [32mINFO[39m (775465): [36mServer listening at http://192.168.1.147:3000[39m
+[16:27:55.645] [32mINFO[39m (775465): [36mServer listening at http://100.105.224.121:3000[39m
+[16:27:55.645] [32mINFO[39m (775465): [36mServer listening at http://172.19.0.1:3000[39m
+[16:27:55.645] [32mINFO[39m (775465): [36mServer listening at http://172.17.0.1:3000[39m
+[16:27:55.645] [32mINFO[39m (775465): [36mServer listening at http://172.23.0.1:3000[39m
+[16:27:55.645] [32mINFO[39m (775465): [36mServer listening at http://172.22.0.1:3000[39m
+[16:27:55.645] [32mINFO[39m (775465): [36mServer listening at http://172.21.0.1:3000[39m
+[16:27:55.645] [32mINFO[39m (775465): [36mServer listening at http://172.18.0.1:3000[39m
+[16:27:55.645] [32mINFO[39m (775465): [36mServer listening at http://172.20.0.1:3000[39m
+[16:27:59.104] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53908
+    }
+[16:28:22.160] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1"
+    res: {
+      "statusCode": 422
+    }
+    responseTime: 23054.98620200157
+[16:28:36.524] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-2"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 55760
+    }
+[16:28:41.181] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-2"
+    res: {
+      "statusCode": 422
+    }
+    responseTime: 4656.834064997733
+[16:28:46.314] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-3"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:28:46.334] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-3"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 19.256312005221844
+[16:29:46.296] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-4"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:29:46.304] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-4"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 8.023313000798225
+[16:30:46.302] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-5"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:30:46.310] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-5"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.74557900428772
+[16:31:46.297] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-6"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:31:46.305] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-6"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 8.06038100272417
+[16:32:46.306] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-7"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:32:46.313] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-7"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.010773994028568
+[16:33:46.303] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-8"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:33:46.309] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-8"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.347703002393246
+[16:34:46.312] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-9"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:34:46.318] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-9"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.083285003900528
+[16:35:46.294] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-a"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:35:46.305] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 10.205977998673916
+[16:36:46.299] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-b"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:36:46.307] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-b"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.425566002726555
+[16:37:46.311] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-c"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:37:46.315] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.854331001639366
+[16:38:46.310] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-d"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:38:46.317] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-d"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.336055003106594
+[16:39:46.297] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-e"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:39:46.304] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-e"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.933646999299526
+[16:40:46.307] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-f"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:40:46.315] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-f"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.325079001486301
+[16:41:46.295] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-g"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:41:46.302] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.843944996595383
+[16:42:46.298] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-h"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:42:46.304] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-h"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.735683999955654
+[16:43:46.296] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-i"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:43:46.307] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-i"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 11.099702000617981
+[16:44:46.296] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-j"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:44:46.302] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.532404005527496
+[16:45:46.292] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-k"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:45:46.306] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 13.294563002884388
+[16:46:46.305] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-l"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:46:46.312] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.2355009987950325
+[16:47:46.306] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-m"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:47:46.312] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-m"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.360402002930641
+[16:48:46.300] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-n"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:48:46.305] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-n"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.192772001028061
+[16:49:46.293] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-o"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:49:46.298] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.265899993479252
+[16:50:46.308] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-p"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:50:46.318] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-p"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.211662001907825
+[16:51:46.309] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-q"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:51:46.313] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.261905997991562
+[16:52:46.291] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:52:46.296] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.852950997650623
+[16:53:46.295] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-s"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:53:46.303] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-s"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 8.052794001996517
+[16:54:46.308] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-t"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:54:46.313] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-t"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.155129998922348
+[16:55:46.296] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-u"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:55:46.304] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-u"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.839773997664452
+[16:56:46.281] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-v"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:56:46.288] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-v"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.92127500474453
+[16:57:46.298] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-w"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53712
+    }
+[16:57:46.303] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-w"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.401217997074127
+[16:58:46.296] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-x"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 58684
+    }
+[16:58:46.303] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-x"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.451195999979973
+[16:59:46.296] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-y"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 58684
+    }
+[16:59:46.303] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-y"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.9025930017232895
+[17:56:31.384] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-z"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 55748
+    }
+[17:56:31.397] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-z"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 12.470734000205994
+[17:56:31.414] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-10"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 55762
+    }
+[17:56:31.432] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-10"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 17.10715100169182
+[17:56:31.572] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-11"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 55748
+    }
+[17:56:31.581] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-11"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 8.704581998288631
+[17:56:33.714] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-12"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44256
+    }
+[17:56:33.718] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-12"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.302099995315075
+[17:56:38.714] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-13"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:56:38.718] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-13"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.305669002234936
+[17:56:43.714] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-14"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:56:43.718] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-14"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.127228997647762
+[17:56:48.715] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-15"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:56:48.719] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-15"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.8247490003705025
+[17:56:53.715] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-16"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:56:53.719] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-16"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 3.9518600031733513
+[17:56:58.714] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-17"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:56:58.721] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-17"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6.7607370018959045
+[17:57:03.715] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-18"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:57:03.723] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-18"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7.148912996053696
+[17:57:08.712] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-19"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:57:08.717] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-19"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.0450109988451
+[17:57:13.713] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1a"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:57:13.718] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1a"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.616516999900341
+[17:57:17.970] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1b"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 51560
+    }
+[17:57:18.714] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1c"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:57:18.719] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1c"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 4.661234006285667
+[17:57:24.607] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1b"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 6637.379840999842
+[17:57:30.994] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1d"
+    req: {
+      "method": "POST",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 39350
+    }
+[17:57:31.123] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1d"
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 129.298666998744
+[17:57:31.135] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1e"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 43230
+    }
+[17:57:31.219] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1e"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 83.7389319986105
+[17:57:31.227] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1f"
+    req: {
+      "method": "POST",
+      "url": "/requests/97d660c8-b4f1-4bdd-aa46-fef660f0887f/artifacts",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 43234
+    }
+[17:57:31.242] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1f"
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 14.512966997921467
+[17:57:31.259] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1g"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 43236
+    }
+[17:57:37.117] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1h"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 49254
+    }
+[17:57:37.118] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1h"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 0.7970279976725578
+[17:57:37.124] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1i"
+    req: {
+      "method": "POST",
+      "url": "/requests/97d660c8-b4f1-4bdd-aa46-fef660f0887f/artifacts",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 49270
+    }
+[17:57:37.133] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1i"
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 8.967160001397133
+[17:57:37.148] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1j"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 49274
+    }
+[17:57:44.283] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1k"
+    req: {
+      "method": "GET",
+      "url": "/requests/97d660c8-b4f1-4bdd-aa46-fef660f0887f",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 36238
+    }
+[17:57:44.286] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1k"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 2.446543000638485
+[17:57:50.166] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1g"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 18907.102263003588
+[17:57:50.180] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1l"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 38194
+    }
+[17:57:50.193] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1l"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 12.566895999014378
+[17:57:50.230] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1m"
+    req: {
+      "method": "POST",
+      "url": "/requests/97d660c8-b4f1-4bdd-aa46-fef660f0887f/artifacts",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 38206
+    }
+[17:57:50.239] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1m"
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 8.601663999259472
+[17:57:50.258] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1n"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 38222
+    }
+[17:57:56.667] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1j"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 19518.882477000356
+[17:57:56.683] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1o"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 39918
+    }
+[17:57:56.684] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1o"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 1.1528740003705025
+[17:57:56.689] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1p"
+    req: {
+      "method": "POST",
+      "url": "/requests/97d660c8-b4f1-4bdd-aa46-fef660f0887f/artifacts",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 39926
+    }
+[17:57:56.696] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1p"
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 6.900169000029564
+[17:57:56.708] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1q"
+    req: {
+      "method": "POST",
+      "url": "/task",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 39936
+    }
+[17:58:19.757] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1r"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:58:19.767] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1r"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 10.530781000852585
+[17:58:21.131] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1n"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 30872.31107199937
+[17:58:21.148] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1s"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 60326
+    }
+[17:58:21.172] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1s"
+    res: {
+      "statusCode": 422
+    }
+    responseTime: 24.110008999705315
+[17:58:28.645] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1q"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 31936.9942759946
+[17:58:28.669] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1t"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "host.docker.internal:3000",
+      "remoteAddress": "172.22.0.4",
+      "remotePort": 46200
+    }
+[17:58:28.670] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1t"
+    res: {
+      "statusCode": 422
+    }
+    responseTime: 0.7467550039291382
+[17:59:19.778] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1u"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[17:59:19.798] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1u"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 19.997655004262924
+[18:00:19.748] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1v"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44264
+    }
+[18:00:19.754] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1v"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5.730452999472618
+[18:01:19.769] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1w"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53378
+    }
+[18:01:19.779] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1w"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 9.993686996400356
+[18:01:50.007] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1x"
+    req: {
+      "method": "POST",
+      "url": "/artifacts/validate",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 43552
+    }
+[18:01:50.008] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1x"
+    res: {
+      "statusCode": 422
+    }
+    responseTime: 0.5801159963011742
+[18:02:19.748] [32mINFO[39m (775465): [36mincoming request[39m
+    reqId: "req-1y"
+    req: {
+      "method": "GET",
+      "url": "/requests",
+      "host": "localhost:3000",
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 53378
+    }
+[18:02:19.760] [32mINFO[39m (775465): [36mrequest completed[39m
+    reqId: "req-1y"
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 12.23242399841547
+
+Shutting down...
+Completed running 'src/server.js'
