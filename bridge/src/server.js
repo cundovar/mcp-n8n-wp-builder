@@ -3,6 +3,7 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import config, { DEFAULT_DEV_TOKEN } from '../config/default.js';
 import { connectDB } from './db/connection.js';
+import { connectDB as connectWpBuilderDB } from '../../modules/wp-builder/backend/db/connection.js';
 import healthRoutes from './core/routes/health.js';
 import taskRoutes from './core/routes/task.js';
 // WP-Builder routes (module produit)
@@ -101,8 +102,11 @@ const start = async () => {
       process.exit(1);
     }
 
-    // Connect to MongoDB
+    // Connect to MongoDB — deux appels nécessaires : bridge/ et
+    // modules/wp-builder/ ont chacun leur propre instance mongoose (deux
+    // node_modules séparés), voir modules/wp-builder/backend/db/connection.js.
     await connectDB();
+    await connectWpBuilderDB(config.mongodb.uri);
 
     await fastify.listen({
       host: config.server.host,
