@@ -22,9 +22,21 @@ const fastify = Fastify({
 });
 
 // Authentication hook
+// Scopé aux seuls endpoints d'exécution IA (task/codex/claude) : ce sont eux
+// qui spawn codex/claude en écriture et doivent rester protégés par token.
+// Les routes produit (/requests, /artifacts, ...) sont exposées publiquement
+// au frontend et protégées autrement : filtrage par chemin côté Traefik
+// (/task, /codex, /claude n'ont volontairement aucun routeur public défini
+// dans /srv/config/mcp-n8n-wp-builder/docker-compose.yml).
+const EXECUTION_PATHS = ['/task', '/codex', '/claude'];
+
+function isExecutionRoute(url) {
+  const path = url.split('?')[0];
+  return EXECUTION_PATHS.includes(path);
+}
+
 fastify.addHook('onRequest', async (request, reply) => {
-  // Skip auth for health check
-  if (request.url === '/health') {
+  if (!isExecutionRoute(request.url)) {
     return;
   }
 
