@@ -6,6 +6,7 @@ import { connectDB } from './db/connection.js';
 import { connectDB as connectWpBuilderDB } from '../../modules/wp-builder/backend/db/connection.js';
 import healthRoutes from './core/routes/health.js';
 import taskRoutes from './core/routes/task.js';
+import infrastructureRoutes from './core/routes/infrastructure.js';
 // WP-Builder routes (module produit)
 import artifactsRoutes from '../../modules/wp-builder/backend/routes/artifacts.js';
 import requestsRoutes from '../../modules/wp-builder/backend/routes/requests.js';
@@ -30,7 +31,7 @@ const fastify = Fastify({
 // au frontend et protégées autrement : filtrage par chemin côté Traefik
 // (/task, /codex, /claude n'ont volontairement aucun routeur public défini
 // dans /srv/config/mcp-n8n-wp-builder/docker-compose.yml).
-const EXECUTION_PATHS = ['/task', '/codex', '/claude'];
+const EXECUTION_PATHS = ['/task', '/codex', '/claude', '/infrastructure/execute'];
 
 function isExecutionRoute(url) {
   const path = url.split('?')[0];
@@ -65,6 +66,7 @@ fastify.register(cors, {
 // Register routes
 fastify.register(healthRoutes);
 fastify.register(taskRoutes);
+fastify.register(infrastructureRoutes);
 fastify.register(artifactsRoutes);
 fastify.register(requestsRoutes);
 fastify.register(validationsRoutes);

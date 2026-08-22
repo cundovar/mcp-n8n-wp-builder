@@ -5,8 +5,12 @@
 FROM node:22-alpine
 
 # Les CLI que le bridge spawne. git est requis par codex/claude pour operer
-# sur un depot ; wget sert au healthcheck du compose.
-RUN apk add --no-cache git wget \
+# sur un depot ; wget sert au healthcheck du compose. Le reste est pour le
+# runner WP-CLI (phase 2) : bash (absent d'alpine par defaut), openssh-client
+# (execution sur le staging), jq (parsing JSON dans le runner), grep -- le
+# vrai paquet GNU, pas le grep busybox qui casse sur `{n,m}` dans les regex
+# de wp-cli-allowlist.json.
+RUN apk add --no-cache git wget openssh-client jq bash grep \
     && npm i -g @openai/codex@0.147.0 @anthropic-ai/claude-code \
     && npm cache clean --force
 

@@ -1,4 +1,13 @@
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+
 import Request from '../db/models/Request.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const buildStatePolicy = JSON.parse(
+  readFileSync(path.resolve(__dirname, '../../../../automation/policies/build-state-policy.json'), 'utf8')
+);
 
 // Decision-making (schema validation, missing-information detection, risk
 // evaluation, dry_run forcing, next-state choice) lives in the n8n workflow
@@ -160,4 +169,86 @@ export default async function contractsRoutes(fastify) {
     }
     return { ok: true, request_id: id, contract: requestDoc.contract };
   });
+
+  // POST /contracts/:id/transition - generic guarded transition for phases 2-4.
+  // n8n decides WHICH transition to make (visible in its own IF/Switch
+  // nodes); this endpoint's only job is to refuse anything not allowed by
+  // build-state-policy.json, as a second, independent gate.
+  fastify.post(
+    '/contracts/:id/transition',
+    {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['state', 'actor', 'reason'],
+          properties: {
+            state: { type: 'string' },
+            actor: { type: 'string', minLength: 1 },
+            reason: { type: 'string', minLength: 1 },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const { state, actor, reason } = request.body;
+
+      const requestDoc = await Request.findOne({ requestId: id });
+      if (!requestDoc || !requestDoc.contract?.build_state) {
+        return reply.code(404).send({ ok: false, error: 'Contract not found', request_id: id });
+      }
+
+      const current = requestDoc.contract.build_state;
+      const allowedNext = buildStatePolicy.transitions[current] || [];
+
+      if (current === state) {
+        return reply.send({ ok: true, request_id: id, build_state: current, note: 'already in this state' });
+      }
+
+      if (!allowedNext.includes(state)) {
+        return reply.code(409).send({
+          ok: false,
+          error: `Cannot transition from "${current}" to "${state}"`,
+          allowed_next: allowedNext,
+          request_id: id,
+        });
+      }
+
+      appendStateHistory(requestDoc, state, actor, reason);
+      await requestDoc.save();
+
+      return reply.send({ ok: true, request_id: id, build_state: requestDoc.contract.build_state });
+    }
+  );
+
+  // PUT /contracts/:id/stage-artifacts - store one keyed artifact (infra result,
+  // build manifest, review result, ...) produced by phases 2-4.
+  fastify.put(
+    '/contracts/:id/stage-artifacts',
+    {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['key', 'value'],
+          properties: { key: { type: 'string', minLength: 1 } },
+        },
+      },
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const { key, value } = request.body;
+
+      const requestDoc = await Request.findOne({ requestId: id });
+      if (!requestDoc || !requestDoc.contract?.build_state) {
+        return reply.code(404).send({ ok: false, error: 'Contract not found', request_id: id });
+      }
+
+      requestDoc.contract.stage_artifacts = requestDoc.contract.stage_artifacts || {};
+      requestDoc.contract.stage_artifacts[key] = value;
+      requestDoc.markModified('contract.stage_artifacts');
+      await requestDoc.save();
+
+      return reply.send({ ok: true, request_id: id, stage_artifacts: requestDoc.contract.stage_artifacts });
+    }
+  );
 }
