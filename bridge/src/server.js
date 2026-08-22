@@ -11,6 +11,7 @@ import artifactsRoutes from '../../modules/wp-builder/backend/routes/artifacts.j
 import requestsRoutes from '../../modules/wp-builder/backend/routes/requests.js';
 import validationsRoutes from '../../modules/wp-builder/backend/routes/validations.js';
 import executionsRoutes from '../../modules/wp-builder/backend/routes/executions.js';
+import contractsRoutes from '../../modules/wp-builder/backend/routes/contracts.js';
 
 // Initialize Fastify
 const fastify = Fastify({
@@ -68,6 +69,7 @@ fastify.register(artifactsRoutes);
 fastify.register(requestsRoutes);
 fastify.register(validationsRoutes);
 fastify.register(executionsRoutes);
+fastify.register(contractsRoutes);
 
 // Error handler
 fastify.setErrorHandler((error, request, reply) => {

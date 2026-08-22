@@ -1,0 +1,48 @@
+{
+  "$id": "https://mcp-n8n-wp-builder/schemas/agent-result.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Agent Result",
+  "description": "What any bounded agent (infrastructure, builder) returns to n8n after one unit of work. Used by phases 2 and 3.",
+  "type": "object",
+  "required": ["request_id", "correlation_id", "agent", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "request_id": { "type": "string", "minLength": 1 },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Ties this result back to the specific n8n execution/action batch that produced it, for retry and audit."
+    },
+    "agent": { "type": "string", "enum": ["infrastructure", "builder"] },
+    "status": { "type": "string", "enum": ["success", "failed", "partial", "blocked"] },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Structured artifact produced (e.g. produced IDs, versions, URLs, configuration evidence)."
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true },
+      "description": "Before/after state, exit status, duration, redacted diagnostics per action."
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "message"],
+        "additionalProperties": false,
+        "properties": {
+          "severity": { "type": "string", "enum": ["info", "warning", "blocking"] },
+          "message": { "type": "string", "minLength": 1 },
+          "artifact_key": { "type": "string" }
+        }
+      }
+    },
+    "retryable": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this failure can be safely retried from the last known-good action."
+    },
+    "duration_ms": { "type": "number", "minimum": 0 }
+  }
+}

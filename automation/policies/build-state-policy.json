@@ -1,0 +1,41 @@
+{
+  "$id": "https://mcp-n8n-wp-builder/policies/build-state-policy.json",
+  "description": "Explicit state machine for the hybrid orchestration (plan phases 1-4). Every transition must carry actor, timestamp and reason -- no implicit jumps.",
+  "states": [
+    "received",
+    "needs_input",
+    "awaiting_staging_approval",
+    "ready_for_staging",
+    "building",
+    "reviewing",
+    "changes_requested",
+    "awaiting_publish_approval",
+    "publishing",
+    "completed",
+    "failed"
+  ],
+  "initial_state": "received",
+  "transitions": {
+    "received": ["needs_input", "awaiting_staging_approval", "failed"],
+    "needs_input": ["received", "failed"],
+    "awaiting_staging_approval": ["ready_for_staging", "needs_input", "failed"],
+    "ready_for_staging": ["building", "failed"],
+    "building": ["reviewing", "failed"],
+    "reviewing": ["awaiting_publish_approval", "changes_requested", "failed"],
+    "changes_requested": ["building", "failed"],
+    "awaiting_publish_approval": ["publishing", "changes_requested", "failed"],
+    "publishing": ["completed", "failed"],
+    "completed": [],
+    "failed": []
+  },
+  "required_transition_fields": ["state", "actor", "at", "reason"],
+  "force_dry_run_when": {
+    "missing_information_not_empty": true,
+    "unmitigated_risk_severity_at_least": "high",
+    "note": "A request satisfying either condition can only ever reach ready_for_staging with execution_mode=dry_run, regardless of what the submitter requested. This is normalized at intake, not enforced later."
+  },
+  "notes": [
+    "approved + validated:false is not a representable state -- normalize to changes_requested/needs_input at intake, per plan decision.",
+    "Duplicate approval events for a request already past awaiting_staging_approval must be idempotent no-ops, not new transitions."
+  ]
+}

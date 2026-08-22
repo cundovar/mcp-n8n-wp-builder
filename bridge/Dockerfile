@@ -23,6 +23,7 @@ RUN cd modules/wp-builder && npm ci --omit=dev
 
 COPY bridge/ ./bridge/
 COPY modules/wp-builder/ ./modules/wp-builder/
+COPY automation/ ./automation/
 
 COPY bridge/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
