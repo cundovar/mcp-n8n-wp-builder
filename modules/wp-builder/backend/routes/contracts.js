@@ -1,34 +1,39 @@
-import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
-
 import Request from '../db/models/Request.js';
 
-// automation/ lives at the repo root, two levels above modules/wp-builder/.
-// Kept as the single canonical copy (plan phase 1) instead of duplicating
-// schema content inline here.
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const AUTOMATION_ROOT = path.resolve(__dirname, '../../../../automation');
-
-function loadSchema(relPath) {
-  return JSON.parse(readFileSync(path.join(AUTOMATION_ROOT, relPath), 'utf8'));
-}
-
-const siteBuildRequestSchema = loadSchema('contracts/site-build-request.schema.json');
-const buildStatePolicy = loadSchema('policies/build-state-policy.json');
-
-const SEVERITY_ORDER = { low: 0, medium: 1, high: 2, critical: 3 };
-const FORCE_DRY_RUN_MIN_SEVERITY = SEVERITY_ORDER[buildStatePolicy.force_dry_run_when.unmitigated_risk_severity_at_least];
-
-function hasUnmitigatedHighRisk(risks = []) {
-  return risks.some((r) => !r.mitigated && SEVERITY_ORDER[r.severity] >= FORCE_DRY_RUN_MIN_SEVERITY);
-}
+// Decision-making (schema validation, missing-information detection, risk
+// evaluation, dry_run forcing, next-state choice) lives in the n8n workflow
+// (00-site-build-intake) as visible Code/IF nodes -- deliberately, so the
+// logic is inspectable per-execution in n8n rather than hidden in this file.
+// This route is intentionally a thin, trusted persistence layer: it stores
+// whatever state n8n already decided and appends the audit trail entry.
 
 function appendStateHistory(requestDoc, state, actor, reason) {
   requestDoc.contract.state_history.push({ state, actor, at: new Date(), reason });
   requestDoc.contract.build_state = state;
 }
+
+const putContractSchema = {
+  body: {
+    type: 'object',
+    required: ['contract_version', 'business', 'execution_mode', 'build_state', 'actor', 'reason'],
+    properties: {
+      contract_version: { type: 'string' },
+      payload_checksum: { type: 'string' },
+      business: { type: 'object' },
+      site: { type: 'object' },
+      execution_mode: { type: 'string', enum: ['dry_run', 'apply'] },
+      missing_information: { type: 'array', items: { type: 'string' } },
+      risks: { type: 'array' },
+      build_state: {
+        type: 'string',
+        enum: ['needs_input', 'awaiting_staging_approval'],
+        description: 'Only intake-time states are accepted here; later states move through their own gated endpoints.',
+      },
+      actor: { type: 'string', minLength: 1 },
+      reason: { type: 'string' },
+    },
+  },
+};
 
 const approveStagingSchema = {
   body: {
@@ -42,29 +47,19 @@ const approveStagingSchema = {
 };
 
 export default async function contractsRoutes(fastify) {
-  // POST /contracts/site-build - intake for the hybrid orchestration (plan phase 1)
-  fastify.post(
-    '/contracts/site-build',
-    { schema: { body: siteBuildRequestSchema } },
+  // PUT /contracts/:id - store a contract + build_state already decided by the n8n intake workflow.
+  fastify.put(
+    '/contracts/:id',
+    { schema: putContractSchema },
     async (request, reply) => {
+      const { id } = request.params;
       const contract = request.body;
-      const checksum = createHash('sha256').update(JSON.stringify(contract)).digest('hex');
 
-      const missingInformation = [];
-      if (!contract.business.coordinates?.phone && !contract.business.coordinates?.email) {
-        missingInformation.push('business.coordinates.phone or business.coordinates.email');
-      }
-
-      const risks = contract.risks || [];
-      const forceDryRun = missingInformation.length > 0 || hasUnmitigatedHighRisk(risks);
-      const executionMode = forceDryRun ? 'dry_run' : contract.execution_mode || 'dry_run';
-      const nextState = missingInformation.length > 0 ? 'needs_input' : 'awaiting_staging_approval';
-
-      let requestDoc = await Request.findOne({ requestId: contract.request_id });
+      let requestDoc = await Request.findOne({ requestId: id });
 
       if (!requestDoc) {
         requestDoc = new Request({
-          requestId: contract.request_id,
+          requestId: id,
           input: {
             site_name: contract.business.name,
             site_type: contract.business.type,
@@ -76,43 +71,37 @@ export default async function contractsRoutes(fastify) {
           },
           contract: {
             contract_version: contract.contract_version,
-            payload_checksum: checksum,
+            payload_checksum: contract.payload_checksum,
             business: contract.business,
             site: contract.site,
-            execution_mode: executionMode,
-            stage_artifacts: contract.stage_artifacts || {},
-            missing_information: missingInformation,
-            risks,
+            execution_mode: contract.execution_mode,
+            stage_artifacts: {},
+            missing_information: contract.missing_information || [],
+            risks: contract.risks || [],
             state_history: [],
           },
         });
       } else {
-        // Resubmission (e.g. needs_input -> received): update the contract in place,
-        // never create a second record for the same request_id.
-        requestDoc.contract.payload_checksum = checksum;
+        // Resubmission (e.g. needs_input -> received): update in place, never
+        // create a second record for the same request_id.
+        requestDoc.contract.payload_checksum = contract.payload_checksum;
         requestDoc.contract.business = contract.business;
         requestDoc.contract.site = contract.site;
-        requestDoc.contract.execution_mode = executionMode;
-        requestDoc.contract.missing_information = missingInformation;
-        requestDoc.contract.risks = risks;
+        requestDoc.contract.execution_mode = contract.execution_mode;
+        requestDoc.contract.missing_information = contract.missing_information || [];
+        requestDoc.contract.risks = contract.risks || [];
       }
 
-      appendStateHistory(
-        requestDoc,
-        nextState,
-        'intake-workflow',
-        missingInformation.length > 0 ? 'missing critical information' : 'contract complete, awaiting human staging approval'
-      );
-
+      appendStateHistory(requestDoc, contract.build_state, contract.actor, contract.reason);
       await requestDoc.save();
 
       return reply.code(201).send({
         ok: true,
-        request_id: contract.request_id,
+        request_id: id,
         build_state: requestDoc.contract.build_state,
         execution_mode: requestDoc.contract.execution_mode,
         missing_information: requestDoc.contract.missing_information,
-        payload_checksum: checksum,
+        payload_checksum: requestDoc.contract.payload_checksum,
       });
     }
   );
