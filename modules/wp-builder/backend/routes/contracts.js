@@ -160,6 +160,99 @@ export default async function contractsRoutes(fastify) {
     }
   );
 
+  // POST /contracts/:id/approve-publish - human gate: awaiting_publish_approval -> publishing.
+  // Independent re-validation of publication-policy.json, deliberately duplicated
+  // from the check the 40-wordpress-publish workflow already does in a visible
+  // Code node -- n8n's check is a fast-fail UX convenience, this is the actual
+  // authority (same defense-in-depth shape as phase 2's runner re-validating
+  // WP-CLI actions independently of the n8n allow-list check).
+  fastify.post(
+    '/contracts/:id/approve-publish',
+    {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['actor', 'build_checksum', 'target_environment', 'expiry'],
+          properties: {
+            actor: { type: 'string', minLength: 1 },
+            build_checksum: { type: 'string', minLength: 1 },
+            target_environment: { type: 'string', minLength: 1 },
+            expiry: { type: 'string', minLength: 1 },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const { actor, build_checksum, target_environment, expiry } = request.body;
+
+      const requestDoc = await Request.findOne({ requestId: id });
+      if (!requestDoc || !requestDoc.contract?.build_state) {
+        return reply.code(404).send({ ok: false, error: 'Contract not found', request_id: id });
+      }
+
+      const current = requestDoc.contract.build_state;
+
+      // Idempotent no-op: already past this gate.
+      if (current === 'publishing' || current === 'completed') {
+        return reply.send({
+          ok: true,
+          request_id: id,
+          build_state: current,
+          note: 'already approved, no new transition recorded',
+        });
+      }
+
+      if (current !== 'awaiting_publish_approval') {
+        return reply.code(409).send({
+          ok: false,
+          error: `Cannot approve publish from state "${current}"`,
+          allowed_from: 'awaiting_publish_approval',
+          request_id: id,
+        });
+      }
+
+      const expiryDate = new Date(expiry);
+      if (Number.isNaN(expiryDate.getTime()) || expiryDate.getTime() <= Date.now()) {
+        return reply.code(400).send({
+          ok: false,
+          error: 'Approval expiry is missing, malformed, or already in the past',
+          request_id: id,
+        });
+      }
+
+      const currentChecksum = requestDoc.contract.stage_artifacts?.build_checksum;
+      if (!currentChecksum || build_checksum !== currentChecksum) {
+        return reply.code(409).send({
+          ok: false,
+          error: 'build_checksum does not match the latest reviewed build -- approval is stale or forged',
+          expected: currentChecksum || null,
+          received: build_checksum,
+          request_id: id,
+        });
+      }
+
+      requestDoc.contract.stage_artifacts = requestDoc.contract.stage_artifacts || {};
+      requestDoc.contract.stage_artifacts.publish_approval = {
+        actor,
+        build_checksum,
+        target_environment,
+        expiry,
+        approved_at: new Date(),
+      };
+      requestDoc.markModified('contract.stage_artifacts');
+
+      appendStateHistory(requestDoc, 'publishing', actor, `publish approved for checksum ${build_checksum} (env: ${target_environment})`);
+      await requestDoc.save();
+
+      return reply.send({
+        ok: true,
+        request_id: id,
+        build_state: requestDoc.contract.build_state,
+      });
+    }
+  );
+
   // GET /contracts/:id - read current contract + state history
   fastify.get('/contracts/:id', async (request, reply) => {
     const { id } = request.params;

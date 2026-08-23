@@ -1,0 +1,28 @@
+{
+  "$id": "https://mcp-n8n-wp-builder/policies/publication-policy.json",
+  "description": "Publication is gated by an explicit human approval that names the exact build being published. The bridge re-validates every field independently of n8n (defense in depth), mirroring how phase 2's runner re-validates WP-CLI actions independently of the n8n allow-list check.",
+  "build_checksum": {
+    "algorithm": "fnv1a32 (not cryptographic -- used for staleness/mismatch detection, not tamper-proofing)",
+    "computed_from": "contract.stage_artifacts.build_manifest, recomputed every time the review workflow (30-wordpress-review) runs",
+    "invalidation_rule": "Because the checksum is recomputed from the current manifest on every review run, any correction cycle (35-wordpress-correction-loop merges corrected entries into build_manifest) produces a new checksum on the next review. An approval naming an old checksum can never match a post-correction manifest, so it is rejected automatically -- this is how 'invalidate earlier approvals after correction' (plan phase 4 task 2) is enforced without a separate revocation step."
+  },
+  "required_approval_fields": ["request_id", "actor", "build_checksum", "target_environment", "expiry"],
+  "validation_rules": [
+    { "field": "build_state", "rule": "must be awaiting_publish_approval at the moment of approval" },
+    { "field": "build_checksum", "rule": "must equal contract.stage_artifacts.build_checksum exactly -- any mismatch (stale or forged) is rejected" },
+    { "field": "expiry", "rule": "must be a valid ISO 8601 timestamp strictly in the future, both when approval is submitted and again when the publish workflow executes it" },
+    { "field": "target_environment", "rule": "must be a non-empty string naming the production adapter to invoke (see automation/README.md for the adapter contract)" }
+  ],
+  "double_gate": "n8n's 40-wordpress-publish workflow performs the same checks in a visible Code node BEFORE calling the bridge, so a human reviewing an execution can see why a request was rejected without reading server logs. The bridge (POST /contracts/:id/approve-publish) re-checks all of it independently and is the actual authority -- n8n's check is a fast-fail UX convenience, not the enforcement point.",
+  "self_approval_forbidden": "The builder (phase 3) and reviewer (phase 4 review stage) never call approve-publish. It is only ever invoked by a human-triggered call to the 40-wordpress-publish webhook.",
+  "post_publish": {
+    "smoke_checks": ["availability", "page_count_matches_manifest", "manifest_readback"],
+    "smoke_checks_not_automated_v1": ["navigation_path", "form_submission_path", "indexing_state", "visual_regression"],
+    "on_smoke_failure": "transition build_state to failed with a state_history reason describing which check failed; no automatic rollback exists in v1 -- see automation/README.md 'Manual recovery'."
+  },
+  "production_adapter": {
+    "v1_default": "staging-passthrough",
+    "v1_default_behaviour": "Treats the already-reviewed staging build as the artifact of record and returns its own URL as published_base_url. This is a deliberate placeholder, not a real deploy: plan.md records the decision that the hosting-specific staging-to-production mechanism is unknown and must stay replaceable.",
+    "replace_by": "Editing the 'Invoke Production Adapter' Code node in 40-wordpress-publish.json. Contract: input is {request_id, contract, build_manifest}; output must be {ok: boolean, adapter: string, published_base_url: string|null, published_at: ISO string, note?: string}."
+  }
+}

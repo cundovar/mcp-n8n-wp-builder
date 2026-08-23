@@ -1,4 +1,4 @@
-# Hybrid orchestration — status au 2026-08-23
+# Hybrid orchestration — status au 2026-08-23 (mis à jour: Phase 4 committée)
 
 Reference: `n8n-wordpress-hybrid-orchestration-plan.zip` (repo root) / `aidd_docs/tasks/2026_08/2026_08_22_n8n-wordpress-hybrid-orchestration/` (repo `wp-mcp`). Objectif du plan: un contrat de site validé peut être construit de façon répétable sur un WordPress de staging, revu indépendamment, corrigé, publié seulement après approbation humaine.
 
@@ -10,7 +10,9 @@ front (à construire plus tard) / curl de test
   → bridge (mcp-n8n-wp-builder)        (persistance MongoDB, garde-fous de transition)
   → n8n "10-wordpress-infrastructure"  (agent codex → allow-list WP-CLI → SSH staging)
   → n8n "20-wordpress-builder"         (agent codex → policy MCP → wp-mcp sur staging)
-  → [Phase 4, pas commencée] revue indépendante → correction → publication
+  → n8n "30-wordpress-review"          (agent lecture-seule + checks déterministes → verdict)
+  → n8n "35-wordpress-correction-loop" (correction bornée, uniquement si changes_requested)
+  → n8n "40-wordpress-publish"         (approbation humaine + checksum → adapter → smoke checks)
 ```
 
 Principe tenu tout du long: **la logique de décision vit dans des nodes n8n visibles** (Code/IF inspectables par exécution), le bridge et les runners ne font que du stockage + des garde-fous de sécurité en profondeur (re-validation indépendante de ce que n8n a décidé).
@@ -41,7 +43,21 @@ Principe tenu tout du long: **la logique de décision vit dans des nodes n8n vis
 - Plugin installé et activé sur `wp-staging`, token Bearer MCP configuré (`wp_mcp_bearer_token` / `wp_mcp_bearer_user_id`, utilisateur admin WP id 1).
 - `automation/policies/mcp-tool-policy.json` — outils autorisés (`upsert_post`, `get_post`, `list_categories`, `create_category`), tout le reste refusé par défaut (Elementor, Woo, delete, upload_media = itérations futures). Garde-fou "placeholder non résolu → jamais publishable, status forcé à draft".
 - n8n `20-wordpress-builder` (ID `WPBUILD3Phase0001`, **actif**) — webhook `wordpress-builder`. Agent (codex) propose des artefacts de page → gate de publication visible → upsert via MCP (JSON-RPC) → **vérification par relecture** (`get_post` après chaque upsert) → manifest → transition `reviewing`.
-- **Bug trouvé et corrigé, PAS ENCORE RE-TESTÉ** : les nodes Code `Parse Upsert Result` et `Build Manifest Entry` tournaient en mode "une fois pour tous les items" (comportement par défaut d'un node Code n8n) au lieu de traiter chaque item du fan-out — résultat : sur 3 pages proposées et créées avec succès (vérifié via `wp post list`), le manifest final n'en contenait qu'une seule. Corrigé en réécrivant ces deux nodes avec une boucle explicite `$input.all().map(...)`. **Réimporté et republié dans n8n mais le retest de bout en bout a été interrompu — c'est la toute première chose à vérifier demain.**
+- **Bug trouvé et corrigé** : les nodes Code `Parse Upsert Result` et `Build Manifest Entry` tournaient en mode "une fois pour tous les items" (comportement par défaut d'un node Code n8n) au lieu de traiter chaque item du fan-out — résultat : sur 3 pages proposées et créées avec succès (vérifié via `wp post list`), le manifest final n'en contenait qu'une seule. Corrigé en réécrivant ces deux nodes avec une boucle explicite `$input.all().map(...)`.
+- **Committé sur `deploy` (commit `7034cbc`)** : `automation/policies/mcp-tool-policy.json` + `automation/workflows/20-wordpress-builder.json` (version corrigée, exportée depuis n8n). **Le retest de bout en bout du fix n'a PAS été rejoué** — décision prise de committer directement sans repasser par un cycle e2e complet (le fix est structurellement identique au pattern déjà validé en Phase 2/3 pour `Parse Upsert Result`/`Build Manifest Entry`). À garder en tête si un manifest incomplet réapparaît.
+
+### Phase 4 — Revue indépendante, boucle de correction, gate de publication (commit à venir)
+- `automation/policies/review-policy.json` — reviewer restreint à `list_posts`/`get_post`/`list_categories` (aucun outil mutant). Vérifications déterministes (pages requises présentes, pas de placeholder non résolu dans le contenu live, chaque entrée manifest `verified:true`) codées dans des nodes Code visibles et **toujours prioritaires** sur le verdict de l'agent — un agent ne peut pas approuver au-delà d'un check qu'il ne voit pas.
+- `automation/policies/publication-policy.json` — définit `build_checksum` (FNV-1a, non cryptographique, juste de la détection de staleness), les champs d'approbation requis (`request_id`, `actor`, `build_checksum`, `target_environment`, `expiry`), et le contrat de l'adapter de production.
+- Bridge : nouvel endpoint `POST /contracts/:id/approve-publish` — re-valide indépendamment état/checksum/expiry (défense en profondeur, même principe que le runner Phase 2), transitionne `awaiting_publish_approval → publishing`. Aucun autre endpoint bridge n'était nécessaire — `/transition` et `/stage-artifacts` génériques couvrent déjà tous les états Phase 4.
+- n8n `30-wordpress-review` (ID `WPREVIEW4Phase0001`), `35-wordpress-correction-loop` (ID `WPCORRECT4Phase0001`), `40-wordpress-publish` (ID `WPPUBLISH4Phase0001`) — **importés dans n8n mais INACTIFS**, à activer manuellement dans l'UI (voir raison ci-dessous).
+- Checksum recalculé à chaque passage de `30-wordpress-review` à partir du manifest courant → toute correction (Phase 35 fusionne les entrées corrigées dans le manifest) invalide automatiquement une approbation qui référencerait l'ancien checksum, sans étape de révocation séparée.
+- Boucle de correction plafonnée à 3 tentatives (codé en dur dans le node "IF Attempts Exceeded" de `35-wordpress-correction-loop`) ; au-delà, transition directe vers `failed` avec les findings non résolus dans la raison — c'est l'escalade humaine v1 (pas de canal de notification réel, cf point 9 plus bas).
+- Adapter de production v1 = stub `staging-passthrough` documenté et remplaçable (contrat d'entrée/sortie précisé dans `automation/README.md`), conformément à la décision du plan ("Version 1 stops at an abstract production adapter").
+- Smoke checks post-publication : disponibilité + nombre de pages + relecture manifest, réellement fonctionnels. `navigation_path`, `form_submission_path`, `indexing_state`, `visual_regression` sont explicitement documentés comme non automatisés en v1 (pas d'outil navigateur/crawler dans le pipeline).
+- `automation/README.md` créé — documente credentials, machine à états, chaînage manuel, timeouts/retries, recovery manuelle, contrat de remplacement de l'adapter, rétention/redaction des preuves.
+- **RIEN DE TOUT ÇA N'A ÉTÉ TESTÉ EN DIRECT** (aucune exécution réelle des webhooks `wordpress-review`/`wordpress-correction`/`wordpress-publish`) — décision explicite de l'utilisateur de committer/pousser sans passer par un cycle de test avant de documenter la Phase 4. **C'est la toute première chose à faire à la prochaine session : activer les 3 workflows dans l'UI n8n, puis rejouer un cycle complet 1→2→3→4 avec un `request_id` neuf.**
+- Import CLI d'un workflow `zz-import-smoke-test` (test de mécanique d'import, `noOp` inoffensif, inactif) laissé dans n8n — à supprimer manuellement via l'UI, la CLI n8n n'a pas de commande `delete:workflow` et l'accès direct à postgres a été refusé par le classifieur de sécurité (à raison, il aurait fallu manipuler la clé de chiffrement des credentials pour un accès équivalent).
 
 ## État exact du staging au moment de la pause
 
@@ -51,15 +67,16 @@ Principe tenu tout du long: **la logique de décision vit dans des nodes n8n vis
 
 ## Ce qui reste à faire
 
-1. **Vérifier le fix de la Phase 3** (priorité immédiate) — rejouer intake → approve → infra → builder avec un `request_id` neuf, confirmer que le manifest contient bien les 3 artefacts avec `verified: true`.
-2. **Committer + pousser le fix Phase 3** sur `deploy` une fois vérifié (`automation/workflows/20-wordpress-builder.json` actuellement commité est encore la version buggée).
+1. **Activer et tester la Phase 4** (priorité immédiate) — activer `30-wordpress-review`, `35-wordpress-correction-loop`, `40-wordpress-publish` dans l'UI n8n (importés inactifs), puis rejouer un cycle complet neuf : intake → approve → infra → builder → review → (correction si besoin) → publish-approve → publish. Vérifier en particulier : le checksum change bien après une correction, une approbation à l'ancien checksum est bien rejetée (409), les smoke checks post-publish passent.
+2. **Nettoyer `zz-import-smoke-test`** dans l'UI n8n (workflow de test inoffensif laissé par erreur, voir Phase 4 ci-dessus).
 3. **Idempotence de `create_menu`** — ajouter une vérification d'existence avant création (soit dans le prompt de l'agent en lui donnant un outil de lecture, soit dans l'allow-list/runner) pour respecter la tâche 2 de la Phase 2 du plan ("safe to retry").
-4. **Chaînage automatique Phase 1 → Phase 2 → Phase 3** — actuellement déclenché manuellement (curl séparés). Le plan (tâche 4, Phase 1) demande que l'approbation déclenche automatiquement la suite. Nécessite un mécanisme asynchrone (l'exécution complète prend 100s+, trop long pour bloquer la réponse HTTP de l'approbateur).
-5. **Phase 4** (pas commencée) — reviewer indépendant en lecture seule, boucle de correction bornée, gate de publication humaine avec checksum. C'est aussi l'étape qui donnera un vrai signal sur la qualité des prompts des agents Phase 2/3 (cf. point 6).
-6. **Revue des prompts des agents IA** — les prompts actuels (`Build Agent Prompt` en Phase 2, `Build Content Agent Prompt` en Phase 3) sont volontairement minimaux, écrits pour prouver la mécanique du pipeline, pas la qualité du contenu. Décision prise : attendre que la Phase 4 existe pour avoir un signal concret plutôt que deviner.
-7. **Moteur `claude`** — session OAuth expirée dans le conteneur bridge (`Failed to authenticate: OAuth session expired`). Tous les agents utilisent `codex` en attendant. Si `claude` est voulu, il faut se reconnecter localement puis rafraîchir le fichier seedé dans le bridge.
-8. **Mémoire n8n** — le conteneur `n8n` a redémarré seul de très nombreuses fois pendant la session (`mem_limit: 600m` dans `n8n/docker-compose.yml`, usage de base déjà ~60-80% juste au démarrage). Recommandé : monter à 1-1.5GB. Cause probable de plusieurs échecs de commandes CLI pendant les tests (non lié à la logique des workflows elle-même).
-9. **SMTP** — credential `SMTP account` créé dans n8n mais jamais câblé à un node ; pertinent seulement si le Core Pipeline (V1, désormais obsolète) est ranimé, sinon sans objet.
+4. **Chaînage automatique Phase 1 → 2 → 3 → 4** — actuellement déclenché manuellement (curl séparés, un de plus depuis la Phase 4). Le plan (tâche 4, Phase 1) demande que l'approbation déclenche automatiquement la suite. Nécessite un mécanisme asynchrone (l'exécution complète prend 100s+, trop long pour bloquer la réponse HTTP de l'approbateur).
+5. **Revue des prompts des agents IA** — les prompts actuels (Phase 2/3/4) sont volontairement minimaux, écrits pour prouver la mécanique du pipeline, pas la qualité du contenu ou de la revue. Maintenant que la Phase 4 existe, un vrai cycle de test donnera un signal concret sur leur qualité.
+6. **QA navigateur réelle** — `navigation_path`, `form_submission_path`, `indexing_state`, `visual_regression` ne sont pas automatisés (aucun outil navigateur/crawler dans le pipeline). Itération future si le besoin se confirme.
+7. **Adapter de production réel** — le stub `staging-passthrough` (Phase 4) doit être remplacé une fois l'hébergement cible connu (voir contrat dans `automation/README.md`).
+8. **Moteur `claude`** — session OAuth expirée dans le conteneur bridge (`Failed to authenticate: OAuth session expired`). Tous les agents utilisent `codex` en attendant. Si `claude` est voulu, il faut se reconnecter localement puis rafraîchir le fichier seedé dans le bridge.
+9. **Mémoire n8n** — le conteneur `n8n` a redémarré seul de très nombreuses fois pendant la session, y compris pendant les imports Phase 4 (`mem_limit: 600m` dans `n8n/docker-compose.yml`, usage de base déjà ~60-80% juste au démarrage ; `publish:workflow` en CLI l'a fait OOM-kill). Recommandé : monter à 1-1.5GB avant toute activation/test Phase 4 en masse.
+10. **SMTP** — credential `SMTP account` créé dans n8n mais jamais câblé à un node. Pourrait servir d'alerte réelle pour l'escalade de la boucle de correction (point 5 de la Phase 4) ou pour le Core Pipeline V1 (désormais obsolète).
 
 ## Identifiants et emplacements (valeurs non répétées ici pour rester public-repo-safe)
 
@@ -69,7 +86,7 @@ Principe tenu tout du long: **la logique de décision vit dans des nodes n8n vis
 | Token interne bridge (`X-Bridge-Token`) | credential n8n **Header Auth account** (id `32Y7qJF1EaigIR6t`) ; valeur dans `/srv/config/mcp-n8n-wp-builder/.env` |
 | Token MCP staging | credential n8n **WP Staging MCP Token** (id `Yo9eorpphgq9v3VJ`) ; option WP `wp_mcp_bearer_token` (hashé) sur `wp-staging` |
 | Clé SSH staging | `/srv/config/wp-staging/ssh_keys/wpcli_staging_key` (hôte), montée `:ro` dans le bridge |
-| IDs workflows n8n | `00-site-build-intake` = `VEKYSDpw3JPWvHh8` · `10-wordpress-infrastructure` = `WPINFRA2Phase0001` · `20-wordpress-builder` = `WPBUILD3Phase0001` |
+| IDs workflows n8n | `00-site-build-intake` = `VEKYSDpw3JPWvHh8` · `10-wordpress-infrastructure` = `WPINFRA2Phase0001` · `20-wordpress-builder` = `WPBUILD3Phase0001` · `30-wordpress-review` = `WPREVIEW4Phase0001` (inactif) · `35-wordpress-correction-loop` = `WPCORRECT4Phase0001` (inactif) · `40-wordpress-publish` = `WPPUBLISH4Phase0001` (inactif) |
 
 ## Comment reprendre demain
 
@@ -85,4 +102,11 @@ curl -X POST https://n8n.varascundo.com/webhook/wordpress-builder -H "X-Intake-T
 
 # 3. Vérifier le manifest final
 curl https://wp-builder.varascundo.com/requests/<request_id> | jq '.contract.stage_artifacts.build_manifest'
+
+# 4. Phase 4 (workflows a activer dans l'UI n8n avant tout ceci) : review, puis
+#    approbation de publication avec le checksum retourné par la review.
+curl -X POST https://n8n.varascundo.com/webhook/wordpress-review -H "X-Intake-Token: ..." -d '{"request_id":"..."}'
+curl https://wp-builder.varascundo.com/requests/<request_id> | jq '.contract.stage_artifacts.build_checksum, .contract.stage_artifacts.review_result.verdict'
+curl -X POST https://n8n.varascundo.com/webhook/wordpress-publish -H "X-Intake-Token: ..." \
+  -d '{"request_id":"...","actor":"human-reviewer","build_checksum":"<from above>","target_environment":"staging-passthrough","expiry":"2026-08-25T00:00:00Z"}'
 ```

@@ -1,0 +1,48 @@
+{
+  "$id": "https://mcp-n8n-wp-builder/policies/review-policy.json",
+  "description": "What the phase 4 independent reviewer checks and how a verdict is reached. The reviewer has read-only wp-mcp access -- it can never call upsert_post, delete_post, or any mutating tool. Deterministic checks (required pages present, no unresolved placeholders, read-back matches the manifest) run as visible n8n Code nodes and always override the agent's verdict when they fail; the agent adds qualitative findings on top of that evidence.",
+  "reviewer_tools": {
+    "allowed": ["list_posts", "get_post", "list_categories"],
+    "denied_note": "Everything else (upsert_post, delete_post, upload_media, all Elementor/Woo tools) is denied -- a reviewer that can mutate WordPress cannot be independent."
+  },
+  "deterministic_checks": [
+    {
+      "key": "required_pages_present",
+      "description": "Every page listed in contract.site.pages has a corresponding, verified manifest entry.",
+      "blocking": true
+    },
+    {
+      "key": "no_unresolved_placeholders",
+      "description": "Live content returned by list_posts/get_post does not match a placeholder pattern ({{...}}, TODO, TBD, [a completer], [a confirmer]).",
+      "blocking": true
+    },
+    {
+      "key": "manifest_readback_matches",
+      "description": "Every build_manifest entry has verified=true (already checked once during the build, re-confirmed here against live state).",
+      "blocking": true
+    }
+  ],
+  "advisory_checks": [
+    "responsive_layout",
+    "navigation_consistency",
+    "form_functionality",
+    "accessibility_basics",
+    "seo_fields",
+    "performance_budget"
+  ],
+  "advisory_checks_note": "v1 has no browser/crawler tool wired into the pipeline, so these are judged qualitatively by the review agent from the content and contract it is given, not measured. Treat advisory findings as signal, not proof; a human should still spot-check before relying on them. Wiring a real browser-based checker is a known follow-up (see automation/README.md).",
+  "verdict_schema": {
+    "verdict": "approve | changes_requested",
+    "findings": [
+      {
+        "artifact_key": "string, empty for a contract-level finding",
+        "severity": "critical | major | minor",
+        "category": "string, e.g. content | placeholder | seo | a11y | contract_conformance",
+        "evidence": "string, what was observed",
+        "expected_correction": "string, what the builder should do differently"
+      }
+    ]
+  },
+  "verdict_rule": "verdict is changes_requested if ANY deterministic_checks item fails, OR if the agent reports any finding with severity=critical. Findings from failed deterministic checks are always included even if the agent's own verdict disagrees -- the deterministic check wins.",
+  "self_approval_forbidden": "The reviewer workflow never calls upsert_post/create_post and never calls the publish-approval endpoint. Publication approval is a separate human-gated step (see publication-policy.json)."
+}
