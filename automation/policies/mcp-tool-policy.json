@@ -1,0 +1,28 @@
+{
+  "$id": "https://mcp-n8n-wp-builder/policies/mcp-tool-policy.json",
+  "description": "Which wp-mcp tools the phase 3 builder may call, and what n8n must check before/after each call. wp-mcp itself already enforces WordPress capabilities and idempotency (see wp-mcp/docs/posts-media-mcp-tools.md); this policy is the orchestration-side boundary on top of that.",
+  "allowed_tools": {
+    "upsert_post": {
+      "purpose": "Create or update one page/post per artifact_key, idempotently.",
+      "arg_bounds": {
+        "title": { "max_length": 200 },
+        "content": { "max_length": 50000 },
+        "post_type": { "enum": ["post", "page"] },
+        "status": { "enum": ["draft", "publish"] }
+      }
+    },
+    "get_post": { "purpose": "Read-back verification after upsert_post.", "readonly": true },
+    "list_categories": { "purpose": "Discover existing taxonomy before creating one.", "readonly": true },
+    "create_category": {
+      "purpose": "Create a taxonomy term referenced by content.",
+      "arg_bounds": { "name": { "max_length": 100 } }
+    }
+  },
+  "denied_tools_note": "Everything not listed in allowed_tools is denied by default -- notably delete_post, all WooCommerce tools, all Elementor tools (patch/snapshot/rollback) and upload_media. Elementor page-structure construction is a later iteration; v1 builds plain page/post content only.",
+  "require_readback_after": ["upsert_post"],
+  "publication_gate": {
+    "placeholder_patterns": ["\\{\\{[^}]*\\}\\}", "\\bTODO\\b", "\\bTBD\\b", "\\[a completer\\]", "\\[a confirmer\\]"],
+    "rule": "If any proposed artifact's content matches a placeholder pattern, its status is forced to draft regardless of what the agent requested -- unresolved placeholders are never publishable."
+  },
+  "max_artifacts_per_request": 30
+}
