@@ -1,6 +1,6 @@
 ---
 objective: "A validated contract imports an approved free Astra Elementor kit, applies approved design and content, passes visual review, and remains blocked from publication until human approval."
-status: in-progress
+status: implemented
 ---
 
 # Plan: Astra Elementor site builder
