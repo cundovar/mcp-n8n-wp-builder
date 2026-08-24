@@ -1,279 +1,182 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import AppShell from './components/AppShell';
+import ArtifactsView from './components/ArtifactsView';
+import ExecutionView from './components/ExecutionView';
+import PipelineView from './components/PipelineView';
+import RequestDetail from './components/RequestDetail';
 import RequestForm from './components/RequestForm';
 import RequestList from './components/RequestList';
-import RequestDetail from './components/RequestDetail';
-import PipelineView from './components/PipelineView';
-import ArtifactsView from './components/ArtifactsView';
-import ValidationView from './components/ValidationView';
 import RevisionsView from './components/RevisionsView';
-import ExecutionView from './components/ExecutionView';
+import ValidationView from './components/ValidationView';
+import FeedbackBanner from './components/ui/FeedbackBanner';
+import { apiRequest } from './lib/api';
+import { getRequestStatus } from './lib/status';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const TOP_LEVEL_ROUTES = {
+  list: '#/projects',
+  validations: '#/validations',
+  form: '#/new',
+};
+
+function readRoute() {
+  const parts = window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
+  if (parts[0] === 'new') return { view: 'form', requestId: null };
+  if (parts[0] === 'validations') return { view: 'validations', requestId: null };
+  if (parts[0] === 'requests' && parts[1]) {
+    return { view: parts[2] || 'detail', requestId: parts[1] };
+  }
+  return { view: 'list', requestId: null };
+}
 
 function App() {
   const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [selectedArtifactType, setSelectedArtifactType] = useState(null);
+  const [route, setRoute] = useState(readRoute);
   const [loading, setLoading] = useState(false);
-  const [view, setView] = useState('list');
+  const [error, setError] = useState(null);
 
-  const validationRequests = requests.filter(
-    (request) => request.status === 'waiting_validation'
-  );
+  const validationRequests = requests.filter((request) => {
+    const status = getRequestStatus(request);
+    return ['waiting_validation', 'awaiting_staging_approval', 'changes_requested', 'awaiting_publish_approval', 'failed'].includes(status);
+  });
 
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     try {
-      const res = await fetch(`${API_URL}/requests`);
-      const data = await res.json();
+      const data = await apiRequest('/requests');
       setRequests(data.requests || []);
-    } catch (error) {
-      console.error('Erreur chargement:', error);
+      setError(null);
+    } catch (requestError) {
+      setError(`Impossible de charger les projets : ${requestError.message}`);
     }
-  };
+  }, []);
+
+  const fetchRequest = useCallback(async (requestId) => {
+    try {
+      const data = await apiRequest(`/requests/${requestId}`);
+      setSelectedRequest(data);
+      setError(null);
+    } catch (requestError) {
+      setSelectedRequest(null);
+      setError(`Impossible d’ouvrir ce projet : ${requestError.message}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!window.location.hash) window.history.replaceState(null, '', TOP_LEVEL_ROUTES.list);
+    const handleHashChange = () => setRoute(readRoute());
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange();
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   useEffect(() => {
     fetchRequests();
-    const interval = setInterval(fetchRequests, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    const interval = window.setInterval(fetchRequests, 5000);
+    return () => window.clearInterval(interval);
+  }, [fetchRequests]);
+
+  useEffect(() => {
+    if (route.requestId) fetchRequest(route.requestId);
+    else setSelectedRequest(null);
+  }, [fetchRequest, route.requestId]);
+
+  const navigate = (view, requestId = route.requestId) => {
+    if (TOP_LEVEL_ROUTES[view]) window.location.hash = TOP_LEVEL_ROUTES[view];
+    else if (requestId) window.location.hash = `#/requests/${requestId}/${view}`;
+  };
 
   const handleSubmit = async (formData) => {
     setLoading(true);
+    setError(null);
     try {
-      const res = await fetch(`${API_URL}/requests`, {
+      const data = await apiRequest('/requests', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      const data = await res.json();
-      if (data.requestId) {
-        setView('list');
-        fetchRequests();
-      }
-    } catch (error) {
-      console.error('Erreur création:', error);
+      await fetchRequests();
+      navigate(data.requestId ? 'detail' : 'list', data.requestId);
+    } catch (requestError) {
+      setError(`La création a échoué : ${requestError.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleViewDetail = async (requestId) => {
-    try {
-      const res = await fetch(`${API_URL}/requests/${requestId}`);
-      const data = await res.json();
-      setSelectedRequest(data);
-      setView('detail');
-    } catch (error) {
-      console.error('Erreur détail:', error);
-    }
-  };
-
-  const handleViewPipeline = async (requestId) => {
-    try {
-      const res = await fetch(`${API_URL}/requests/${requestId}`);
-      const data = await res.json();
-      setSelectedRequest(data);
-      setView('pipeline');
-    } catch (error) {
-      console.error('Erreur pipeline:', error);
-    }
-  };
-
   const handleApproveValidation = async (requestId) => {
     setLoading(true);
+    setError(null);
     try {
-      const res = await fetch(`${API_URL}/requests/${requestId}/approve`, {
-        method: 'POST',
-      });
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Validation impossible');
-      }
-
-      await fetchRequests();
-      await handleViewDetail(requestId);
-    } catch (error) {
-      console.error('Erreur validation:', error);
+      await apiRequest(`/requests/${requestId}/approve`, { method: 'POST' });
+      await Promise.all([fetchRequests(), fetchRequest(requestId)]);
+    } catch (requestError) {
+      setError(`La validation a échoué : ${requestError.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteRequest = async (requestId) => {
-    const confirmed = window.confirm(
-      'Supprimer cette demande ?\n\nCette action supprimera aussi les artefacts, validations et exécutions associés.'
-    );
-
+    const confirmed = window.confirm('Supprimer ce projet et toutes ses données associées ? Cette action est définitive.');
     if (!confirmed) return;
 
     setLoading(true);
+    setError(null);
     try {
-      const res = await fetch(`${API_URL}/requests/${requestId}`, {
-        method: 'DELETE',
-      });
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Suppression impossible');
-      }
-
-      // Si la demande supprimée était ouverte, revenir à la liste
-      if (selectedRequest?.requestId === requestId) {
-        setSelectedRequest(null);
-        setView('list');
-      }
-
+      await apiRequest(`/requests/${requestId}`, { method: 'DELETE' });
       await fetchRequests();
-    } catch (error) {
-      console.error('Erreur suppression:', error);
-      alert('Erreur lors de la suppression: ' + error.message);
+      navigate('list');
+    } catch (requestError) {
+      setError(`La suppression a échoué : ${requestError.message}`);
     } finally {
       setLoading(false);
     }
   };
 
+  const openArtifact = (type) => {
+    setSelectedArtifactType(type || null);
+    navigate('artifacts');
+  };
+
+  const renderProjectView = () => {
+    if (!selectedRequest) {
+      return (
+        <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+          <p className="mt-4 text-sm text-slate-500">Chargement du projet…</p>
+        </div>
+      );
+    }
+
+    const commonBack = () => navigate('list');
+    switch (route.view) {
+      case 'pipeline':
+        return <PipelineView request={selectedRequest} onBack={() => navigate('detail')} onViewArtifact={openArtifact} />;
+      case 'artifacts':
+        return <ArtifactsView request={selectedRequest} onBack={() => navigate('pipeline')} initialArtifactType={selectedArtifactType} onViewRevisions={(type) => { setSelectedArtifactType(type); navigate('revisions'); }} />;
+      case 'revisions':
+        return <RevisionsView request={selectedRequest} onBack={() => navigate('artifacts')} initialArtifactType={selectedArtifactType} />;
+      case 'validation':
+        return <ValidationView request={selectedRequest} onBack={() => navigate('detail')} onValidationComplete={async () => { await Promise.all([fetchRequests(), fetchRequest(selectedRequest.requestId)]); navigate('detail'); }} onViewRevisions={(type) => { setSelectedArtifactType(type); navigate('revisions'); }} />;
+      case 'execution':
+        return <ExecutionView request={selectedRequest} onBack={() => navigate('detail')} />;
+      default:
+        return <RequestDetail request={selectedRequest} onBack={commonBack} onApproveValidation={handleApproveValidation} onViewValidation={() => navigate('validation')} onViewPipeline={() => navigate('pipeline')} onViewArtifacts={() => openArtifact(null)} onViewExecution={() => navigate('execution')} onDeleteRequest={handleDeleteRequest} loading={loading} />;
+    }
+  };
+
   return (
-    <div className="min-h-screen p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-center mb-2">
-            WP Site Builder
-          </h1>
-          <p className="text-center text-gray-600 dark:text-gray-400">
-            Générez des sites WordPress avec l'IA
-          </p>
-        </header>
+    <AppShell view={route.view} requestCount={requests.length} validationCount={validationRequests.length} onNavigate={navigate}>
+      <div className="mx-auto max-w-7xl space-y-5">
+        {error ? <FeedbackBanner onRetry={route.requestId ? () => fetchRequest(route.requestId) : fetchRequests} onDismiss={() => setError(null)}>{error}</FeedbackBanner> : null}
 
-        <nav className="flex gap-2 mb-6 justify-center">
-          <button
-            onClick={() => setView('list')}
-            className={`px-4 py-2 rounded-lg transition ${
-              view === 'list'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300'
-            }`}
-          >
-            Mes demandes ({requests.length})
-          </button>
-          <button
-            onClick={() => setView('validations')}
-            className={`px-4 py-2 rounded-lg transition ${
-              view === 'validations'
-                ? 'bg-amber-600 text-white'
-                : 'bg-amber-100 text-amber-900 hover:bg-amber-200'
-            }`}
-          >
-            Validations ({validationRequests.length})
-          </button>
-          <button
-            onClick={() => setView('form')}
-            className={`px-4 py-2 rounded-lg transition ${
-              view === 'form'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300'
-            }`}
-          >
-            + Nouvelle demande
-          </button>
-        </nav>
-
-        <main className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-          {validationRequests.length > 0 && view !== 'detail' && (
-            <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-amber-900">
-              {validationRequests.length} demande{validationRequests.length > 1 ? 's' : ''} en attente de validation.
-            </div>
-          )}
-
-          {view === 'form' && (
-            <RequestForm onSubmit={handleSubmit} loading={loading} />
-          )}
-          {view === 'list' && (
-            <RequestList
-              requests={requests}
-              onViewDetail={handleViewDetail}
-              onRefresh={fetchRequests}
-              onDeleteRequest={handleDeleteRequest}
-            />
-          )}
-          {view === 'validations' && (
-            <RequestList
-              title="Demandes à valider"
-              emptyTitle="Aucune validation en attente"
-              emptyDescription="Les briefs à approuver apparaîtront ici."
-              requests={validationRequests}
-              onViewDetail={handleViewDetail}
-              onRefresh={fetchRequests}
-              onDeleteRequest={handleDeleteRequest}
-            />
-          )}
-          {view === 'detail' && selectedRequest && (
-            <RequestDetail
-              request={selectedRequest}
-              onBack={() => setView('list')}
-              onApproveValidation={handleApproveValidation}
-              onViewValidation={() => setView('validation')}
-              onViewPipeline={() => setView('pipeline')}
-              onViewArtifacts={() => {
-                setSelectedArtifactType(null);
-                setView('artifacts');
-              }}
-              onViewExecution={() => setView('execution')}
-              onDeleteRequest={handleDeleteRequest}
-              loading={loading}
-            />
-          )}
-          {view === 'pipeline' && selectedRequest && (
-            <PipelineView
-              request={selectedRequest}
-              onBack={() => setView('detail')}
-              onViewArtifact={(type) => {
-                setSelectedArtifactType(type);
-                setView('artifacts');
-              }}
-            />
-          )}
-          {view === 'artifacts' && selectedRequest && (
-            <ArtifactsView
-              request={selectedRequest}
-              onBack={() => setView('pipeline')}
-              initialArtifactType={selectedArtifactType}
-              onViewRevisions={(type) => {
-                setSelectedArtifactType(type);
-                setView('revisions');
-              }}
-            />
-          )}
-          {view === 'revisions' && selectedRequest && (
-            <RevisionsView
-              request={selectedRequest}
-              onBack={() => setView('artifacts')}
-              initialArtifactType={selectedArtifactType}
-            />
-          )}
-          {view === 'validation' && selectedRequest && (
-            <ValidationView
-              request={selectedRequest}
-              onBack={() => setView('detail')}
-              onValidationComplete={async () => {
-                await fetchRequests();
-                await handleViewDetail(selectedRequest.requestId);
-              }}
-              onViewRevisions={(type) => {
-                setSelectedArtifactType(type);
-                setView('revisions');
-              }}
-            />
-          )}
-          {view === 'execution' && selectedRequest && (
-            <ExecutionView
-              request={selectedRequest}
-              onBack={() => setView('detail')}
-            />
-          )}
-        </main>
+        {route.view === 'form' ? <RequestForm onSubmit={handleSubmit} loading={loading} /> : null}
+        {route.view === 'list' ? <RequestList requests={requests} onViewDetail={(id) => navigate('detail', id)} onRefresh={fetchRequests} onDeleteRequest={handleDeleteRequest} /> : null}
+        {route.view === 'validations' ? <RequestList title="Actions requises" emptyTitle="Aucune action requise" emptyDescription="Les validations, corrections et incidents apparaîtront ici." requests={validationRequests} onViewDetail={(id) => navigate('detail', id)} onRefresh={fetchRequests} onDeleteRequest={handleDeleteRequest} /> : null}
+        {route.requestId ? renderProjectView() : null}
       </div>
-    </div>
+    </AppShell>
   );
 }
 
