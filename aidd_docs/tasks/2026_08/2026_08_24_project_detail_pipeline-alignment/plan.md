@@ -1,6 +1,6 @@
 ---
 objective: "Make project detail and progress views concise, non-duplicative, and driven by the backend's canonical contract and artifact data."
-status: in-progress
+status: implemented
 ---
 
 # Plan: Project detail and pipeline alignment
