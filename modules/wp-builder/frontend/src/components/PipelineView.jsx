@@ -16,7 +16,7 @@ const PLAN_ARTIFACTS = [
 const ARTIFACT_STATUS = {
   pending: { label: 'Non produit', classes: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300' },
   generating: { label: 'En préparation', classes: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300' },
-  generated: { label: 'À valider', classes: 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' },
+  generated: { label: 'Généré', classes: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300' },
   validated: { label: 'Validé', classes: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' },
   stale: { label: 'À actualiser', classes: 'bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300' },
   failed: { label: 'Échec', classes: 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300' },
