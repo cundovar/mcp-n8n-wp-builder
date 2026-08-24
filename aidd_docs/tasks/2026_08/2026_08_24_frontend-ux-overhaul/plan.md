@@ -1,6 +1,6 @@
 ---
 objective: "Turn WP Site Builder into a clear, accessible project workspace aligned with the Astra/Elementor staging lifecycle."
-status: in-progress
+status: implemented
 ---
 
 # Plan: WP Builder frontend UX overhaul
