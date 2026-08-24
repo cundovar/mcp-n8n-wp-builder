@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { getRequestStatus } from '../lib/status';
+import StatusBadge from './ui/StatusBadge';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -16,6 +18,7 @@ const ARTIFACT_LABELS = {
 function RequestDetail({ request, onBack, onApproveValidation, onViewValidation, onViewPipeline, onViewArtifacts, onViewExecution, onDeleteRequest, loading }) {
   const [copied, setCopied] = useState(false);
   const [validationContext, setValidationContext] = useState(null);
+  const displayStatus = getRequestStatus(request);
 
   // Charger le contexte de validation si en attente de validation
   useEffect(() => {
@@ -152,7 +155,7 @@ function RequestDetail({ request, onBack, onApproveValidation, onViewValidation,
               🗑️ Supprimer
             </button>
           )}
-          {getStatusBadge(request.status)}
+          <StatusBadge status={displayStatus} />
         </div>
       </div>
 
@@ -326,21 +329,13 @@ function RequestDetail({ request, onBack, onApproveValidation, onViewValidation,
           )}
 
           <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => onApproveValidation(request.requestId)}
-              disabled={loading}
-              className="flex-1 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition font-medium"
-            >
-              {loading ? 'Validation en cours...' : '✓ Approuver rapidement'}
-            </button>
             {onViewValidation && (
               <button
                 type="button"
                 onClick={onViewValidation}
-                className="flex-1 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition font-medium"
+                className="flex-1 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition font-medium"
               >
-                📝 Validation détaillée
+                Examiner et décider
               </button>
             )}
           </div>

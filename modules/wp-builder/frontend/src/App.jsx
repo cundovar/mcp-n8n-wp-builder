@@ -3,11 +3,13 @@ import AppShell from './components/AppShell';
 import ArtifactsView from './components/ArtifactsView';
 import ExecutionView from './components/ExecutionView';
 import PipelineView from './components/PipelineView';
+import ProjectWorkspace from './components/ProjectWorkspace';
 import RequestDetail from './components/RequestDetail';
 import RequestForm from './components/RequestForm';
 import RequestList from './components/RequestList';
 import RevisionsView from './components/RevisionsView';
 import ValidationView from './components/ValidationView';
+import VisualReviewView from './components/VisualReviewView';
 import FeedbackBanner from './components/ui/FeedbackBanner';
 import { apiRequest } from './lib/api';
 import { getRequestStatus } from './lib/status';
@@ -149,21 +151,31 @@ function App() {
       );
     }
 
-    const commonBack = () => navigate('list');
+    let content;
     switch (route.view) {
       case 'pipeline':
-        return <PipelineView request={selectedRequest} onBack={() => navigate('detail')} onViewArtifact={openArtifact} />;
+        content = <PipelineView request={selectedRequest} onBack={() => navigate('detail')} onViewArtifact={openArtifact} />;
+        break;
       case 'artifacts':
-        return <ArtifactsView request={selectedRequest} onBack={() => navigate('pipeline')} initialArtifactType={selectedArtifactType} onViewRevisions={(type) => { setSelectedArtifactType(type); navigate('revisions'); }} />;
+        content = <ArtifactsView request={selectedRequest} onBack={() => navigate('pipeline')} initialArtifactType={selectedArtifactType} onViewRevisions={(type) => { setSelectedArtifactType(type); navigate('revisions'); }} />;
+        break;
       case 'revisions':
-        return <RevisionsView request={selectedRequest} onBack={() => navigate('artifacts')} initialArtifactType={selectedArtifactType} />;
+        content = <RevisionsView request={selectedRequest} onBack={() => navigate('artifacts')} initialArtifactType={selectedArtifactType} />;
+        break;
       case 'validation':
-        return <ValidationView request={selectedRequest} onBack={() => navigate('detail')} onValidationComplete={async () => { await Promise.all([fetchRequests(), fetchRequest(selectedRequest.requestId)]); navigate('detail'); }} onViewRevisions={(type) => { setSelectedArtifactType(type); navigate('revisions'); }} />;
+        content = <ValidationView request={selectedRequest} onBack={() => navigate('detail')} onValidationComplete={async () => { await Promise.all([fetchRequests(), fetchRequest(selectedRequest.requestId)]); navigate('detail'); }} onViewRevisions={(type) => { setSelectedArtifactType(type); navigate('revisions'); }} />;
+        break;
+      case 'visual':
+        content = <VisualReviewView request={selectedRequest} />;
+        break;
       case 'execution':
-        return <ExecutionView request={selectedRequest} onBack={() => navigate('detail')} />;
+        content = <ExecutionView request={selectedRequest} onBack={() => navigate('detail')} />;
+        break;
       default:
-        return <RequestDetail request={selectedRequest} onBack={commonBack} onApproveValidation={handleApproveValidation} onViewValidation={() => navigate('validation')} onViewPipeline={() => navigate('pipeline')} onViewArtifacts={() => openArtifact(null)} onViewExecution={() => navigate('execution')} onDeleteRequest={handleDeleteRequest} loading={loading} />;
+        content = <RequestDetail request={selectedRequest} onBack={() => navigate('list')} onApproveValidation={handleApproveValidation} onViewValidation={() => navigate('validation')} onViewPipeline={() => navigate('pipeline')} onViewArtifacts={() => openArtifact(null)} onViewExecution={() => navigate('execution')} onDeleteRequest={handleDeleteRequest} loading={loading} />;
     }
+
+    return <ProjectWorkspace request={selectedRequest} activeView={route.view} onNavigate={navigate} onBack={() => navigate('list')}>{content}</ProjectWorkspace>;
   };
 
   return (
