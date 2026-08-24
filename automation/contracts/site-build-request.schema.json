@@ -4,7 +4,7 @@
   "title": "Site Build Request",
   "description": "Canonical contract submitted to the intake workflow (phase 1). The structured JSON is the source of truth; any human-readable brief is generated from it, never the other way around.",
   "type": "object",
-  "required": ["contract_version", "request_id", "business", "site", "execution_mode"],
+  "required": ["contract_version", "request_id", "business", "site", "execution_mode", "approved_artifact_versions", "target_site", "kit_selection", "constraints"],
   "additionalProperties": false,
   "properties": {
     "contract_version": {
@@ -51,6 +51,47 @@
       "type": "string",
       "enum": ["dry_run", "apply"],
       "default": "dry_run"
+    },
+    "approved_artifact_versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["site_architecture", "content_plan", "design_plan", "wordpress_plan", "execution_plan"],
+      "properties": {
+        "site_architecture": { "type": "integer", "minimum": 1 },
+        "content_plan": { "type": "integer", "minimum": 1 },
+        "design_plan": { "type": "integer", "minimum": 1 },
+        "wordpress_plan": { "type": "integer", "minimum": 1 },
+        "execution_plan": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "target_site": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["site_id"],
+      "properties": {
+        "site_id": { "type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,99}$" }
+      }
+    },
+    "kit_selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "kit_id"],
+      "properties": {
+        "mode": { "type": "string", "enum": ["auto", "manual"] },
+        "kit_id": { "type": ["string", "null"], "pattern": "^[a-z0-9][a-z0-9-]{0,99}$" }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["theme", "builder", "elementor_level", "woocommerce", "publish"],
+      "properties": {
+        "theme": { "const": "astra" },
+        "builder": { "const": "elementor" },
+        "elementor_level": { "type": "string", "enum": ["free", "pro"] },
+        "woocommerce": { "type": "boolean" },
+        "publish": { "const": false }
+      }
     },
     "stage_artifacts": {
       "type": "object",

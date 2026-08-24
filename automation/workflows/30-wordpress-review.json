@@ -180,7 +180,61 @@
       },
       {
         "parameters": {
-          "jsCode": "const ctx = $('Compute Build Checksum').first().json;\nconst requestId = ctx.request_id;\nconst manifest = ctx.manifest;\nconst contract = ctx.contract;\nlet livePosts = [];\ntry {\n  const parsed = JSON.parse($json.result.content[0].text);\n  livePosts = Array.isArray(parsed) ? parsed : (parsed.posts || []);\n} catch (e) { livePosts = []; }\n\nconst placeholderPatterns = [/\\{\\{[^}]*\\}\\}/, /\\bTODO\\b/, /\\bTBD\\b/, /\\[a completer\\]/i, /\\[a confirmer\\]/i];\nconst findings = [];\n\nconst requiredPages = (contract.site && Array.isArray(contract.site.pages) && contract.site.pages.length) ? contract.site.pages : [];\nconst manifestKeys = new Set(manifest.map(m => m.artifact_key));\nconst missingPages = requiredPages.filter(p => !manifestKeys.has(p));\nif (missingPages.length) {\n  findings.push({ artifact_key: '', severity: 'critical', category: 'contract_conformance', evidence: 'Missing manifest entries for: ' + missingPages.join(', '), expected_correction: 'Build the missing pages before requesting review again.' });\n}\n\nconst unverified = manifest.filter(m => m.verified !== true);\nfor (const m of unverified) {\n  findings.push({ artifact_key: m.artifact_key, severity: 'critical', category: 'content', evidence: 'Manifest entry was not verified at build time (verified=' + m.verified + ')', expected_correction: 'Rebuild this artifact so the read-back verification passes.' });\n}\n\nfor (const post of livePosts) {\n  const text = (post.title || '') + ' ' + (post.content || post.excerpt || '');\n  const hit = placeholderPatterns.find(p => p.test(text));\n  if (hit) {\n    findings.push({ artifact_key: post.slug || String(post.ID || post.id || ''), severity: 'critical', category: 'placeholder', evidence: 'Live content matches placeholder pattern ' + hit, expected_correction: 'Replace the placeholder with real content.' });\n  }\n}\n\nreturn [{ json: { request_id: requestId, deterministic_findings: findings, deterministic_pass: findings.length === 0, manifest, contract, build_checksum: ctx.build_checksum, live_posts_count: livePosts.length } }];"
+          "method": "POST",
+          "url": "http://wp-staging/wp-json/wp-mcp/v1/mcp",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [{ "name": "content-type", "value": "application/json" }]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ jsonrpc: '2.0', id: $('Compute Build Checksum').first().json.request_id + ':review:elementor', method: 'tools/call', params: { name: 'inspect_elementor_build', arguments: { post_ids: $('Compute Build Checksum').first().json.manifest.map((entry) => entry.post_id).filter((id) => Number.isInteger(id) && id > 0) } } }) }}",
+          "options": {},
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth"
+        },
+        "name": "Inspect Elementor Build",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [-1360, -140],
+        "id": "c7c7c7c7-0007-4000-8000-000000000018",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "Yo9eorpphgq9v3VJ",
+            "name": "WP Staging MCP Token"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://mcp-bridge:3000/infrastructure/visual-review",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [{ "name": "content-type", "value": "application/json" }]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ request_id: $('Compute Build Checksum').first().json.request_id, base_url: 'http://wp-staging', pages: $('Compute Build Checksum').first().json.manifest.map((entry) => ({ page_key: entry.artifact_key, path: entry.artifact_key === 'accueil' ? '/' : '/' + entry.artifact_key + '/' })) }) }}",
+          "options": { "timeout": 210000 },
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth"
+        },
+        "name": "Capture Visual Review",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [-1320, -140],
+        "id": "c7c7c7c7-0007-4000-8000-000000000019",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "32Y7qJF1EaigIR6t",
+            "name": "Header Auth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const ctx = $('Compute Build Checksum').first().json;\nconst requestId = ctx.request_id;\nconst manifest = ctx.manifest;\nconst contract = ctx.contract;\nlet livePosts = [];\ntry {\n  const response = $('List Live Posts').first().json;\n  const parsed = JSON.parse(response.result.content[0].text);\n  livePosts = Array.isArray(parsed) ? parsed : (parsed.posts || []);\n} catch (e) { livePosts = []; }\nlet elementorInspection = { blocking: true, pages: [] };\ntry { elementorInspection = JSON.parse($('Inspect Elementor Build').first().json.result.content[0].text); } catch (e) {}\nconst visual = $json.manifest || {};\nconst captures = Array.isArray(visual.captures) ? visual.captures : [];\nconst placeholderPatterns = [/\\{\\{[^}]*\\}\\}/, /\\bTODO\\b/, /\\bTBD\\b/, /\\[a completer\\]/i, /\\[a confirmer\\]/i];\nconst findings = [];\nconst requiredPages = (contract.site && Array.isArray(contract.site.pages) && contract.site.pages.length) ? contract.site.pages : [];\nconst manifestKeys = new Set(manifest.map(m => m.artifact_key));\nconst missingPages = requiredPages.filter(p => !manifestKeys.has(p));\nif (missingPages.length) findings.push({ artifact_key: '', severity: 'critical', category: 'contract_conformance', evidence: 'Missing manifest entries for: ' + missingPages.join(', '), expected_correction: 'Build the missing pages before requesting review again.' });\nfor (const m of manifest.filter(m => m.verified !== true)) findings.push({ artifact_key: m.artifact_key, severity: 'critical', category: 'content', evidence: 'Manifest entry was not verified at build time (verified=' + m.verified + ')', expected_correction: 'Rebuild this artifact so the read-back verification passes.' });\nfor (const post of livePosts) {\n  const text = (post.title || '') + ' ' + (post.content || post.excerpt || '');\n  const hit = placeholderPatterns.find(p => p.test(text));\n  if (hit) findings.push({ artifact_key: post.slug || String(post.ID || post.id || ''), severity: 'critical', category: 'placeholder', evidence: 'Live content matches placeholder pattern ' + hit, expected_correction: 'Replace the placeholder with real content.' });\n}\nfor (const page of elementorInspection.pages || []) for (const finding of page.findings || []) findings.push({ artifact_key: manifest.find(m => m.post_id === page.post_id)?.artifact_key || '', severity: finding.severity || 'major', category: 'elementor', evidence: `${finding.code || 'elementor_check_failed'} on post ${page.post_id}`, expected_correction: 'Correct only the reported Elementor element and re-run inspection.' });\nif (elementorInspection.blocking && !(elementorInspection.pages || []).length) findings.push({ artifact_key: '', severity: 'critical', category: 'elementor', evidence: 'Elementor inspection did not return any page report', expected_correction: 'Restore readable Elementor page documents before review.' });\nconst expectedCaptureCount = manifest.length * 3;\nif (!visual.ok || captures.length !== expectedCaptureCount || captures.some(c => c.ok !== true)) findings.push({ artifact_key: '', severity: 'major', category: 'visual', evidence: `Visual evidence incomplete: ${captures.filter(c => c.ok).length}/${expectedCaptureCount} captures succeeded`, expected_correction: 'Capture successful desktop, tablet and mobile evidence for every built page.' });\nreturn [{ json: { request_id: requestId, deterministic_findings: findings, deterministic_pass: findings.length === 0, manifest, elementor_inspection: elementorInspection, visual_manifest: visual, contract, build_checksum: ctx.build_checksum, live_posts_count: livePosts.length } }];"
         },
         "name": "Run Deterministic Checks",
         "type": "n8n-nodes-base.code",
@@ -471,6 +525,28 @@
         ]
       },
       "List Live Posts": {
+        "main": [
+          [
+            {
+              "node": "Inspect Elementor Build",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Inspect Elementor Build": {
+        "main": [
+          [
+            {
+              "node": "Capture Visual Review",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Capture Visual Review": {
         "main": [
           [
             {

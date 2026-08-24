@@ -10,7 +10,7 @@ FROM node:22-alpine
 # (execution sur le staging), jq (parsing JSON dans le runner), grep -- le
 # vrai paquet GNU, pas le grep busybox qui casse sur `{n,m}` dans les regex
 # de wp-cli-allowlist.json.
-RUN apk add --no-cache git wget openssh-client jq bash grep \
+RUN apk add --no-cache git wget openssh-client jq bash grep chromium \
     && npm i -g @openai/codex@0.147.0 @anthropic-ai/claude-code \
     && npm cache clean --force
 

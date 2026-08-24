@@ -7,10 +7,12 @@ const RUNNERS_ROOT = path.resolve(__dirname, '../../../../automation/runners');
 
 const BUILD_RUNNER = path.join(RUNNERS_ROOT, 'wp-cli-build-runner.sh');
 const HEALTH_CHECK = path.join(RUNNERS_ROOT, 'wp-cli-health-check.sh');
+const VISUAL_REVIEW_RUNNER = path.join(RUNNERS_ROOT, 'visual-review-runner.mjs');
 
 function runScript(scriptPath, { input, timeoutMs = 120000, args = [] } = {}) {
   return new Promise((resolve, reject) => {
-    const child = spawn('bash', [scriptPath, ...args], {
+    const executable = path.extname(scriptPath) === '.mjs' ? process.execPath : 'bash';
+    const child = spawn(executable, [scriptPath, ...args], {
       env: { ...process.env },
       stdio: ['pipe', 'pipe', 'pipe'],
     });
@@ -105,4 +107,14 @@ export async function checkStagingHealth() {
     // fall through
   }
   return { ...result, health: parsed };
+}
+
+export async function captureVisualReview({ requestId, baseUrl, pages, timeoutMs = 180000 }) {
+  const result = await runScript(VISUAL_REVIEW_RUNNER, {
+    input: { request_id: requestId, base_url: baseUrl, pages },
+    timeoutMs,
+  });
+  let parsed = null;
+  try { parsed = JSON.parse(result.stdout); } catch { /* caller receives diagnostics */ }
+  return { ...result, manifest: parsed };
 }

@@ -328,7 +328,7 @@
           },
           "sendBody": true,
           "specifyBody": "json",
-          "jsonBody": "={{ JSON.stringify({ request_id: $('Check All Valid').first().json.request_id, actions: $('Check All Valid').first().json.actions, timeout_ms: 300000 }) }}",
+          "jsonBody": "={{ JSON.stringify({ request_id: $('Check All Valid').first().json.request_id, execution_mode: $('Get Contract').first().json.contract.execution_mode, actions: $('Check All Valid').first().json.actions, timeout_ms: 300000 }) }}",
           "options": {
             "timeout": 330000
           },

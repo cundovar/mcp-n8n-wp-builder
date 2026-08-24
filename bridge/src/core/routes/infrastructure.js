@@ -2,6 +2,7 @@ import {
   executeInfrastructureActions,
   validateInfrastructureActions,
   checkStagingHealth,
+  captureVisualReview,
 } from '../services/infrastructureExecutor.js';
 import { listSiteKits, selectSiteKit } from '../services/siteKitCatalog.js';
 
@@ -85,6 +86,33 @@ export default async function infrastructureRoutes(fastify) {
       return reply.code(422).send({ ok: false, ...selection });
     }
     return reply.send({ ok: true, ...selection });
+  });
+
+  fastify.post('/infrastructure/visual-review', {
+    schema: {
+      body: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['request_id', 'base_url', 'pages'],
+        properties: {
+          request_id: { type: 'string', pattern: '^[a-zA-Z0-9][a-zA-Z0-9_-]{0,99}$' },
+          base_url: { type: 'string', minLength: 8, maxLength: 500 },
+          pages: {
+            type: 'array', minItems: 1, maxItems: 30,
+            items: {
+              type: 'object', additionalProperties: false, required: ['page_key', 'path'],
+              properties: {
+                page_key: { type: 'string', pattern: '^[a-z0-9][a-z0-9_-]{0,99}$' },
+                path: { type: 'string', pattern: '^/' },
+              },
+            },
+          },
+        },
+      },
+    },
+  }, async (request, reply) => {
+    const result = await captureVisualReview({ requestId: request.body.request_id, baseUrl: request.body.base_url, pages: request.body.pages });
+    return reply.code(result.exitCode === 0 ? 200 : 422).send({ ok: result.exitCode === 0, manifest: result.manifest, stderr: result.stderr || undefined });
   });
 
   // POST /infrastructure/validate - same allowlist check the runner does,

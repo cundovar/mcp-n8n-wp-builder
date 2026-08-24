@@ -16,10 +16,33 @@
     "create_category": {
       "purpose": "Create a taxonomy term referenced by content.",
       "arg_bounds": { "name": { "max_length": 100 } }
+    },
+    "get_elementor_document": {
+      "purpose": "Read the imported Elementor document and revision before semantic changes.",
+      "readonly": true
+    },
+    "apply_elementor_design_system": {
+      "purpose": "Apply validated global colors, typography, and container width through Elementor APIs."
+    },
+    "replace_kit_content": {
+      "purpose": "Replace explicitly mapped semantic fields through the guarded Elementor patch engine."
+    },
+    "ensure_pages_and_menu": {
+      "purpose": "Create missing draft pages and navigation entries idempotently."
+    },
+    "inspect_elementor_build": {
+      "purpose": "Read-only inspection for editability, placeholders, unsafe or unavailable widgets.",
+      "readonly": true
+    },
+    "regenerate_elementor_css": {
+      "purpose": "Regenerate Elementor CSS after validated mutations."
+    },
+    "rollback_elementor_snapshot": {
+      "purpose": "Restore an explicitly selected Elementor snapshot after a failed page mutation."
     }
   },
-  "denied_tools_note": "Everything not listed in allowed_tools is denied by default -- notably delete_post, all WooCommerce tools, all Elementor tools (patch/snapshot/rollback) and upload_media. Elementor page-structure construction is a later iteration; v1 builds plain page/post content only.",
-  "require_readback_after": ["upsert_post"],
+  "denied_tools_note": "Everything not listed in allowed_tools is denied by default -- notably delete_post, WooCommerce mutations outside its separate branch, raw Elementor document creation, dangerous widgets, and upload_media until media provenance is validated.",
+  "require_readback_after": ["upsert_post", "replace_kit_content", "apply_elementor_design_system", "ensure_pages_and_menu"],
   "publication_gate": {
     "placeholder_patterns": ["\\{\\{[^}]*\\}\\}", "\\bTODO\\b", "\\bTBD\\b", "\\[a completer\\]", "\\[a confirmer\\]"],
     "rule": "If any proposed artifact's content matches a placeholder pattern, its status is forced to draft regardless of what the agent requested -- unresolved placeholders are never publishable."

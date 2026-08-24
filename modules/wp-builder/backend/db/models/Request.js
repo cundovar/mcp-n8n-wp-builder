@@ -145,6 +145,11 @@ const RequestSchema = new mongoose.Schema({
     business: { type: mongoose.Schema.Types.Mixed },
     site: { type: mongoose.Schema.Types.Mixed },
     execution_mode: { type: String, enum: ['dry_run', 'apply'] },
+    approved_artifact_versions: { type: mongoose.Schema.Types.Mixed },
+    target_site: { type: mongoose.Schema.Types.Mixed },
+    kit_selection: { type: mongoose.Schema.Types.Mixed },
+    constraints: { type: mongoose.Schema.Types.Mixed },
+    artifacts_verified_at: { type: Date },
     stage_artifacts: { type: mongoose.Schema.Types.Mixed },
     missing_information: [{ type: String }],
     risks: [

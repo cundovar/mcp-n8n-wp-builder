@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 import Request from '../db/models/Request.js';
+import { getArtifactByVersion } from '../services/artifact-store.js';
+import { verifyApprovedArtifacts } from '../services/artifact-approval.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const buildStatePolicy = JSON.parse(
@@ -24,7 +26,7 @@ function appendStateHistory(requestDoc, state, actor, reason) {
 const putContractSchema = {
   body: {
     type: 'object',
-    required: ['contract_version', 'business', 'execution_mode', 'build_state', 'actor', 'reason'],
+    required: ['contract_version', 'business', 'execution_mode', 'approved_artifact_versions', 'target_site', 'kit_selection', 'constraints', 'build_state', 'actor', 'reason'],
     properties: {
       contract_version: { type: 'string' },
       payload_checksum: { type: 'string' },
@@ -33,6 +35,10 @@ const putContractSchema = {
       execution_mode: { type: 'string', enum: ['dry_run', 'apply'] },
       missing_information: { type: 'array', items: { type: 'string' } },
       risks: { type: 'array' },
+      approved_artifact_versions: { type: 'object' },
+      target_site: { type: 'object' },
+      kit_selection: { type: 'object' },
+      constraints: { type: 'object' },
       build_state: {
         type: 'string',
         enum: ['needs_input', 'awaiting_staging_approval'],
@@ -84,6 +90,10 @@ export default async function contractsRoutes(fastify) {
             business: contract.business,
             site: contract.site,
             execution_mode: contract.execution_mode,
+            approved_artifact_versions: contract.approved_artifact_versions,
+            target_site: contract.target_site,
+            kit_selection: contract.kit_selection,
+            constraints: contract.constraints,
             stage_artifacts: {},
             missing_information: contract.missing_information || [],
             risks: contract.risks || [],
@@ -97,6 +107,10 @@ export default async function contractsRoutes(fastify) {
         requestDoc.contract.business = contract.business;
         requestDoc.contract.site = contract.site;
         requestDoc.contract.execution_mode = contract.execution_mode;
+        requestDoc.contract.approved_artifact_versions = contract.approved_artifact_versions;
+        requestDoc.contract.target_site = contract.target_site;
+        requestDoc.contract.kit_selection = contract.kit_selection;
+        requestDoc.contract.constraints = contract.constraints;
         requestDoc.contract.missing_information = contract.missing_information || [];
         requestDoc.contract.risks = contract.risks || [];
       }
@@ -148,6 +162,23 @@ export default async function contractsRoutes(fastify) {
           request_id: id,
         });
       }
+
+      const approvedVersions = requestDoc.contract.approved_artifact_versions || {};
+      const verification = await verifyApprovedArtifacts(id, approvedVersions, getArtifactByVersion);
+
+      if (requestDoc.contract.execution_mode === 'apply' && verification.errors.length > 0) {
+        return reply.code(409).send({
+          ok: false,
+          error: 'Approved artifact verification failed',
+          details: verification.errors,
+          request_id: id,
+        });
+      }
+
+      requestDoc.contract.stage_artifacts = requestDoc.contract.stage_artifacts || {};
+      requestDoc.contract.stage_artifacts.approved_artifacts = verification.artifacts;
+      requestDoc.contract.artifacts_verified_at = new Date();
+      requestDoc.markModified('contract.stage_artifacts');
 
       appendStateHistory(requestDoc, 'ready_for_staging', actor, reason || 'staging build approved by human reviewer');
       await requestDoc.save();
