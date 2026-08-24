@@ -99,10 +99,15 @@ function ExecutionView({ request, onBack }) {
         const executionsList = data.executions || [];
         setExecutions(executionsList);
 
-        // Sélectionner la plus récente par défaut
-        if (executionsList.length > 0 && !selectedExecution) {
-          setSelectedExecution(executionsList[0]);
-        }
+        // Conserver la sélection tout en la rafraîchissant avec les dernières données.
+        setSelectedExecution((current) => {
+          if (executionsList.length === 0) return null;
+          if (!current) return executionsList[0];
+          return (
+            executionsList.find((execution) => execution.execution_id === current.execution_id) ||
+            executionsList[0]
+          );
+        });
       } catch (err) {
         console.error('Erreur chargement exécutions:', err);
       } finally {
@@ -221,7 +226,9 @@ function ExecutionView({ request, onBack }) {
                       <p className="font-medium text-sm truncate">
                         {exec.execution_id.slice(0, 12)}...
                       </p>
-                      <p className="text-xs text-gray-500">{exec.mode === 'apply' ? 'Production' : 'Dry-run'}</p>
+                      <p className="text-xs text-gray-500">
+                        {exec.mode === 'apply' ? 'Staging (application)' : 'Simulation'}
+                      </p>
                     </div>
                   </div>
                 </button>
@@ -243,7 +250,7 @@ function ExecutionView({ request, onBack }) {
                       <div>
                         <p className={`font-semibold ${statusStyle.text}`}>{statusStyle.label}</p>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Mode: {selectedExecution.mode === 'apply' ? 'Production' : 'Dry-run'}
+                          Mode : {selectedExecution.mode === 'apply' ? 'Construction sur staging' : 'Simulation sans modification'}
                         </p>
                       </div>
                     </div>
@@ -312,53 +319,61 @@ function ExecutionView({ request, onBack }) {
                   </div>
                 )}
 
-                {/* Logs */}
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold">Logs</h3>
-                    <div className="flex items-center gap-2">
-                      <label className="flex items-center gap-1 text-sm">
-                        <input
-                          type="checkbox"
-                          checked={autoScroll}
-                          onChange={(e) => setAutoScroll(e.target.checked)}
-                          className="rounded"
-                        />
-                        Auto-scroll
-                      </label>
-                      <select
-                        value={logFilter}
-                        onChange={(e) => setLogFilter(e.target.value)}
-                        className="text-sm px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700"
-                      >
-                        <option value="all">Tous</option>
-                        <option value="error">Erreurs</option>
-                        <option value="warn">Warnings</option>
-                        <option value="info">Info</option>
-                        <option value="debug">Debug</option>
-                      </select>
+                {/* Logs techniques, disponibles à la demande */}
+                <details className="group rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+                  <summary className="cursor-pointer list-none px-4 py-3 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                    <span className="inline-flex items-center gap-2">
+                      <span aria-hidden="true" className="transition group-open:rotate-90">▶</span>
+                      Logs techniques ({filteredLogs.length})
+                    </span>
+                  </summary>
+                  <div className="border-t border-gray-200 p-4 dark:border-gray-700">
+                    <div className="mb-3 flex flex-wrap items-center justify-end gap-2">
+                      <div className="flex items-center gap-2">
+                        <label className="flex items-center gap-1 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={autoScroll}
+                            onChange={(e) => setAutoScroll(e.target.checked)}
+                            className="rounded"
+                          />
+                          Auto-scroll
+                        </label>
+                        <select
+                          aria-label="Filtrer les logs par niveau"
+                          value={logFilter}
+                          onChange={(e) => setLogFilter(e.target.value)}
+                          className="rounded border border-gray-300 bg-white px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-700"
+                        >
+                          <option value="all">Tous</option>
+                          <option value="error">Erreurs</option>
+                          <option value="warn">Avertissements</option>
+                          <option value="info">Informations</option>
+                          <option value="debug">Débogage</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="max-h-80 overflow-y-auto rounded-lg bg-gray-900 p-4 font-mono text-sm">
+                      {filteredLogs.length === 0 ? (
+                        <p className="text-gray-500">Aucun log disponible</p>
+                      ) : (
+                        filteredLogs.map((log, index) => (
+                          <div key={index} className="mb-1 flex gap-2">
+                            <span className="shrink-0 select-none text-gray-500">
+                              {new Date(log.timestamp).toLocaleTimeString('fr-FR')}
+                            </span>
+                            <span className="shrink-0">{LOG_LEVEL_ICONS[log.level] || 'ℹ️'}</span>
+                            <span className={LOG_LEVEL_STYLES[log.level] || 'text-gray-300'}>
+                              {log.message}
+                            </span>
+                          </div>
+                        ))
+                      )}
+                      <div ref={logsEndRef} />
                     </div>
                   </div>
-
-                  <div className="bg-gray-900 rounded-lg p-4 max-h-80 overflow-y-auto font-mono text-sm">
-                    {filteredLogs.length === 0 ? (
-                      <p className="text-gray-500">Aucun log disponible</p>
-                    ) : (
-                      filteredLogs.map((log, index) => (
-                        <div key={index} className="flex gap-2 mb-1">
-                          <span className="text-gray-500 select-none shrink-0">
-                            {new Date(log.timestamp).toLocaleTimeString('fr-FR')}
-                          </span>
-                          <span className="shrink-0">{LOG_LEVEL_ICONS[log.level] || 'ℹ️'}</span>
-                          <span className={LOG_LEVEL_STYLES[log.level] || 'text-gray-300'}>
-                            {log.message}
-                          </span>
-                        </div>
-                      ))
-                    )}
-                    <div ref={logsEndRef} />
-                  </div>
-                </div>
+                </details>
 
                 {/* Result */}
                 {selectedExecution.result && (

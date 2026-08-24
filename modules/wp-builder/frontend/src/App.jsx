@@ -106,19 +106,6 @@ function App() {
     }
   };
 
-  const handleApproveValidation = async (requestId) => {
-    setLoading(true);
-    setError(null);
-    try {
-      await apiRequest(`/requests/${requestId}/approve`, { method: 'POST' });
-      await Promise.all([fetchRequests(), fetchRequest(requestId)]);
-    } catch (requestError) {
-      setError(`La validation a échoué : ${requestError.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleDeleteRequest = async (requestId) => {
     const confirmed = window.confirm('Supprimer ce projet et toutes ses données associées ? Cette action est définitive.');
     if (!confirmed) return;
@@ -172,7 +159,7 @@ function App() {
         content = <ExecutionView request={selectedRequest} onBack={() => navigate('detail')} />;
         break;
       default:
-        content = <RequestDetail request={selectedRequest} onBack={() => navigate('list')} onApproveValidation={handleApproveValidation} onViewValidation={() => navigate('validation')} onViewPipeline={() => navigate('pipeline')} onViewArtifacts={() => openArtifact(null)} onViewExecution={() => navigate('execution')} onDeleteRequest={handleDeleteRequest} loading={loading} />;
+        content = <RequestDetail request={selectedRequest} onBack={() => navigate('list')} onViewValidation={() => navigate('validation')} onViewPipeline={() => navigate('pipeline')} onViewArtifacts={() => openArtifact(null)} onViewExecution={() => navigate('execution')} onDeleteRequest={handleDeleteRequest} loading={loading} />;
     }
 
     return <ProjectWorkspace request={selectedRequest} activeView={route.view} onNavigate={navigate} onBack={() => navigate('list')}>{content}</ProjectWorkspace>;

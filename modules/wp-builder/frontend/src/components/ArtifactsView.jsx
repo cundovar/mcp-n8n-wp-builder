@@ -72,7 +72,6 @@ function ArtifactsView({ request, onBack, initialArtifactType, onViewRevisions }
         const res = await fetch(
           `${API_URL}/requests/${request.requestId}/artifacts/${selectedType}/versions`
         );
-        console.log(res);
         const data = await res.json();
         setVersions(data.versions || []);
         // Sélectionner la dernière version par défaut

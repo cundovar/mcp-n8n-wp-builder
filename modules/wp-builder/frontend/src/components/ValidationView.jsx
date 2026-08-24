@@ -72,7 +72,6 @@ function ValidationView({ request, onBack, onValidationComplete, onViewRevisions
       try {
         const res = await fetch(`${API_URL}/requests/${request.requestId}/validation-context`);
         const data = await res.json();
-        console.log('Contexte de validation:', data);
         if (data.ok) {
           setValidationContext(data);
         }
@@ -90,12 +89,10 @@ function ValidationView({ request, onBack, onValidationComplete, onViewRevisions
       try {
         const res = await fetch(`${API_URL}/requests/${request.requestId}/artifacts`);
         const data = await res.json();
-        console.log('Artifacts:', data);
         const allArtifacts = data.artifacts || [];
         const validatableArtifacts = allArtifacts.filter(
           (a) => a.status === 'generated' || a.status === 'validated'
         );
-        console.log('Validatable artifacts:', validatableArtifacts);
         setArtifacts(validatableArtifacts);
 
         // La vue essaie d'abord de preselecitonner la cible courante renvoyee

@@ -15,7 +15,7 @@ const ARTIFACT_LABELS = {
   execution_report: { label: 'Rapport', icon: '📊' },
 };
 
-function RequestDetail({ request, onBack, onApproveValidation, onViewValidation, onViewPipeline, onViewArtifacts, onViewExecution, onDeleteRequest, loading }) {
+function RequestDetail({ request, onBack, onViewValidation, onViewPipeline, onViewArtifacts, onViewExecution, onDeleteRequest, loading }) {
   const [copied, setCopied] = useState(false);
   const [validationContext, setValidationContext] = useState(null);
   const displayStatus = getRequestStatus(request);
@@ -40,30 +40,6 @@ function RequestDetail({ request, onBack, onApproveValidation, onViewValidation,
     };
     fetchValidationContext();
   }, [request.requestId, request.status]);
-
-  const getStatusBadge = (status) => {
-    const styles = {
-      pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-      processing: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-      waiting_validation: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
-      approved: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      completed: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      failed: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-    };
-    const labels = {
-      pending: 'En attente',
-      processing: 'En cours',
-      waiting_validation: 'Validation requise',
-      approved: 'Approuvé',
-      completed: 'Terminé',
-      failed: 'Échec',
-    };
-    return (
-      <span className={`px-3 py-1 rounded-full text-sm font-medium ${styles[status] || styles.pending}`}>
-        {labels[status] || status}
-      </span>
-    );
-  };
 
   const formatDate = (dateStr) => {
     if (!dateStr) return '-';
