@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { listSiteKits, selectSiteKit } from '../src/core/services/siteKitCatalog.js';
+import { listSiteKits, resolveSiteKitCatalogEntry, selectSiteKit } from '../src/core/services/siteKitCatalog.js';
 
-test('catalogue lists normalized candidate kits', () => {
+test('catalogue separates staging-validated and candidate kits', () => {
   const kits = listSiteKits({ status: 'candidate' });
-  assert.equal(kits.length, 8);
+  assert.equal(kits.length, 7);
   assert.ok(kits.every((kit) => kit.builder === 'elementor' && kit.license === 'free'));
+  assert.deepEqual(listSiteKits({ status: 'validated' }).map((kit) => kit.kit_id), ['astra-wellness-coach-02']);
 });
 
 test('selection is deterministic and excludes WooCommerce by default', () => {
@@ -28,10 +29,20 @@ test('selection is deterministic and excludes WooCommerce by default', () => {
   assert.equal(first.selected.woocommerce, undefined);
 });
 
-test('apply mode refuses unvalidated candidates', () => {
+test('apply mode selects only a validated candidate', () => {
   const result = selectSiteKit({ execution_mode: 'apply', constraints: {} });
-  assert.equal(result.selected, null);
-  assert.match(result.reason, /No validated/);
+  assert.equal(result.selected.kit_id, 'astra-wellness-coach-02');
+});
+
+test('live resolution pins the validated free Elementor template id', () => {
+  const kit = listSiteKits({ status: 'validated' })[0];
+  const resolved = resolveSiteKitCatalogEntry(kit, [
+    { id: 94191, type: 'Free', 'page-builder': 'Elementor', url: '//websitedemos.net/wellness-coach-02' },
+  ]);
+  assert.equal(resolved.starter_template_id, 94191);
+  assert.throws(() => resolveSiteKitCatalogEntry(kit, [
+    { id: 99999, type: 'Free', 'page-builder': 'Elementor', url: '//websitedemos.net/wellness-coach-02' },
+  ]), /changed live template id/);
 });
 
 test('WooCommerce catalogue branch requires explicit permission', () => {

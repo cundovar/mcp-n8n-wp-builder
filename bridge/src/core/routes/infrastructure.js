@@ -4,7 +4,7 @@ import {
   checkStagingHealth,
   captureVisualReview,
 } from '../services/infrastructureExecutor.js';
-import { listSiteKits, selectSiteKit } from '../services/siteKitCatalog.js';
+import { listSiteKits, resolveSiteKitCatalogEntry, selectSiteKit } from '../services/siteKitCatalog.js';
 
 const executeSchema = {
   body: {
@@ -50,6 +50,18 @@ const selectKitSchema = {
   },
 };
 
+const resolveKitSchema = {
+  body: {
+    ...selectKitSchema.body,
+    required: ['request_id', 'execution_mode'],
+    properties: {
+      ...selectKitSchema.body.properties,
+      request_id: { type: 'string', pattern: '^[a-zA-Z0-9][a-zA-Z0-9_-]{0,99}$' },
+      kit_id: { type: ['string', 'null'], pattern: '^[a-z0-9][a-z0-9-]{0,99}$' },
+    },
+  },
+};
+
 export default async function infrastructureRoutes(fastify) {
   // POST /infrastructure/execute - runs pre-validated WP-CLI actions on staging (phase 2).
   // Protected by X-Bridge-Token (see EXECUTION_PATHS in server.js) same as /task:
@@ -86,6 +98,29 @@ export default async function infrastructureRoutes(fastify) {
       return reply.code(422).send({ ok: false, ...selection });
     }
     return reply.send({ ok: true, ...selection });
+  });
+
+  fastify.post('/infrastructure/site-kits/resolve', { schema: resolveKitSchema }, async (request, reply) => {
+    const requestedKit = request.body.kit_id
+      ? listSiteKits().find((kit) => kit.kit_id === request.body.kit_id)
+      : selectSiteKit(request.body).selected;
+    if (!requestedKit) return reply.code(422).send({ ok: false, error: 'No eligible site kit found' });
+
+    try {
+      const catalogResult = await executeInfrastructureActions({
+        requestId: `${request.body.request_id}-catalog`,
+        executionMode: 'apply',
+        actions: [{ action: 'list_starter_templates', args: {} }],
+        timeoutMs: 120000,
+      });
+      const firstResult = Array.isArray(catalogResult.results) ? catalogResult.results[0] : null;
+      if (!firstResult?.ok) throw new Error(firstResult?.output || 'Unable to read live Starter Templates catalogue');
+      const liveCatalog = JSON.parse(firstResult.output);
+      const resolved = resolveSiteKitCatalogEntry(requestedKit, liveCatalog);
+      return reply.send({ ok: true, kit: resolved, starter_template_id: resolved.starter_template_id });
+    } catch (error) {
+      return reply.code(422).send({ ok: false, error: error.message });
+    }
   });
 
   fastify.post('/infrastructure/visual-review', {

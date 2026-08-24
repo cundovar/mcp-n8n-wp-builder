@@ -81,3 +81,27 @@ export function selectSiteKit(input, { catalogPath } = {}) {
     fallback_kit_id: fallback?.kit_id || null,
   };
 }
+
+export function resolveSiteKitCatalogEntry(kit, liveCatalog) {
+  if (!kit || kit.status !== 'validated' || kit.builder !== 'elementor' || kit.license !== 'free') {
+    throw new Error('Only validated free Elementor kits can be resolved for import');
+  }
+  if (!Array.isArray(liveCatalog)) throw new Error('Live Starter Templates catalogue is invalid');
+
+  const match = liveCatalog.find((entry) => {
+    const id = Number(entry?.id || 0);
+    const type = String(entry?.type || '').toLowerCase();
+    const builder = String(entry?.['page-builder'] || '').toLowerCase();
+    const url = String(entry?.url || '').toLowerCase();
+    return Number.isInteger(id) && id > 0
+      && type === 'free'
+      && builder.includes('elementor')
+      && url.includes(String(kit.catalog_match || '').toLowerCase());
+  });
+
+  if (!match) throw new Error(`Validated kit ${kit.kit_id} is unavailable in the live free Elementor catalogue`);
+  if (kit.validated_template_id && Number(kit.validated_template_id) !== Number(match.id)) {
+    throw new Error(`Validated kit ${kit.kit_id} changed live template id`);
+  }
+  return { ...kit, starter_template_id: Number(match.id), live_catalog_entry: match };
+}

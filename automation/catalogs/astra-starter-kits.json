@@ -52,7 +52,9 @@
       "industries": ["coach", "therapy", "wellness"],
       "features": ["contact_form"],
       "requires": ["astra", "elementor"],
-      "status": "candidate"
+      "status": "validated",
+      "validated_at": "2026-08-24",
+      "validated_template_id": 94191
     },
     {
       "kit_id": "astra-charity-02",
