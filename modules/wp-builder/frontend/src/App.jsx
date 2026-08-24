@@ -141,7 +141,7 @@ function App() {
     let content;
     switch (route.view) {
       case 'pipeline':
-        content = <PipelineView request={selectedRequest} onBack={() => navigate('detail')} onViewArtifact={openArtifact} />;
+        content = <PipelineView request={selectedRequest} onViewArtifact={openArtifact} />;
         break;
       case 'artifacts':
         content = <ArtifactsView request={selectedRequest} onBack={() => navigate('pipeline')} initialArtifactType={selectedArtifactType} onViewRevisions={(type) => { setSelectedArtifactType(type); navigate('revisions'); }} />;
@@ -159,7 +159,7 @@ function App() {
         content = <ExecutionView request={selectedRequest} onBack={() => navigate('detail')} />;
         break;
       default:
-        content = <RequestDetail request={selectedRequest} onBack={() => navigate('list')} onViewValidation={() => navigate('validation')} onViewPipeline={() => navigate('pipeline')} onViewArtifacts={() => openArtifact(null)} onViewExecution={() => navigate('execution')} onDeleteRequest={handleDeleteRequest} loading={loading} />;
+        content = <RequestDetail request={selectedRequest} />;
     }
 
     return <ProjectWorkspace request={selectedRequest} activeView={route.view} onNavigate={navigate} onBack={() => navigate('list')}>{content}</ProjectWorkspace>;
