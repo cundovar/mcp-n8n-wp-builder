@@ -52,10 +52,10 @@ for (const page of input.pages) {
   for (const viewport of VIEWPORTS) {
     const file = path.join(outputDir, `${pageKey}-${viewport.name}.png`);
     const result = spawnSync(chromium, [
-      '--headless', '--no-sandbox', '--disable-gpu', '--hide-scrollbars',
-      '--virtual-time-budget=5000', `--window-size=${viewport.width},${viewport.height}`,
+      '--headless', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage', '--hide-scrollbars',
+      '--virtual-time-budget=2000', `--window-size=${viewport.width},${viewport.height}`,
       `--screenshot=${file}`, targetUrl.toString(),
-    ], { encoding: 'utf8', timeout: 30000 });
+    ], { encoding: 'utf8', timeout: 20000 });
     const exists = result.status === 0 && fs.existsSync(file) && fs.statSync(file).size > 0;
     captures.push({
       page_key: pageKey,
