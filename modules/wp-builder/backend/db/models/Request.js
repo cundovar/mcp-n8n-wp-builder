@@ -136,6 +136,55 @@ const RequestSchema = new mongoose.Schema({
     workflow_decision_in_progress: { type: Boolean, default: false },
   },
 
+  // Hybrid orchestration (plan phases 1-4): contrat canonique + machine a etats
+  // explicite, distincte du `status` V1/V2 ci-dessus pour ne pas perturber le
+  // pipeline wp-builder-v2 existant tant que les phases 2-4 ne sont pas la.
+  contract: {
+    contract_version: { type: String },
+    payload_checksum: { type: String },
+    business: { type: mongoose.Schema.Types.Mixed },
+    site: { type: mongoose.Schema.Types.Mixed },
+    execution_mode: { type: String, enum: ['dry_run', 'apply'] },
+    approved_artifact_versions: { type: mongoose.Schema.Types.Mixed },
+    target_site: { type: mongoose.Schema.Types.Mixed },
+    kit_selection: { type: mongoose.Schema.Types.Mixed },
+    constraints: { type: mongoose.Schema.Types.Mixed },
+    artifacts_verified_at: { type: Date },
+    stage_artifacts: { type: mongoose.Schema.Types.Mixed },
+    missing_information: [{ type: String }],
+    risks: [
+      {
+        description: { type: String },
+        severity: { type: String, enum: ['low', 'medium', 'high', 'critical'] },
+        mitigated: { type: Boolean, default: false },
+      },
+    ],
+    build_state: {
+      type: String,
+      enum: [
+        'received',
+        'needs_input',
+        'awaiting_staging_approval',
+        'ready_for_staging',
+        'building',
+        'reviewing',
+        'changes_requested',
+        'awaiting_publish_approval',
+        'publishing',
+        'completed',
+        'failed',
+      ],
+    },
+    state_history: [
+      {
+        state: { type: String },
+        actor: { type: String },
+        at: { type: Date },
+        reason: { type: String },
+      },
+    ],
+  },
+
   // Metadonnees
   n8n_execution_id: { type: String },
   duration_ms: { type: Number },

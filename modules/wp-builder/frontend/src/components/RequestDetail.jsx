@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { getRequestStatus } from '../lib/status';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -6,489 +7,219 @@ const ARTIFACT_LABELS = {
   normalized_brief: { label: 'Brief normalisé', icon: '📝' },
   discovery_brief: { label: 'Découverte', icon: '🔍' },
   site_architecture: { label: 'Architecture', icon: '🏗️' },
-  content_plan: { label: 'Plan contenu', icon: '📄' },
-  design_plan: { label: 'Plan design', icon: '🎨' },
+  content_plan: { label: 'Plan de contenu', icon: '📄' },
+  design_plan: { label: 'Direction visuelle', icon: '🎨' },
   wordpress_plan: { label: 'Plan WordPress', icon: '🔧' },
-  execution_plan: { label: 'Plan exécution', icon: '📋' },
-  execution_report: { label: 'Rapport', icon: '📊' },
+  execution_plan: { label: 'Plan d’exécution', icon: '📋' },
 };
 
-function RequestDetail({ request, onBack, onApproveValidation, onViewValidation, onViewPipeline, onViewArtifacts, onViewExecution, onDeleteRequest, loading }) {
-  const [copied, setCopied] = useState(false);
-  const [validationContext, setValidationContext] = useState(null);
+function formatDate(dateString) {
+  if (!dateString) return 'Non renseigné';
+  return new Date(dateString).toLocaleString('fr-FR', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
 
-  // Charger le contexte de validation si en attente de validation
+function RequestDetail({ request }) {
+  const [validationContext, setValidationContext] = useState(null);
+  const [copied, setCopied] = useState(null);
+  const [exportError, setExportError] = useState(null);
+  const displayStatus = getRequestStatus(request);
+  const input = request.input || {};
+  const planApproved = request.status === 'approved' || request.validation?.status === 'approved';
+
   useEffect(() => {
     if (request.status !== 'waiting_validation') {
       setValidationContext(null);
-      return;
+      return undefined;
     }
 
+    let active = true;
     const fetchValidationContext = async () => {
       try {
-        const res = await fetch(`${API_URL}/requests/${request.requestId}/validation-context`);
-        const data = await res.json();
-        if (data.ok) {
-          setValidationContext(data);
-        }
-      } catch (err) {
-        console.error('Erreur chargement contexte validation:', err);
+        const response = await fetch(`${API_URL}/requests/${request.requestId}/validation-context`);
+        if (!response.ok) return;
+        const data = await response.json();
+        if (active && data.ok) setValidationContext(data);
+      } catch (error) {
+        console.error('Erreur chargement contexte validation:', error);
       }
     };
+
     fetchValidationContext();
+    return () => {
+      active = false;
+    };
   }, [request.requestId, request.status]);
 
-  const getStatusBadge = (status) => {
-    const styles = {
-      pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-      processing: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-      waiting_validation: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
-      approved: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      completed: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      failed: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-    };
-    const labels = {
-      pending: 'En attente',
-      processing: 'En cours',
-      waiting_validation: 'Validation requise',
-      approved: 'Approuvé',
-      completed: 'Terminé',
-      failed: 'Échec',
-    };
-    return (
-      <span className={`px-3 py-1 rounded-full text-sm font-medium ${styles[status] || styles.pending}`}>
-        {labels[status] || status}
-      </span>
-    );
+  const showCopiedFeedback = (type) => {
+    setCopied(type);
+    window.setTimeout(() => setCopied(null), 2000);
   };
 
-  const formatDate = (dateStr) => {
-    if (!dateStr) return '-';
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('fr-FR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
+  const copyPlan = async (format) => {
+    setExportError(null);
+    try {
+      const response = await fetch(`${API_URL}/requests/${request.requestId}/ai-ready-plan?format=${format}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const content = format === 'json'
+        ? JSON.stringify((await response.json()).plan, null, 2)
+        : await response.text();
+      await navigator.clipboard.writeText(content);
+      showCopiedFeedback(format);
+    } catch (error) {
+      setExportError(`Impossible de copier le plan : ${error.message}`);
+    }
+  };
+
+  const downloadPlan = async () => {
+    setExportError(null);
+    try {
+      const response = await fetch(`${API_URL}/requests/${request.requestId}/ai-ready-plan?format=markdown`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const content = await response.text();
+      const url = URL.createObjectURL(new Blob([content], { type: 'text/markdown' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `plan-${request.requestId.slice(0, 8)}.md`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      setExportError(`Impossible de télécharger le plan : ${error.message}`);
+    }
   };
 
   const copyScript = async () => {
-    if (request.result?.bash_script) {
-      await navigator.clipboard.writeText(request.result.bash_script);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+    await navigator.clipboard.writeText(request.result.bash_script);
+    showCopiedFeedback('script');
   };
 
   const downloadScript = () => {
-    if (request.result?.bash_script) {
-      const blob = new Blob([request.result.bash_script], { type: 'text/x-sh' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `wp-build-${request.requestId.slice(0, 8)}.sh`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
+    const url = URL.createObjectURL(new Blob([request.result.bash_script], { type: 'text/x-sh' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `wp-build-${request.requestId.slice(0, 8)}.sh`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
-  const validationBrief = request.validation?.brief_architecte;
-  const validationBriefText =
-    typeof validationBrief === 'string'
-      ? validationBrief
-      : validationBrief
-        ? JSON.stringify(validationBrief, null, 2)
-        : null;
+  const validationTarget = validationContext?.current_target;
+  const validationTargetInfo = ARTIFACT_LABELS[validationTarget?.artifact_type];
 
   return (
-    <div>
-      <button
-        onClick={onBack}
-        className="mb-4 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-      >
-        ← Retour à la liste
-      </button>
-
-      {/* Header */}
-      <div className="flex justify-between items-start mb-6">
-        <div>
-          <h2 className="text-2xl font-bold">{request.input?.site_name || 'Sans nom'}</h2>
-          <p className="text-gray-500 dark:text-gray-400">ID: {request.requestId}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          {onViewPipeline && (
-            <button
-              onClick={onViewPipeline}
-              className="px-3 py-1 text-sm bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-800 transition"
-            >
-              📊 Pipeline
-            </button>
-          )}
-          {onViewArtifacts && (
-            <button
-              onClick={onViewArtifacts}
-              className="px-3 py-1 text-sm bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200 rounded-lg hover:bg-cyan-200 dark:hover:bg-cyan-800 transition"
-            >
-              📦 Artefacts
-            </button>
-          )}
-          {onViewExecution && (
-            <button
-              onClick={onViewExecution}
-              className="px-3 py-1 text-sm bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition"
-            >
-              🚀 Exécution
-            </button>
-          )}
-          {onDeleteRequest && (
-            <button
-              onClick={() => onDeleteRequest(request.requestId)}
-              disabled={loading}
-              className="px-3 py-1 text-sm bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition disabled:opacity-50"
-            >
-              🗑️ Supprimer
-            </button>
-          )}
-          {getStatusBadge(request.status)}
-        </div>
-      </div>
-
-      {/* Input Details */}
-      <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-        <h3 className="font-semibold mb-3">Détails de la demande</h3>
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <span className="text-gray-500 dark:text-gray-400">Type:</span>{' '}
-            {request.input?.site_type || '-'}
-          </div>
-          <div>
-            <span className="text-gray-500 dark:text-gray-400">Style:</span>{' '}
-            {request.input?.design_style || '-'}
-          </div>
-          <div>
-            <span className="text-gray-500 dark:text-gray-400">Couleur:</span>{' '}
-            <span
-              className="inline-block w-4 h-4 rounded align-middle"
-              style={{ backgroundColor: request.input?.primary_color || '#3B82F6' }}
-            />
-            {' '}{request.input?.primary_color || '-'}
-          </div>
-          <div>
-            <span className="text-gray-500 dark:text-gray-400">Créé le:</span>{' '}
-            {formatDate(request.createdAt || request.created_at)}
-          </div>
+    <div className="space-y-6">
+      <section aria-labelledby="project-brief-title">
+        <div className="mb-4">
+          <h3 id="project-brief-title" className="text-lg font-bold">Brief du projet</h3>
+          <p className="mt-1 text-sm text-slate-500">Informations utilisées pour préparer le site.</p>
         </div>
 
-        {request.input?.objective && (
-          <div className="mt-3">
-            <span className="text-gray-500 dark:text-gray-400">Objectif:</span>
-            <p className="mt-1">{request.input.objective}</p>
+        <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-800/70">
+            <dt className="text-xs font-bold uppercase tracking-wide text-slate-500">Type de site</dt>
+            <dd className="mt-1 font-semibold capitalize">{input.site_type || 'Site vitrine'}</dd>
           </div>
-        )}
+          <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-800/70">
+            <dt className="text-xs font-bold uppercase tracking-wide text-slate-500">Audience</dt>
+            <dd className="mt-1 font-semibold">{input.target_audience || 'Non renseignée'}</dd>
+          </div>
+          <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-800/70 sm:col-span-2">
+            <dt className="text-xs font-bold uppercase tracking-wide text-slate-500">Direction visuelle</dt>
+            <dd className="mt-1 font-semibold">{input.design_preferences || 'À définir dans le plan design'}</dd>
+          </div>
+        </dl>
 
-        {request.input?.pages?.length > 0 && (
-          <div className="mt-3">
-            <span className="text-gray-500 dark:text-gray-400">Pages:</span>
-            <div className="flex flex-wrap gap-1 mt-1">
-              {request.input.pages.map((page) => (
-                <span
-                  key={page}
-                  className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs"
-                >
-                  {page}
-                </span>
-              ))}
+        <div className="mt-4 rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+          <h4 className="text-sm font-bold">Objectif</h4>
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-600 dark:text-slate-300">
+            {input.objective || 'Aucun objectif détaillé n’a été fourni.'}
+          </p>
+        </div>
+
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+            <h4 className="text-sm font-bold">Pages demandées</h4>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {input.pages?.length ? input.pages.map((page) => <span key={page} className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">{page}</span>) : <span className="text-sm text-slate-500">Aucune page précisée</span>}
             </div>
           </div>
-        )}
-
-        {request.input?.features?.length > 0 && (
-          <div className="mt-3">
-            <span className="text-gray-500 dark:text-gray-400">Fonctionnalités:</span>
-            <div className="flex flex-wrap gap-1 mt-1">
-              {request.input.features.map((feature) => (
-                <span
-                  key={feature}
-                  className="px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded text-xs"
-                >
-                  {feature}
-                </span>
-              ))}
+          <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+            <h4 className="text-sm font-bold">Fonctionnalités demandées</h4>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {input.features?.length ? input.features.map((feature) => <span key={feature} className="rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">{feature}</span>) : <span className="text-sm text-slate-500">Aucune fonctionnalité précisée</span>}
             </div>
           </div>
-        )}
-      </div>
-
-      {/* Result */}
-      {request.status === 'pending' && (
-        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-          <div className="text-4xl mb-2">⏳</div>
-          <p>En attente de traitement...</p>
         </div>
-      )}
+      </section>
 
-      {request.status === 'processing' && (
-        <div className="text-center py-8 text-blue-500">
-          <div className="text-4xl mb-2 animate-spin">⚙️</div>
-          <p>Génération en cours...</p>
-        </div>
-      )}
-
-      {request.status === 'approved' && (
-        <div className="text-center py-8 text-green-600 dark:text-green-400">
-          <div className="text-4xl mb-2">✅</div>
-          <p>La validation a été approuvée.</p>
-        </div>
-      )}
-
-      {request.status === 'waiting_validation' && (
-        <div className="space-y-4">
-          {/* Badge de type de validation */}
-          <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-            <div className="flex items-center gap-3 mb-2">
-              {validationContext?.display_state === 'post_revision_validation' ? (
-                <>
-                  <span className="text-2xl">🔄</span>
-                  <div>
-                    <span className="px-2 py-1 bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 rounded-full text-xs font-medium">
-                      Nouvelle version après révision
-                    </span>
-                    <h3 className="font-semibold text-amber-800 dark:text-amber-200 mt-1">
-                      Validation requise
-                    </h3>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <span className="text-2xl">🆕</span>
-                  <div>
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-xs font-medium">
-                      Validation initiale
-                    </span>
-                    <h3 className="font-semibold text-amber-800 dark:text-amber-200 mt-1">
-                      Validation requise
-                    </h3>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Target artifact info */}
-            {validationContext?.current_target && (
-              <div className="flex items-center gap-2 mt-2 text-sm">
-                <span>Artefact ciblé :</span>
-                <span className="font-medium">
-                  {ARTIFACT_LABELS[validationContext.current_target.artifact_type]?.icon || '📦'}{' '}
-                  {ARTIFACT_LABELS[validationContext.current_target.artifact_type]?.label || validationContext.current_target.artifact_type}
-                </span>
-                <span className="px-2 py-0.5 bg-amber-200 dark:bg-amber-800 rounded text-xs">
-                  v{validationContext.current_target.version}
-                </span>
-              </div>
-            )}
-
-            <p className="text-amber-700 dark:text-amber-300 mt-2">
-              {validationContext?.display_state === 'post_revision_validation'
-                ? 'Une nouvelle version a été reconstruite suite à vos demandes de changements.'
-                : 'Le brief architecte est prêt. Validez pour continuer le pipeline.'}
+      {request.status === 'waiting_validation' ? (
+        <section className="rounded-2xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-800 dark:bg-amber-950/30">
+          <p className="text-xs font-bold uppercase tracking-wide text-amber-700 dark:text-amber-300">Validation requise</p>
+          <h3 className="mt-1 text-lg font-bold text-amber-950 dark:text-amber-100">
+            {validationContext?.display_state === 'post_revision_validation' ? 'Une nouvelle version est prête à relire' : 'Un livrable est prêt à être examiné'}
+          </h3>
+          {validationTarget ? (
+            <p className="mt-2 text-sm text-amber-800 dark:text-amber-200">
+              {validationTargetInfo?.icon || '📦'} {validationTargetInfo?.label || validationTarget.artifact_type} · version {validationTarget.version}
             </p>
+          ) : null}
+          <p className="mt-3 text-sm text-amber-700 dark:text-amber-300">Utilisez le bouton « Action requise » dans l’en-tête pour ouvrir la validation.</p>
+        </section>
+      ) : null}
+
+      {planApproved ? (
+        <section aria-labelledby="plan-tools-title" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 dark:border-emerald-900 dark:bg-emerald-950/30">
+          <div>
+            <h3 id="plan-tools-title" className="text-lg font-bold text-emerald-950 dark:text-emerald-100">Exports du plan</h3>
+            <p className="mt-1 text-sm text-emerald-700 dark:text-emerald-300">Le plan validé est disponible pour archivage ou réutilisation.</p>
           </div>
-
-          {/* Contexte des changements demandés précédents */}
-          {validationContext?.display_state === 'post_revision_validation' && validationContext?.last_decision && (
-            <div className="p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
-              <h4 className="font-semibold text-orange-800 dark:text-orange-200 mb-2 text-sm">
-                Changements précédemment demandés
-              </h4>
-              {validationContext.last_decision.comment && (
-                <p className="text-sm italic mb-2">"{validationContext.last_decision.comment}"</p>
-              )}
-              {validationContext.last_decision.requested_changes?.length > 0 && (
-                <ul className="list-disc list-inside space-y-1 text-sm text-orange-700 dark:text-orange-300">
-                  {validationContext.last_decision.requested_changes.map((change, idx) => (
-                    <li key={idx}>{change}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-
-          {validationBriefText && (
-            <div>
-              <h3 className="font-semibold mb-2">Brief architecte</h3>
-              <pre className="p-4 bg-gray-900 text-gray-100 rounded-lg overflow-x-auto text-sm max-h-96 overflow-y-auto whitespace-pre-wrap">
-                <code>{validationBriefText}</code>
-              </pre>
-            </div>
-          )}
-
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => onApproveValidation(request.requestId)}
-              disabled={loading}
-              className="flex-1 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition font-medium"
-            >
-              {loading ? 'Validation en cours...' : '✓ Approuver rapidement'}
-            </button>
-            {onViewValidation && (
-              <button
-                type="button"
-                onClick={onViewValidation}
-                className="flex-1 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition font-medium"
-              >
-                📝 Validation détaillée
-              </button>
-            )}
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button type="button" onClick={() => copyPlan('json')} className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">{copied === 'json' ? 'JSON copié' : 'Copier le JSON'}</button>
+            <button type="button" onClick={() => copyPlan('prompt')} className="rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500">{copied === 'prompt' ? 'Prompt copié' : 'Copier le prompt'}</button>
+            <button type="button" onClick={downloadPlan} className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">Télécharger en Markdown</button>
           </div>
-        </div>
-      )}
+          {exportError ? <p role="alert" className="mt-3 text-sm font-medium text-red-700 dark:text-red-300">{exportError}</p> : null}
+        </section>
+      ) : null}
 
-      {request.status === 'approved' && (
-        <div className="space-y-4">
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">✅</span>
-              <div>
-                <h3 className="font-semibold text-green-800 dark:text-green-200">Plan approuvé</h3>
-                <p className="text-sm text-green-600 dark:text-green-300">
-                  Le plan est prêt à être envoyé à une IA pour construire le site.
-                </p>
-              </div>
+      {displayStatus === 'failed' ? (
+        <section role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-5 dark:border-red-800 dark:bg-red-950/30">
+          <h3 className="font-bold text-red-800 dark:text-red-200">Le traitement a échoué</h3>
+          <p className="mt-2 text-sm text-red-700 dark:text-red-300">{request.result?.error || 'Aucun détail technique n’est disponible.'}</p>
+        </section>
+      ) : null}
+
+      {request.status === 'completed' && request.result ? (
+        <section aria-labelledby="legacy-result-title" className="space-y-4">
+          <h3 id="legacy-result-title" className="text-lg font-bold">Résultat</h3>
+          {request.result.summary ? (
+            <div className="rounded-xl bg-emerald-50 p-4 text-sm dark:bg-emerald-950/30">
+              {typeof request.result.summary === 'string' ? request.result.summary : <pre className="whitespace-pre-wrap">{JSON.stringify(request.result.summary, null, 2)}</pre>}
             </div>
-
-            <div className="flex gap-3 flex-wrap">
-              <button
-                onClick={async () => {
-                  try {
-                    const res = await fetch(`${API_URL}/requests/${request.requestId}/ai-ready-plan?format=json`);
-                    const data = await res.json();
-                    await navigator.clipboard.writeText(JSON.stringify(data.plan, null, 2));
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                  } catch (err) {
-                    console.error('Erreur copie plan:', err);
-                  }
-                }}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
-              >
-                <span>📋</span>
-                <span>{copied ? 'Copié!' : 'Copier le plan (JSON)'}</span>
-              </button>
-
-              <button
-                onClick={async () => {
-                  try {
-                    const res = await fetch(`${API_URL}/requests/${request.requestId}/ai-ready-plan?format=prompt`);
-                    const text = await res.text();
-                    await navigator.clipboard.writeText(text);
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                  } catch (err) {
-                    console.error('Erreur copie prompt:', err);
-                  }
-                }}
-                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition flex items-center gap-2"
-              >
-                <span>🤖</span>
-                <span>Copier le prompt IA</span>
-              </button>
-
-              <button
-                onClick={async () => {
-                  try {
-                    const res = await fetch(`${API_URL}/requests/${request.requestId}/ai-ready-plan?format=markdown`);
-                    const text = await res.text();
-                    const blob = new Blob([text], { type: 'text/markdown' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `plan-${request.requestId.slice(0, 8)}.md`;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                  } catch (err) {
-                    console.error('Erreur téléchargement:', err);
-                  }
-                }}
-                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition flex items-center gap-2"
-              >
-                <span>⬇️</span>
-                <span>Télécharger (Markdown)</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h4 className="font-semibold mb-2">Prochaine étape</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Copiez le plan et collez-le dans Claude, ChatGPT ou une autre IA pour générer le code WordPress.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {request.status === 'failed' && (
-        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-          <h3 className="font-semibold text-red-800 dark:text-red-200 mb-2">Erreur</h3>
-          <p className="text-red-600 dark:text-red-300">{request.result?.error || 'Erreur inconnue'}</p>
-        </div>
-      )}
-
-      {request.status === 'completed' && request.result && (
-        <div>
-          {/* Summary */}
-          {request.result.summary && (
-            <div className="mb-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-              <h3 className="font-semibold text-green-800 dark:text-green-200 mb-2">Résumé</h3>
-              {typeof request.result.summary === 'string' ? (
-                <p>{request.result.summary}</p>
-              ) : (
-                <pre className="text-sm whitespace-pre-wrap">
-                  {JSON.stringify(request.result.summary, null, 2)}
-                </pre>
-              )}
-            </div>
-          )}
-
-          {/* Bash Script */}
-          {request.result.bash_script && (
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold">Script Bash généré</h3>
-                <div className="flex gap-2">
-                  <button
-                    onClick={copyScript}
-                    className="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-                  >
-                    {copied ? '✓ Copié!' : '📋 Copier'}
-                  </button>
-                  <button
-                    onClick={downloadScript}
-                    className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                  >
-                    ⬇ Télécharger
-                  </button>
+          ) : null}
+          {request.result.bash_script ? (
+            <details className="rounded-xl border border-slate-200 dark:border-slate-700">
+              <summary className="cursor-pointer px-4 py-3 font-semibold">Script Bash historique</summary>
+              <div className="border-t border-slate-200 p-4 dark:border-slate-700">
+                <div className="mb-3 flex justify-end gap-2">
+                  <button type="button" onClick={copyScript} className="rounded-lg bg-slate-200 px-3 py-1.5 text-sm font-semibold dark:bg-slate-700">{copied === 'script' ? 'Copié' : 'Copier'}</button>
+                  <button type="button" onClick={downloadScript} className="rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white">Télécharger</button>
                 </div>
+                <pre className="max-h-96 overflow-auto rounded-lg bg-slate-950 p-4 text-sm text-emerald-300"><code>{request.result.bash_script}</code></pre>
               </div>
-              <div className="relative">
-                <pre className="p-4 bg-gray-900 text-green-400 rounded-lg overflow-x-auto text-sm max-h-96 overflow-y-auto">
-                  <code>{request.result.bash_script}</code>
-                </pre>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+            </details>
+          ) : null}
+        </section>
+      ) : null}
 
-      {/* Timestamps */}
-      {(request.completedAt || request.completed_at) && (
-        <div className="mt-4 text-sm text-gray-500 dark:text-gray-400 text-right">
-          Terminé le: {formatDate(request.completedAt || request.completed_at)}
-        </div>
-      )}
+      <footer className="border-t border-slate-200 pt-4 text-xs text-slate-500 dark:border-slate-800">
+        Projet créé le {formatDate(request.createdAt || request.created_at)}
+        {request.completedAt || request.completed_at ? ` · terminé le ${formatDate(request.completedAt || request.completed_at)}` : ''}
+      </footer>
     </div>
   );
 }

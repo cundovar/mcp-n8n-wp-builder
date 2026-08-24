@@ -1,110 +1,88 @@
+import { getRequestStatus, getStatusConfig } from '../lib/status';
+import StatusBadge from './ui/StatusBadge';
+
+function formatDate(dateStr) {
+  if (!dateStr) return 'Date inconnue';
+  return new Date(dateStr).toLocaleDateString('fr-FR', {
+    day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
+  });
+}
+
 function RequestList({
   requests,
   onViewDetail,
   onRefresh,
   onDeleteRequest,
-  title = 'Mes demandes',
-  emptyTitle = 'Aucune demande',
-  emptyDescription = 'Créez votre première demande de site WordPress',
+  title = 'Tous les projets',
+  emptyTitle = 'Aucun projet',
+  emptyDescription = 'Créez votre premier site WordPress.',
 }) {
-  const getStatusBadge = (status) => {
-    const styles = {
-      pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-      processing: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-      waiting_validation: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
-      approved: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      completed: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      failed: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-    };
-    const labels = {
-      pending: 'En attente',
-      processing: 'En cours',
-      waiting_validation: 'Validation requise',
-      approved: 'Approuvé',
-      completed: 'Terminé',
-      failed: 'Échec',
-    };
-    return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${styles[status] || styles.pending}`}>
-        {labels[status] || status}
-      </span>
-    );
-  };
-
-  const formatDate = (dateStr) => {
-    if (!dateStr) return '-';
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('fr-FR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
   if (requests.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="text-6xl mb-4">📝</div>
-        <h3 className="text-lg font-medium mb-2">{emptyTitle}</h3>
-        <p className="text-gray-500 dark:text-gray-400">
-          {emptyDescription}
-        </p>
-      </div>
+      <section className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center dark:border-slate-700 dark:bg-slate-900">
+        <div aria-hidden="true" className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-xl font-bold text-blue-600 dark:bg-blue-950">+</div>
+        <h2 className="mt-4 text-xl font-semibold">{emptyTitle}</h2>
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{emptyDescription}</p>
+      </section>
     );
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">{title}</h2>
-        <button
-          onClick={onRefresh}
-          className="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-        >
-          ↻ Actualiser
+    <section aria-labelledby="projects-heading">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="text-sm font-medium text-blue-600 dark:text-blue-400">Portfolio WordPress</p>
+          <h2 id="projects-heading" className="mt-1 text-2xl font-bold tracking-tight">{title}</h2>
+          <p className="mt-1 text-sm text-slate-500">{requests.length} projet{requests.length > 1 ? 's' : ''}</p>
+        </div>
+        <button type="button" onClick={onRefresh} className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800">
+          Actualiser
         </button>
       </div>
 
-      <div className="space-y-3">
-        {requests.map((request) => (
-          <div
-            key={request.requestId}
-            onClick={() => onViewDetail(request.requestId)}
-            className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition"
-          >
-            <div className="flex justify-between items-start mb-2">
-              <div>
-                <h3 className="font-medium">{request.input?.site_name || 'Sans nom'}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {request.input?.site_type || 'Site vitrine'}
-                </p>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {requests.map((request) => {
+          const status = getRequestStatus(request);
+          const statusInfo = getStatusConfig(status);
+          const progress = statusInfo.step ? Math.round((statusInfo.step / 7) * 100) : 0;
+          return (
+            <article key={request.requestId} className="group relative rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-700">
+              <button type="button" onClick={() => onViewDetail(request.requestId)} aria-label={`Ouvrir le projet ${request.input?.site_name || 'Sans nom'}`} className="absolute inset-0 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" />
+              <div className="relative pointer-events-none">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-lg font-semibold">{request.input?.site_name || 'Sans nom'}</p>
+                    <p className="mt-1 text-sm capitalize text-slate-500">{request.input?.site_type || 'Site vitrine'}</p>
+                  </div>
+                  <StatusBadge status={status} />
+                </div>
+
+                <div className="mt-6">
+                  <div className="mb-2 flex justify-between text-xs text-slate-500">
+                    <span>{statusInfo.step ? `Étape ${statusInfo.step} sur 7` : statusInfo.label}</span>
+                    <span>{progress}%</span>
+                  </div>
+                  <div className="h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+                    <div className="h-full rounded-full bg-blue-600 transition-all" style={{ width: `${progress}%` }} />
+                  </div>
+                </div>
+
+                <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4 text-xs text-slate-500 dark:border-slate-800">
+                  <span>{formatDate(request.createdAt || request.created_at)}</span>
+                  <span className="font-mono">{request.requestId.slice(0, 8)}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                {getStatusBadge(request.status)}
-                {onDeleteRequest && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDeleteRequest(request.requestId);
-                    }}
-                    className="px-2 py-1 text-xs bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300 rounded hover:bg-red-200 dark:hover:bg-red-800 transition"
-                    title="Supprimer"
-                  >
-                    🗑️
-                  </button>
-                )}
-              </div>
-            </div>
-            <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-              <span>ID: {request.requestId.slice(0, 8)}...</span>
-              <span>{formatDate(request.createdAt || request.created_at)}</span>
-            </div>
-          </div>
-        ))}
+
+              {onDeleteRequest ? (
+                <button type="button" onClick={() => onDeleteRequest(request.requestId)} aria-label={`Supprimer le projet ${request.input?.site_name || 'Sans nom'}`} className="relative z-10 mt-4 w-full rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 opacity-0 transition hover:bg-red-50 focus:opacity-100 group-hover:opacity-100 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-950/50">
+                  Supprimer
+                </button>
+              ) : null}
+            </article>
+          );
+        })}
       </div>
-    </div>
+    </section>
   );
 }
 

@@ -1,3 +1,7 @@
+// Token de dev volontairement inutilisable en prod : le serveur refuse de
+// démarrer avec cette valeur quand l'auth est active (voir src/server.js).
+export const DEFAULT_DEV_TOKEN = 'dev-token-change-me';
+
 export default {
   server: {
     host: process.env.BRIDGE_HOST || '0.0.0.0', // 0.0.0.0 pour accès Docker
@@ -10,9 +14,15 @@ export default {
   },
 
   auth: {
-    token: process.env.BRIDGE_TOKEN || 'dev-token-change-me',
-    enabled: process.env.BRIDGE_AUTH_ENABLED === 'true', // Désactivé par défaut
+    token: process.env.BRIDGE_TOKEN || DEFAULT_DEV_TOKEN,
+    // Activée sauf opt-out explicite : un .env de prod incomplet ne doit pas
+    // laisser l'exécution de codex/claude ouverte sans token.
+    enabled: process.env.BRIDGE_AUTH_ENABLED !== 'false',
   },
+
+  // Racine unique sous laquelle les tâches IA ont le droit de s'exécuter.
+  // Tout cwd reçu par l'API y est confiné (voir src/core/services/executor.js).
+  workspaceRoot: process.env.WORKSPACE_ROOT || process.cwd(),
 
   engines: {
     codex: {

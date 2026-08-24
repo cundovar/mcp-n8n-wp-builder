@@ -1,0 +1,17 @@
+node_modules
+**/node_modules
+.git
+.gitignore
+.run
+tmp
+docs
+**/docs
+n8n-local
+dist
+.claude
+.codex
+.agents
+.env
+**/.env
+*.md
+!README.md

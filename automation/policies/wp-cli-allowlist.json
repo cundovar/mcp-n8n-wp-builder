@@ -1,0 +1,81 @@
+{
+  "$id": "https://mcp-n8n-wp-builder/policies/wp-cli-allowlist.json",
+  "description": "Bounded WP-CLI operations the phase 2 runner may execute on staging. n8n validates every proposed action against this file before the runner (over SSH) ever sees it; the runner re-checks it again as a second, independent gate.",
+  "actions": {
+    "install_plugin": {
+      "wp_command": ["plugin", "install", "{slug}", "--activate"],
+      "args": { "slug": "^[a-z0-9][a-z0-9-]{1,99}$" }
+    },
+    "activate_plugin": {
+      "wp_command": ["plugin", "activate", "{slug}"],
+      "args": { "slug": "^[a-z0-9][a-z0-9-]{1,99}$" }
+    },
+    "deactivate_plugin": {
+      "wp_command": ["plugin", "deactivate", "{slug}"],
+      "args": { "slug": "^[a-z0-9][a-z0-9-]{1,99}$" }
+    },
+    "install_theme": {
+      "wp_command": ["theme", "install", "{slug}", "--activate"],
+      "args": { "slug": "^[a-z0-9][a-z0-9-]{1,99}$" }
+    },
+    "activate_theme": {
+      "wp_command": ["theme", "activate", "{slug}"],
+      "args": { "slug": "^[a-z0-9][a-z0-9-]{1,99}$" }
+    },
+    "update_option": {
+      "wp_command": ["option", "update", "{key}", "{value}"],
+      "args": {
+        "key": "^(blogname|blogdescription|permalink_structure|template|stylesheet|default_comment_status|default_ping_status)$",
+        "value": "^.{0,500}$"
+      }
+    },
+    "flush_permalinks": {
+      "wp_command": ["rewrite", "flush"],
+      "args": {}
+    },
+    "create_menu": {
+      "wp_command": ["menu", "create", "{name}"],
+      "args": { "name": "^[a-zA-Z0-9 _-]{1,60}$" }
+    },
+    "assign_menu_location": {
+      "wp_command": ["menu", "location", "assign", "{menu}", "{location}"],
+      "args": { "menu": "^[a-zA-Z0-9 _-]{1,60}$", "location": "^[a-z0-9_-]{1,60}$" }
+    },
+    "list_starter_templates": {
+      "handler": "list_starter_templates",
+      "args": {}
+    },
+    "backup_site_build": {
+      "handler": "backup_site_build",
+      "args": {}
+    },
+    "ensure_astra_child_theme": {
+      "handler": "ensure_astra_child_theme",
+      "args": {}
+    },
+    "import_starter_template": {
+      "handler": "import_starter_template",
+      "required_args": ["starter_template_id", "expected_builder", "expected_license"],
+      "args": {
+        "starter_template_id": "^[1-9][0-9]{0,9}$",
+        "expected_builder": "^elementor$",
+        "expected_license": "^free$"
+      }
+    },
+    "rollback_site_build": {
+      "handler": "rollback_site_build",
+      "required_args": ["backup_request_id"],
+      "args": {
+        "backup_request_id": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,99}$"
+      }
+    }
+  },
+  "readonly_actions": {
+    "list_plugins": { "wp_command": ["plugin", "list", "--format=json"], "args": {} },
+    "list_themes": { "wp_command": ["theme", "list", "--format=json"], "args": {} },
+    "core_verify_checksums": { "wp_command": ["core", "verify-checksums"], "args": {} }
+  },
+  "denied_arg_patterns": [";", "&&", "\\|\\|", "\\|", "`", "\\$\\(", "<", ">", "\\.\\./", "\\.\\.\\\\"],
+  "max_actions_per_request": 50,
+  "allowed_target_hosts": ["wp-staging"]
+}

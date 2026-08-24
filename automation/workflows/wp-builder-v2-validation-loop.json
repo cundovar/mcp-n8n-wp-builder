@@ -1,0 +1,300 @@
+[
+  {
+    "id": "fUUjOAaResOiVPt2",
+    "name": "wp-builder-v2-validation-loop",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "wp-builder-v2-validation-loop",
+          "options": {}
+        },
+        "id": "feb5ceb0-a4c5-40c2-82e5-5e44f3556b3b",
+        "name": "Validation Loop Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -1088,
+          224
+        ],
+        "webhookId": "3bc7d344-01f0-404d-8aca-5992a3a1aa2f"
+      },
+      {
+        "parameters": {
+          "jsCode": "const input = $json.body ?? $json;\nconst requestId = input.requestId || input.request_id;\nconst artifactType = input.artifact_type || input.target_artifact;\nconst artifactVersion = Number(input.artifact_version || input.target_version);\nconst decision = String(input.decision || '').trim();\n  const bridgeBaseUrl = String(input.bridge_base_url || input.bridgeBaseUrl || 'http://mcp-bridge:3000').trim();\n  const n8nBaseUrl = String(input.n8n_base_url || input.n8nBaseUrl || 'http://n8n:5678').trim();\nconst createdBy = String(input.created_by || input.user_id || input.user || 'human-validator').trim();\nconst comment = String(input.comment || '').trim();\nconst requestedChanges = Array.isArray(input.requested_changes)\n  ? input.requested_changes.map((item) => String(item).trim()).filter(Boolean)\n  : typeof input.requested_changes === 'string'\n    ? input.requested_changes.split('\\n').map((item) => item.trim()).filter(Boolean)\n    : [];\n\nif (!requestId) throw new Error('Missing requestId');\nif (!artifactType) throw new Error('Missing artifact_type');\nif (!Number.isInteger(artifactVersion) || artifactVersion < 1) throw new Error('Invalid artifact_version');\nif (!['approved', 'changes_requested', 'rejected'].includes(decision)) throw new Error('Invalid decision');\n\nreturn [{ json: {\n  request_id: requestId,\n  artifact_type: artifactType,\n  artifact_version: artifactVersion,\n  decision,\n  comment,\n  requested_changes: requestedChanges,\n  created_by: createdBy,\n  bridge_base_url: bridgeBaseUrl.replace(/\\/$/, ''),\n  n8n_base_url: n8nBaseUrl.replace(/\\/$/, '')\n} }];"
+        },
+        "id": "0c9245bf-4b2b-410a-b4f4-d138f1e8edcd",
+        "name": "Normalize decision input",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -816,
+          224
+        ]
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.decision }}",
+                      "rightValue": "approved",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.decision }}",
+                      "rightValue": "changes_requested",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.decision }}",
+                      "rightValue": "rejected",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "80c87ce3-1bd2-4542-bbb4-d77e525d9b84",
+        "name": "Route by decision",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          -560,
+          224
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $('Normalize decision input').first().json.n8n_base_url + '/webhook/wp-builder-v2-targeted-rebuild' }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "request_id",
+                "value": "={{ $('Normalize decision input').first().json.request_id }}"
+              },
+              {
+                "name": "artifact_type",
+                "value": "={{ $('Normalize decision input').first().json.artifact_type }}"
+              },
+              {
+                "name": "artifact_version",
+                "value": "={{ $('Normalize decision input').first().json.artifact_version }}"
+              },
+              {
+                "name": "comment",
+                "value": "={{ $('Normalize decision input').first().json.comment }}"
+              },
+              {
+                "name": "requested_changes",
+                "value": "={{ $('Normalize decision input').first().json.requested_changes }}"
+              },
+              {
+                "name": "created_by",
+                "value": "={{ $('Normalize decision input').first().json.created_by }}"
+              },
+              {
+                "name": "bridge_base_url",
+                "value": "={{ $('Normalize decision input').first().json.bridge_base_url }}"
+              },
+              {
+                "name": "n8n_base_url",
+                "value": "={{ $('Normalize decision input').first().json.n8n_base_url }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "d7fb3137-1724-4274-90ca-99191ff8b96c",
+        "name": "Trigger targeted rebuild",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          0,
+          224
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const input = $('Normalize decision input').first().json;\nreturn [{ json: {\n  ok: true,\n  request_id: input.request_id,\n  decision: 'approved',\n  artifact_type: input.artifact_type,\n  artifact_version: input.artifact_version,\n  validation_decision: {\n    decision: 'approved',\n    artifact_type: input.artifact_type,\n    artifact_version: input.artifact_version,\n    created_by: input.created_by,\n  },\n  next_step: 'ready_for_execution'\n} }];"
+        },
+        "id": "5ae778fc-a735-4d18-8f0b-977d024bab39",
+        "name": "Build approved response",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const input = $('Normalize decision input').first().json;\nreturn [{ json: {\n  ok: true,\n  request_id: input.request_id,\n  decision: 'changes_requested',\n  artifact_type: input.artifact_type,\n  artifact_version: input.artifact_version,\n  validation_decision: {\n    decision: 'changes_requested',\n    artifact_type: input.artifact_type,\n    artifact_version: input.artifact_version,\n    created_by: input.created_by,\n    requested_changes: input.requested_changes,\n    comment: input.comment,\n  },\n  rebuild: $json,\n  next_step: 'waiting_validation'\n} }];"
+        },
+        "id": "d34dfbc4-d701-4972-a07d-4bd73053fe04",
+        "name": "Build changes response",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          272,
+          224
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const input = $('Normalize decision input').first().json;\nreturn [{ json: {\n  ok: true,\n  request_id: input.request_id,\n  decision: 'rejected',\n  artifact_type: input.artifact_type,\n  artifact_version: input.artifact_version,\n  validation_decision: {\n    decision: 'rejected',\n    artifact_type: input.artifact_type,\n    artifact_version: input.artifact_version,\n    created_by: input.created_by,\n    comment: input.comment,\n  },\n  next_step: 'pipeline_stopped'\n} }];"
+        },
+        "id": "1fc3a6c5-ba3b-4ad7-8e01-7099dd31e29b",
+        "name": "Build rejected response",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          0,
+          448
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          496,
+          480
+        ],
+        "id": "c1fb5c73-1392-4428-b27c-4f137b59704b",
+        "name": "AI Agent"
+      }
+    ],
+    "connections": {
+      "Validation Loop Webhook": {
+        "main": [
+          [
+            {
+              "node": "Normalize decision input",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalize decision input": {
+        "main": [
+          [
+            {
+              "node": "Route by decision",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Route by decision": {
+        "main": [
+          [
+            {
+              "node": "Build approved response",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Trigger targeted rebuild",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Build rejected response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trigger targeted rebuild": {
+        "main": [
+          [
+            {
+              "node": "Build changes response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "active": true,
+    "tags": []
+  }
+]

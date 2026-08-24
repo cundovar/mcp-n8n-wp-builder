@@ -1,6 +1,25 @@
 import { spawn } from 'node:child_process';
+import path from 'node:path';
 import config from '../../../config/default.js';
 import { buildSuccess, buildError, tryParseJson, truncate } from '../utils/response.js';
+
+/**
+ * Confine un cwd fourni par le client sous config.workspaceRoot.
+ *
+ * La comparaison se fait sur les chemins résolus, ce qui neutralise aussi bien
+ * les chemins absolus ('/etc') que les remontées relatives ('../..').
+ * Retourne null si le chemin sort de la racine autorisée.
+ */
+export function resolveCwd(cwd) {
+  const root = path.resolve(config.workspaceRoot);
+  const target = path.resolve(root, cwd ?? '.');
+
+  if (target !== root && !target.startsWith(root + path.sep)) {
+    return null;
+  }
+
+  return target;
+}
 
 /**
  * Execute a CLI command (codex or claude)
@@ -18,13 +37,24 @@ export async function executeTask({ engine, prompt, cwd, timeoutMs, expectJson, 
     });
   }
 
+  const safeCwd = resolveCwd(cwd);
+
+  if (!safeCwd) {
+    return buildError({
+      engine,
+      errorType: 'invalid_cwd',
+      message: `cwd must stay inside the workspace root (${config.workspaceRoot})`,
+      meta: context,
+    });
+  }
+
   const timeout = Math.min(timeoutMs || engineConfig.defaultTimeout, config.timeouts.max);
 
   try {
     const result = await spawnCli({
       command: engineConfig.command,
       prompt,
-      cwd,
+      cwd: safeCwd,
       timeout,
     });
 
@@ -101,7 +131,8 @@ function spawnCli({ command, prompt, cwd, timeout }) {
   return new Promise((resolve, reject) => {
     const args = buildArgs(command, prompt);
     const options = {
-      cwd: cwd || process.cwd(),
+      // Déjà résolu et validé par resolveCwd() dans executeTask().
+      cwd,
       env: { ...process.env },
       shell: false,
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -165,11 +196,18 @@ function buildArgs(command, prompt) {
   if (command === 'codex' || command.includes('codex')) {
     // codex exec <prompt> runs non-interactively
     // --skip-git-repo-check allows running outside git repos
+    // Le sandbox interne de codex (workspace-write) repose sur bubblewrap, qui
+    // ne peut pas créer de namespace dans un conteneur non privilégié :
+    // "bwrap: No permissions to create a new namespace". Y remédier
+    // demanderait SYS_ADMIN, donc d'affaiblir le conteneur pour dupliquer une
+    // isolation qu'il fournit déjà. On laisse donc le conteneur faire office de
+    // bac à sable : seul /workspace est monté depuis l'hôte, et resolveCwd()
+    // confine l'exécution à cette racine.
     return [
       'exec',
       '--skip-git-repo-check',
       '--sandbox',
-      'read-only',
+      'danger-full-access',
       '--color',
       'never',
       prompt,
@@ -177,8 +215,8 @@ function buildArgs(command, prompt) {
   }
 
   if (command === 'claude' || command.includes('claude')) {
-    // claude -p <prompt> prints response and exits
-    return ['-p', prompt];
+    // acceptEdits : sans TTY, une demande d'autorisation bloquerait le process.
+    return ['-p', '--permission-mode', 'acceptEdits', prompt];
   }
 
   // Generic fallback

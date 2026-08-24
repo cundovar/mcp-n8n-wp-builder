@@ -1,0 +1,34 @@
+{
+  "$id": "https://mcp-n8n-wp-builder/schemas/review-result.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Review Result",
+  "description": "Output of the read-only reviewer (phase 4). Never produced by the builder itself -- self-approval is not a valid state.",
+  "type": "object",
+  "required": ["request_id", "correlation_id", "decision", "reviewed_checksum"],
+  "additionalProperties": false,
+  "properties": {
+    "request_id": { "type": "string", "minLength": 1 },
+    "correlation_id": { "type": "string", "minLength": 1 },
+    "decision": { "type": "string", "enum": ["approve", "changes_requested"] },
+    "reviewed_checksum": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Checksum of the build manifest this review was performed against. A stale checksum invalidates the review."
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["artifact_key", "severity", "evidence", "expected_correction"],
+        "additionalProperties": false,
+        "properties": {
+          "artifact_key": { "type": "string", "minLength": 1 },
+          "severity": { "type": "string", "enum": ["blocking", "major", "minor"] },
+          "evidence": { "type": "string", "minLength": 1 },
+          "expected_correction": { "type": "string", "minLength": 1 }
+        }
+      },
+      "description": "Required (may be empty) even on approve, so the audit trail always shows what was checked."
+    }
+  }
+}
