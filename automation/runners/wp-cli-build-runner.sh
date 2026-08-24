@@ -175,7 +175,7 @@ for i in $(seq 0 $((ACTION_COUNT - 1))); do
         ;;
       backup_site_build)
         backup_dir="${STAGING_BACKUP_ROOT}/${REQUEST_ID}"
-        remote_cmd="set -e; umask 077; backup_dir=$(printf '%q' "$backup_dir"); wp_path=$(printf '%q' "$STAGING_WP_PATH"); if [ -f \"\$backup_dir/manifest.sha256\" ]; then echo backup_exists; exit 0; fi; mkdir -p \"\$backup_dir\"; wp db export \"\$backup_dir/database.sql\" --path=\"\$wp_path\"; tar -C \"\$wp_path\" -czf \"\$backup_dir/wp-content.tar.gz\" wp-content; sha256sum \"\$backup_dir/database.sql\" \"\$backup_dir/wp-content.tar.gz\" > \"\$backup_dir/manifest.sha256\""
+        remote_cmd="set -e; umask 077; backup_dir=$(printf '%q' "$backup_dir"); wp_path=$(printf '%q' "$STAGING_WP_PATH"); if [ -f \"\$backup_dir/manifest.sha256\" ]; then echo backup_exists; exit 0; fi; mkdir -p \"\$backup_dir\"; wp maintenance-mode activate --path=\"\$wp_path\" >/dev/null || true; trap 'wp maintenance-mode deactivate --path=\"'\"\$wp_path\"'\" >/dev/null 2>&1 || true' EXIT; wp db export \"\$backup_dir/database.sql\" --path=\"\$wp_path\"; tar --warning=no-file-changed --ignore-failed-read --exclude=.maintenance -C \"\$wp_path\" -czf \"\$backup_dir/wp-content.tar.gz\" wp-content; sha256sum \"\$backup_dir/database.sql\" \"\$backup_dir/wp-content.tar.gz\" > \"\$backup_dir/manifest.sha256\"; wp maintenance-mode deactivate --path=\"\$wp_path\" >/dev/null 2>&1 || true; trap - EXIT"
         output=$($SSH "$remote_cmd" 2>&1)
         exit_code=$?
         ;;
