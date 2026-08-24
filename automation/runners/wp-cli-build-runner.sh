@@ -55,6 +55,23 @@ snapshot_state() {
   jq -n --argjson plugins "$plugins" --argjson themes "$themes" '{plugins: $plugins, themes: $themes}'
 }
 
+starter_templates_tsv_to_json() {
+  jq -R -s '
+    split("\n")
+    | map(select(length > 0) | split("\t"))
+    | if length < 2 then [] else
+        .[0] as $headers
+        | .[1:]
+        | map(
+            . as $row
+            | reduce range(0; $headers | length) as $index
+                ({}; . + {($headers[$index]): ($row[$index] // "")})
+            | .id = (.id | tonumber)
+          )
+      end
+  '
+}
+
 emit_execution_result() {
   local action_name="$1" exit_code="$2" duration_ms="$3" output="$4" before_state="$5" after_state="$6"
   local redacted_output
@@ -148,8 +165,13 @@ for i in $(seq 0 $((ACTION_COUNT - 1))); do
     set +e
     case "$handler" in
       list_starter_templates)
-        output=$($SSH "wp starter-templates list --page-builder=elementor --type=free --per-page=100 --format=json --path=$(printf '%q' "$STAGING_WP_PATH")" 2>&1)
+        catalog_tsv=$($SSH "wp starter-templates list --page-builder=elementor --type=free --per-page=100 --path=$(printf '%q' "$STAGING_WP_PATH")" 2>&1)
         exit_code=$?
+        if [ "$exit_code" -eq 0 ]; then
+          output=$(printf '%s\n' "$catalog_tsv" | starter_templates_tsv_to_json)
+        else
+          output="$catalog_tsv"
+        fi
         ;;
       backup_site_build)
         backup_dir="${STAGING_BACKUP_ROOT}/${REQUEST_ID}"
@@ -169,9 +191,10 @@ for i in $(seq 0 $((ACTION_COUNT - 1))); do
         starter_template_id=$(echo "$args_json" | jq -r '.starter_template_id')
         backup_dir="${STAGING_BACKUP_ROOT}/${REQUEST_ID}"
         lock_dir="/tmp/wp-mcp-site-build-${REQUEST_ID}.lock"
-        catalog=$($SSH "wp starter-templates list --page-builder=elementor --type=free --per-page=100 --format=json --path=$(printf '%q' "$STAGING_WP_PATH")" 2>/dev/null)
+        catalog_tsv=$($SSH "wp starter-templates list --page-builder=elementor --type=free --per-page=100 --path=$(printf '%q' "$STAGING_WP_PATH")" 2>/dev/null)
         catalog_exit=$?
-        if [ "$catalog_exit" -ne 0 ] || ! echo "$catalog" | jq -e --argjson wanted "$starter_template_id" 'if type == "array" then any(.[]; ((.id // .ID // .site_id // .siteId // 0) | tonumber?) == $wanted) else false end' >/dev/null 2>&1; then
+        catalog=$(printf '%s\n' "$catalog_tsv" | starter_templates_tsv_to_json)
+        if [ "$catalog_exit" -ne 0 ] || ! echo "$catalog" | jq -e --argjson wanted "$starter_template_id" 'any(.[]; .id == $wanted and ((.type // "") | ascii_downcase) == "free" and ((.["page-builder"] // "") | ascii_downcase | contains("elementor")))' >/dev/null 2>&1; then
           output="starter template is unavailable, non-free, or not Elementor"
           exit_code=74
         else
