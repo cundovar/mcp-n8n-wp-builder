@@ -28,4 +28,3 @@ status: in-progress
 | WP-CLI mutations stay in MCP_N8N runners, while WordPress-native mutations stay in wp-mcp. | Prevents shell execution from the WordPress HTTP process and preserves the existing security boundary. |
 | Auto-selection in apply mode uses only internally validated free Elementor kits. | The remote Astra catalogue and dependencies can change. |
 | Git push and n8n import remain separate operations. | A repository update must not silently mutate active automation. |
-

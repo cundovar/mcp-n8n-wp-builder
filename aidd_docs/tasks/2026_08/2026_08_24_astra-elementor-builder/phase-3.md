@@ -28,4 +28,3 @@ status: pending
 | 1 | Every mutation is capability-checked, validated, revision-aware, and idempotent. |
 | 2 | Dangerous HTML, Pro-only unavailable widgets, and out-of-scope semantic targets are rejected. |
 | 3 | Existing Elementor snapshot, rollback, and CSS regeneration behavior remains green. |
-

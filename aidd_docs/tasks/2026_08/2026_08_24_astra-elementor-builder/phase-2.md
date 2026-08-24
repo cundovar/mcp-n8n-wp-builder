@@ -30,4 +30,3 @@ bridge/src/core/services/infrastructureExecutor.js ✏️
 | 1 | Dry-run is mutation-free and import rejects unknown, premium, non-Elementor, or disallowed dependencies. |
 | 2 | Child-theme preparation and repeated import requests are idempotent. |
 | 3 | A request-scoped backup can restore the pre-import state. |
-
