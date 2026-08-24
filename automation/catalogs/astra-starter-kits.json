@@ -1,0 +1,111 @@
+{
+  "$schema_version": "1.0",
+  "source": "astra_starter_templates",
+  "kits": [
+    {
+      "kit_id": "astra-digital-agency-02",
+      "name": "Digital Agency",
+      "source_url": "https://websitedemos.net/digital-agency-02/",
+      "catalog_match": "digital-agency-02",
+      "builder": "elementor",
+      "license": "free",
+      "page_types": ["home", "services", "about", "contact"],
+      "industries": ["agency", "business", "services"],
+      "features": ["contact_form"],
+      "requires": ["astra", "elementor", "wpforms-lite"],
+      "status": "candidate"
+    },
+    {
+      "kit_id": "astra-construction-company-02",
+      "name": "Construction Company",
+      "source_url": "https://websitedemos.net/construction-company-02/",
+      "catalog_match": "construction-company-02",
+      "builder": "elementor",
+      "license": "free",
+      "page_types": ["home", "services", "about", "contact"],
+      "industries": ["construction", "trades", "repair"],
+      "features": ["quote_form"],
+      "requires": ["astra", "elementor", "wpforms-lite"],
+      "status": "candidate"
+    },
+    {
+      "kit_id": "astra-deli-restaurant-02",
+      "name": "Deli Restaurant",
+      "source_url": "https://websitedemos.net/deli-restaurant-02/",
+      "catalog_match": "deli-restaurant-02",
+      "builder": "elementor",
+      "license": "free",
+      "page_types": ["home", "menu", "about", "contact"],
+      "industries": ["restaurant", "cafe", "catering"],
+      "features": ["contact_form"],
+      "requires": ["astra", "elementor", "wpforms-lite"],
+      "status": "candidate"
+    },
+    {
+      "kit_id": "astra-wellness-coach-02",
+      "name": "Wellness Coach",
+      "source_url": "https://websitedemos.net/wellness-coach-02/",
+      "catalog_match": "wellness-coach-02",
+      "builder": "elementor",
+      "license": "free",
+      "page_types": ["home", "services", "about", "contact"],
+      "industries": ["coach", "therapy", "wellness"],
+      "features": ["contact_form"],
+      "requires": ["astra", "elementor"],
+      "status": "candidate"
+    },
+    {
+      "kit_id": "astra-charity-02",
+      "name": "Charity",
+      "source_url": "https://websitedemos.net/charity-02/",
+      "catalog_match": "charity-02",
+      "builder": "elementor",
+      "license": "free",
+      "page_types": ["home", "about", "projects", "contact"],
+      "industries": ["charity", "nonprofit", "culture"],
+      "features": ["donation_link"],
+      "requires": ["astra", "elementor"],
+      "status": "candidate"
+    },
+    {
+      "kit_id": "astra-visual-artist-portfolio-02",
+      "name": "Visual Artist Portfolio",
+      "source_url": "https://websitedemos.net/visual-artist-portfolio-02/",
+      "catalog_match": "visual-artist-portfolio-02",
+      "builder": "elementor",
+      "license": "free",
+      "page_types": ["home", "portfolio", "about", "contact"],
+      "industries": ["artist", "photography", "design"],
+      "features": ["gallery"],
+      "requires": ["astra", "elementor"],
+      "status": "candidate"
+    },
+    {
+      "kit_id": "astra-creative-blog-02",
+      "name": "Creative Blog",
+      "source_url": "https://websitedemos.net/creative-blog-02/",
+      "catalog_match": "creative-blog-02",
+      "builder": "elementor",
+      "license": "free",
+      "page_types": ["home", "blog", "about", "contact"],
+      "industries": ["blog", "media", "news"],
+      "features": ["blog"],
+      "requires": ["astra", "elementor"],
+      "status": "candidate"
+    },
+    {
+      "kit_id": "astra-generic-ecommerce-02",
+      "name": "Generic eCommerce",
+      "source_url": "https://websitedemos.net/generic-ecommerce-02/",
+      "catalog_match": "generic-ecommerce-02",
+      "builder": "elementor",
+      "license": "free",
+      "page_types": ["home", "shop", "cart", "checkout", "contact"],
+      "industries": ["ecommerce", "retail"],
+      "features": ["woocommerce"],
+      "requires": ["astra", "elementor", "woocommerce"],
+      "status": "candidate",
+      "woocommerce": true
+    }
+  ]
+}

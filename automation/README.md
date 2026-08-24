@@ -17,6 +17,29 @@ curl / future front-end
 
 Decision logic (validation, state transitions, verdicts) lives in visible n8n Code/IF nodes, inspectable per execution. The bridge and WP-CLI runners only do storage and independent re-validation in depth — they never make a decision n8n hasn't already made once.
 
+## Astra Starter Templates operations
+
+The bridge exposes the versioned candidate catalogue at
+`GET /infrastructure/site-kits` and deterministic selection at
+`POST /infrastructure/site-kits/select`. Every infrastructure endpoint requires
+the bridge execution token.
+
+The WP-CLI runner accepts only structured actions. Astra imports use this order:
+
+1. `list_starter_templates`
+2. `backup_site_build`
+3. `ensure_astra_child_theme`
+4. `import_starter_template`
+
+`import_starter_template` rechecks that the numeric ID is still listed as a
+free Elementor site, requires the request-scoped backup, and takes an atomic
+site lock. `rollback_site_build` restores that backup explicitly. The runner
+never uses the Starter Templates destructive `--reset` option.
+
+`execution_mode: dry_run` performs policy validation only and never opens SSH.
+Apply-mode auto-selection rejects catalogue entries until they have been tested
+on a clean WordPress fixture and promoted from `candidate` to `validated`.
+
 ## State machine
 
 Defined in `automation/policies/build-state-policy.json`. Every transition is recorded in `contract.state_history` with `actor`, `at`, `reason`.

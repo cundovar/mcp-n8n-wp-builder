@@ -58,9 +58,9 @@ function runScript(scriptPath, { input, timeoutMs = 120000, args = [] } = {}) {
  * Actions are re-validated by the runner script itself against
  * wp-cli-allowlist.json -- this function does not trust the caller.
  */
-export async function executeInfrastructureActions({ requestId, actions, timeoutMs }) {
+export async function executeInfrastructureActions({ requestId, actions, timeoutMs, executionMode = 'dry_run' }) {
   const result = await runScript(BUILD_RUNNER, {
-    input: { request_id: requestId, actions },
+    input: { request_id: requestId, execution_mode: executionMode, actions },
     timeoutMs,
   });
 
@@ -79,9 +79,9 @@ export async function executeInfrastructureActions({ requestId, actions, timeout
  * touches SSH. Used by n8n to show a real per-action pass/fail before
  * deciding whether to call executeInfrastructureActions at all.
  */
-export async function validateInfrastructureActions({ requestId, actions }) {
+export async function validateInfrastructureActions({ requestId, actions, executionMode = 'dry_run' }) {
   const result = await runScript(BUILD_RUNNER, {
-    input: { request_id: requestId, actions },
+    input: { request_id: requestId, execution_mode: executionMode, actions },
     timeoutMs: 15000,
     args: ['--validate-only'],
   });
