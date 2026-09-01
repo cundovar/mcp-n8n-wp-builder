@@ -53,11 +53,19 @@
         "id": "devdoc-0005"
       },
       {
+        "parameters": { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 }, "conditions": [{ "leftValue": "={{ $json.data.status }}", "rightValue": "succeeded", "operator": { "type": "string", "operation": "equals" } }], "combinator": "and" }, "options": {} },
+        "name": "Is Already Finalized",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [-240, 100],
+        "id": "devdoc-0019"
+      },
+      {
         "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/candidats' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ title: $('Expand Courses').item.json.course.title, description: $('Expand Courses').item.json.course.description || '', technology: $('Expand Courses').item.json.category, level: $('Expand Courses').item.json.level, duration: $('Expand Courses').item.json.course.duration }) }}", "options": {} },
         "name": "Generate Candidate",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
-        "position": [-360, 100],
+        "position": [0, 100],
         "id": "devdoc-0006"
       },
       {
@@ -156,7 +164,8 @@
       "Validate and Flatten Batch": { "main": [[{ "node": "Prepare Formation", "type": "main", "index": 0 }]] },
       "Prepare Formation": { "main": [[{ "node": "Expand Courses", "type": "main", "index": 0 }]] },
       "Expand Courses": { "main": [[{ "node": "Register Generation", "type": "main", "index": 0 }]] },
-      "Register Generation": { "main": [[{ "node": "Generate Candidate", "type": "main", "index": 0 }]] },
+      "Register Generation": { "main": [[{ "node": "Is Already Finalized", "type": "main", "index": 0 }]] },
+      "Is Already Finalized": { "main": [[], [{ "node": "Generate Candidate", "type": "main", "index": 0 }]] },
       "Generate Candidate": { "main": [[{ "node": "Generate Illustrations", "type": "main", "index": 0 }]] },
       "Generate Illustrations": { "main": [[{ "node": "Associate Illustrations", "type": "main", "index": 0 }]] },
       "Associate Illustrations": { "main": [[{ "node": "Verify Candidate", "type": "main", "index": 0 }]] },
