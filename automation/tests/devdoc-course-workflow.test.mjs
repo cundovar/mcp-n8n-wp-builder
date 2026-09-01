@@ -3,7 +3,14 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const workflowPath = new URL("../workflows/50-devdoc-course-batch.json", import.meta.url);
-const [workflow] = JSON.parse(await readFile(workflowPath, "utf8"));
+const workflow = JSON.parse(await readFile(workflowPath, "utf8"));
+
+test("le fichier est importable directement par n8n", () => {
+  assert.equal(Array.isArray(workflow), false);
+  assert.equal(workflow.id, "DEVDOCCOURSEBATCH01");
+  assert.ok(Array.isArray(workflow.nodes));
+  assert.equal(typeof workflow.connections, "object");
+});
 
 test("le workflow reste inactif et le webhook exige un credential dédié", () => {
   assert.equal(workflow.active, false);
