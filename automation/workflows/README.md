@@ -1,27 +1,21 @@
-# n8n workflow inventory
+# Workflow DevDoc : génération de cours
 
-The repository is the reviewable source for workflow definitions, while the
-active n8n instance remains a separately deployed runtime. A Git push does not
-import or activate a workflow.
+`50-devdoc-course-batch.json` est volontairement **inactif** à l'import. Il ne
+modifie aucun workflow WordPress existant.
 
-## Site planning workflows
+## Variables n8n
 
-| Workflow | ID | Status | Role |
-| --- | --- | --- | --- |
-| `wp-builder-v2` | `7NjF4vFxVsOHBcH8` | Active, tracked | Produces planning artifacts. |
-| `wp-builder-v2-validation-loop` | `fUUjOAaResOiVPt2` | Active, tracked | Receives human validation decisions. |
-| `wp-builder-v2-targeted-rebuild` | `iOFPfFZ19jOyTHm4` | Active, tracked | Rebuilds only rejected planning artifacts. |
+```dotenv
+DEVDOC_MCP_URL=http://<nom-tailscale-ou-ip>:<port>
+DEVDOC_MCP_TOKEN=<jeton-Bearer-dedie>
+```
 
-These workflows are not legacy: they expose active webhooks and the planning
-and validation workflows have successful executions. They feed approved
-artifacts to the WordPress construction pipeline.
+Le workflow accepte un lot avec un `externalId` unique pour chaque cours. Il
+prépare l'arborescence, traite les cours séparément, relance la correction après
+un refus et arrête après trois vérifications. Les appels HTTP utilisent la
+progression d'exécution n8n ; une reprise avec le même `batchId` et le même
+`externalId` réutilise la génération Symfony.
 
-## Deployment rule
-
-Before importing a tracked workflow:
-
-1. Export the live workflow and record a checksum.
-2. Compare its semantic hash with the expected pre-deployment hash.
-3. Import only workflow IDs changed by the commit.
-4. Confirm the live semantic hash matches the committed file.
-5. Retain the export until a successful post-deployment execution.
+Avant activation, installer et connecter Tailscale sur Netcup, puis vérifier
+depuis le conteneur n8n l'endpoint `/health` et un appel de lecture authentifié.
+Les clés OpenAI et DeepSeek restent uniquement dans le MCP.

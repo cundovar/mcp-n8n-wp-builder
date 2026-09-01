@@ -1,0 +1,172 @@
+[
+  {
+    "name": "50-devdoc-course-batch",
+    "active": false,
+    "settings": { "executionOrder": "v1", "saveExecutionProgress": true },
+    "nodes": [
+      {
+        "parameters": { "httpMethod": "POST", "path": "devdoc-course-batch", "responseMode": "onReceived", "options": {} },
+        "name": "DevDoc Course Batch Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [-1320, 100],
+        "id": "devdoc-0001"
+      },
+      {
+        "parameters": {},
+        "name": "Manual Test Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [-1320, -80],
+        "id": "devdoc-0002"
+      },
+      {
+        "parameters": { "jsCode": "const input = $json.body ?? $json;\nif (!input.superMenu || !input.category || !Array.isArray(input.menus)) throw new Error('superMenu, category and menus are required');\nconst seen = new Set();\nlet count = 0;\nfor (const menu of input.menus) {\n  for (const course of (menu.courses || [])) {\n    const externalId = String(course.externalId || '').trim();\n    if (!externalId || seen.has(externalId)) throw new Error('Every course needs a unique externalId');\n    seen.add(externalId);\n    count += 1;\n  }\n}\nif (!count) throw new Error('No course supplied');\nreturn [{ json: { batchId: input.batchId || `devdoc-${$execution.id}`, superMenu: input.superMenu, category: input.category, menus: input.menus } }];" },
+        "name": "Validate and Flatten Batch",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [-1080, 100],
+        "id": "devdoc-0003"
+      },
+      {
+        "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/formations/preparer' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ superMenu: $json.superMenu, category: $json.category, menus: $json.menus }) }}", "options": {} },
+        "name": "Prepare Formation",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [-840, 100],
+        "id": "devdoc-0004"
+      },
+      {
+        "parameters": { "jsCode": "const source = $('Validate and Flatten Batch').first().json;\nconst prepared = $json.data;\nconst key = (name, level) => `${String(name || 'Cours').trim().toLowerCase()}::${String(level || '').trim().toLowerCase()}`;\nconst menuIds = new Map(prepared.menus.map((menu) => [key(menu.label, menu.niveauCoursName), menu.id]));\nconst rows = [];\nfor (const menu of source.menus) {\n  for (const course of (menu.courses || [])) {\n    const level = menu.level || course.level;\n    const menuId = menuIds.get(key(menu.name || 'Cours', level));\n    if (!menuId) throw new Error(`Prepared menu not found: ${menu.name || 'Cours'}`);\n    rows.push({ json: { batchId: source.batchId, category: source.category, level, menuId, course } });\n  }\n}\nreturn rows;" },
+        "name": "Expand Courses",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [-720, 100],
+        "id": "devdoc-0018"
+      },
+      {
+        "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/generations' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ batchId: $json.batchId, externalId: $json.course.externalId, payload: { title: $json.course.title, description: $json.course.description || '', technology: $json.category, level: $json.level, duration: $json.course.duration, menuId: $json.menuId } }) }}", "options": {} },
+        "name": "Register Generation",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [-480, 100],
+        "id": "devdoc-0005"
+      },
+      {
+        "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/candidats' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ title: $('Expand Courses').item.json.course.title, description: $('Expand Courses').item.json.course.description || '', technology: $('Expand Courses').item.json.category, level: $('Expand Courses').item.json.level, duration: $('Expand Courses').item.json.course.duration }) }}", "options": {} },
+        "name": "Generate Candidate",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [-360, 100],
+        "id": "devdoc-0006"
+      },
+      {
+        "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/illustrations' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ generationId: $('Register Generation').item.json.data.id, illustrations: $('Generate Candidate').item.json.data.illustrations }) }}", "options": {} },
+        "name": "Generate Illustrations",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [-120, 100],
+        "id": "devdoc-0007",
+        "continueOnFail": true
+      },
+      {
+        "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/illustrations/associer' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ candidate: $('Generate Candidate').item.json.data, images: $json.data || [] }) }}", "options": {} },
+        "name": "Associate Illustrations",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [120, 100],
+        "id": "devdoc-0008"
+      },
+      {
+        "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/verifier' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ candidate: $('Associate Illustrations').item.json.data, images: $('Generate Illustrations').item.json.data || [] }) }}", "options": {} },
+        "name": "Verify Candidate",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [360, 100],
+        "id": "devdoc-0009"
+      },
+      {
+        "parameters": { "method": "PUT", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/generations/' + $('Register Generation').item.json.data.id }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ status: 'verifying', candidate: $('Associate Illustrations').item.json.data, verificationReport: $('Verify Candidate').item.json.data }) }}", "options": {} },
+        "name": "Store Verification",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [600, 100],
+        "id": "devdoc-0010"
+      },
+      {
+        "parameters": { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 }, "conditions": [{ "leftValue": "={{ $json.data.verificationReport.approved }}", "rightValue": true, "operator": { "type": "boolean", "operation": "true" } }], "combinator": "and" }, "options": {} },
+        "name": "IF Verified",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [840, 100],
+        "id": "devdoc-0011"
+      },
+      {
+        "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/generations/' + $('Register Generation').item.json.data.id + '/finaliser' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }] }, "options": {} },
+        "name": "Finalize Visible Course",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [1080, -20],
+        "id": "devdoc-0012"
+      },
+      {
+        "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/generations/' + $('Register Generation').item.json.data.id + '/echouer' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ technicalError: 'Verification rejected after the configured maximum of three attempts', verificationReport: $json.data.verificationReport }) }}", "options": {} },
+        "name": "Record Failed Course",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [1080, 220],
+        "id": "devdoc-0013"
+      },
+      {
+        "parameters": { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 }, "conditions": [{ "leftValue": "={{ Number($json.data.verificationAttempts) }}", "rightValue": 3, "operator": { "type": "number", "operation": "smaller" } }], "combinator": "and" }, "options": {} },
+        "name": "Can Retry Verification",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [1080, 180],
+        "id": "devdoc-0014"
+      },
+      {
+        "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/corriger' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ candidate: $json.data.candidate, report: $json.data.verificationReport, technology: $('Expand Courses').item.json.category, level: $('Expand Courses').item.json.level }) }}", "options": {} },
+        "name": "Correct Candidate",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [1320, 100],
+        "id": "devdoc-0015"
+      },
+      {
+        "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/verifier' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ candidate: $('Correct Candidate').item.json.data, images: $('Generate Illustrations').item.json.data || [] }) }}", "options": {} },
+        "name": "Verify Corrected Candidate",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [1560, 100],
+        "id": "devdoc-0016"
+      },
+      {
+        "parameters": { "method": "PUT", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/generations/' + $('Register Generation').item.json.data.id }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ status: 'verifying', candidate: $('Correct Candidate').item.json.data, verificationReport: $('Verify Corrected Candidate').item.json.data }) }}", "options": {} },
+        "name": "Store Corrected Verification",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [1800, 100],
+        "id": "devdoc-0017"
+      }
+    ],
+    "connections": {
+      "DevDoc Course Batch Webhook": { "main": [[{ "node": "Validate and Flatten Batch", "type": "main", "index": 0 }]] },
+      "Manual Test Trigger": { "main": [[{ "node": "Validate and Flatten Batch", "type": "main", "index": 0 }]] },
+      "Validate and Flatten Batch": { "main": [[{ "node": "Prepare Formation", "type": "main", "index": 0 }]] },
+      "Prepare Formation": { "main": [[{ "node": "Expand Courses", "type": "main", "index": 0 }]] },
+      "Expand Courses": { "main": [[{ "node": "Register Generation", "type": "main", "index": 0 }]] },
+      "Register Generation": { "main": [[{ "node": "Generate Candidate", "type": "main", "index": 0 }]] },
+      "Generate Candidate": { "main": [[{ "node": "Generate Illustrations", "type": "main", "index": 0 }]] },
+      "Generate Illustrations": { "main": [[{ "node": "Associate Illustrations", "type": "main", "index": 0 }]] },
+      "Associate Illustrations": { "main": [[{ "node": "Verify Candidate", "type": "main", "index": 0 }]] },
+      "Verify Candidate": { "main": [[{ "node": "Store Verification", "type": "main", "index": 0 }]] },
+      "Store Verification": { "main": [[{ "node": "IF Verified", "type": "main", "index": 0 }]] },
+      "IF Verified": { "main": [[{ "node": "Finalize Visible Course", "type": "main", "index": 0 }], [{ "node": "Can Retry Verification", "type": "main", "index": 0 }]] },
+      "Can Retry Verification": { "main": [[{ "node": "Correct Candidate", "type": "main", "index": 0 }], [{ "node": "Record Failed Course", "type": "main", "index": 0 }]] },
+      "Correct Candidate": { "main": [[{ "node": "Verify Corrected Candidate", "type": "main", "index": 0 }]] },
+      "Verify Corrected Candidate": { "main": [[{ "node": "Store Corrected Verification", "type": "main", "index": 0 }]] },
+      "Store Corrected Verification": { "main": [[{ "node": "IF Verified", "type": "main", "index": 0 }]] }
+    }
+  }
+]
