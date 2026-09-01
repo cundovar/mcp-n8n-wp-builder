@@ -5,12 +5,13 @@
     "settings": { "executionOrder": "v1", "saveExecutionProgress": true },
     "nodes": [
       {
-        "parameters": { "httpMethod": "POST", "path": "devdoc-course-batch", "responseMode": "onReceived", "options": {} },
+        "parameters": { "httpMethod": "POST", "path": "devdoc-course-batch", "authentication": "headerAuth", "responseMode": "onReceived", "options": {} },
         "name": "DevDoc Course Batch Webhook",
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 2.1,
         "position": [-1320, 100],
-        "id": "devdoc-0001"
+        "id": "devdoc-0001",
+        "credentials": { "httpHeaderAuth": { "id": "devdoc-course-batch-header-auth", "name": "DevDoc Course Batch Webhook Token" } }
       },
       {
         "parameters": {},
@@ -34,7 +35,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [-840, 100],
-        "id": "devdoc-0004"
+        "id": "devdoc-0004",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       },
       {
         "parameters": { "jsCode": "const source = $('Validate and Flatten Batch').first().json;\nconst prepared = $json.data;\nconst key = (name, level) => `${String(name || 'Cours').trim().toLowerCase()}::${String(level || '').trim().toLowerCase()}`;\nconst menuIds = new Map(prepared.menus.map((menu) => [key(menu.label, menu.niveauCoursName), menu.id]));\nconst rows = [];\nfor (const menu of source.menus) {\n  for (const course of (menu.courses || [])) {\n    const level = menu.level || course.level;\n    const menuId = menuIds.get(key(menu.name || 'Cours', level));\n    if (!menuId) throw new Error(`Prepared menu not found: ${menu.name || 'Cours'}`);\n    rows.push({ json: { batchId: source.batchId, category: source.category, level, menuId, course } });\n  }\n}\nreturn rows;" },
@@ -50,7 +54,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [-480, 100],
-        "id": "devdoc-0005"
+        "id": "devdoc-0005",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       },
       {
         "parameters": { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 }, "conditions": [{ "leftValue": "={{ $json.data.status }}", "rightValue": "succeeded", "operator": { "type": "string", "operation": "equals" } }], "combinator": "and" }, "options": {} },
@@ -66,7 +73,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [0, 100],
-        "id": "devdoc-0006"
+        "id": "devdoc-0006",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       },
       {
         "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/illustrations' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ generationId: $('Register Generation').item.json.data.id, illustrations: $('Generate Candidate').item.json.data.illustrations }) }}", "options": {} },
@@ -75,6 +85,9 @@
         "typeVersion": 4.2,
         "position": [-120, 100],
         "id": "devdoc-0007",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000,
         "continueOnFail": true
       },
       {
@@ -83,7 +96,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [120, 100],
-        "id": "devdoc-0008"
+        "id": "devdoc-0008",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       },
       {
         "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/verifier' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ candidate: $('Associate Illustrations').item.json.data, images: $('Generate Illustrations').item.json.data || [] }) }}", "options": {} },
@@ -91,7 +107,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [360, 100],
-        "id": "devdoc-0009"
+        "id": "devdoc-0009",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       },
       {
         "parameters": { "method": "PUT", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/generations/' + $('Register Generation').item.json.data.id }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ status: 'verifying', candidate: $('Associate Illustrations').item.json.data, verificationReport: $('Verify Candidate').item.json.data }) }}", "options": {} },
@@ -99,7 +118,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [600, 100],
-        "id": "devdoc-0010"
+        "id": "devdoc-0010",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       },
       {
         "parameters": { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 }, "conditions": [{ "leftValue": "={{ $json.data.verificationReport.approved }}", "rightValue": true, "operator": { "type": "boolean", "operation": "true" } }], "combinator": "and" }, "options": {} },
@@ -115,7 +137,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [1080, -20],
-        "id": "devdoc-0012"
+        "id": "devdoc-0012",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       },
       {
         "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/generations/' + $('Register Generation').item.json.data.id + '/echouer' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ technicalError: 'Verification rejected after the configured maximum of three attempts', verificationReport: $json.data.verificationReport }) }}", "options": {} },
@@ -123,7 +148,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [1080, 220],
-        "id": "devdoc-0013"
+        "id": "devdoc-0013",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       },
       {
         "parameters": { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 }, "conditions": [{ "leftValue": "={{ Number($json.data.verificationAttempts) }}", "rightValue": 3, "operator": { "type": "number", "operation": "smaller" } }], "combinator": "and" }, "options": {} },
@@ -139,7 +167,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [1320, 100],
-        "id": "devdoc-0015"
+        "id": "devdoc-0015",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       },
       {
         "parameters": { "method": "POST", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/verifier' }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ candidate: $('Correct Candidate').item.json.data, images: $('Generate Illustrations').item.json.data || [] }) }}", "options": {} },
@@ -147,7 +178,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [1560, 100],
-        "id": "devdoc-0016"
+        "id": "devdoc-0016",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       },
       {
         "parameters": { "method": "PUT", "url": "={{ $env.DEVDOC_MCP_URL + '/api/orchestration/generations/' + $('Register Generation').item.json.data.id }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.DEVDOC_MCP_TOKEN }}" }, { "name": "Content-Type", "value": "application/json" }] }, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ status: 'verifying', candidate: $('Correct Candidate').item.json.data, verificationReport: $('Verify Corrected Candidate').item.json.data }) }}", "options": {} },
@@ -155,7 +189,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [1800, 100],
-        "id": "devdoc-0017"
+        "id": "devdoc-0017",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
       }
     ],
     "connections": {
