@@ -1,5 +1,4 @@
-[
-  {
+{
     "name": "50-devdoc-course-batch",
     "active": false,
     "settings": { "executionOrder": "v1", "saveExecutionProgress": true },
@@ -214,5 +213,4 @@
       "Verify Corrected Candidate": { "main": [[{ "node": "Store Corrected Verification", "type": "main", "index": 0 }]] },
       "Store Corrected Verification": { "main": [[{ "node": "IF Verified", "type": "main", "index": 0 }]] }
     }
-  }
-]
+}
